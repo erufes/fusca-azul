@@ -4,6 +4,7 @@ Projeto dos trainees da Equipe de Rrobótica da UFES (ERUS) para desenvolvimento
 
 
 ✋ Controle por gestos (via webcam);
+
 🚧 Desvio automático de obstáculos;
 
 
