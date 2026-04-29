@@ -20,6 +20,12 @@ MediaPipe
 
 Modo autônomo usando sensor ultrassônico para detectar e evitar colisões.
 
+Tecnologias previstas:
+
+ESP32 //modelo a adicionar
+Sensor ultrassônico //modelo a adicionar
+Ponte H //modelo a adicionar
+
 ⚙️ Status do Projeto
 
 🚧 Em desenvolvimento (fase inicial)
