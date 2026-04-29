@@ -1,4 +1,6 @@
-🤖 Fusca Azul, Robô com Controle por Gestos e Desvio Automático de Obstáculos
+FUSCA AZUL
+
+🤖 Robô com Controle por Gestos e Desvio Automático de Obstáculos
 
 Projeto dos trainees da Equipe de Rrobótica da UFES (ERUS) para desenvolvimento de um veículo com dois modos de operação:
 
