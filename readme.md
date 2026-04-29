@@ -1,38 +1,43 @@
-🚙 FUSCA AZUL
-🤖 Robô com Controle por Gestos e Desvio Automático de Obstáculos
+# 🚙 FUSCA AZUL  
 
-Projeto dos trainees da Equipe de Robótica da UFES (ERUS) para desenvolvimento de um veículo com dois modos de operação:
+## 🤖 Robô com Controle por Gestos e Desvio Automático de Obstáculos  
 
-✋ Controle por gestos (via webcam)
-🚧 Desvio automático de obstáculos
-📌 Descrição
+Projeto dos trainees da Equipe de Robótica da UFES (ERUS) para desenvolvimento de um veículo com dois modos de operação:  
 
-O robô será controlado por um ESP32 e terá dois modos:
+- ✋ Controle por gestos (via webcam)  
+- 🚧 Desvio automático de obstáculos  
 
-✋ Controle por gestos
+## 📌 Descrição  
 
-Uso de visão computacional para capturar movimentos da mão e enviar comandos ao robô.
+O robô será controlado por um ESP32 e terá dois modos:  
 
-Tecnologias previstas:
+### ✋ Controle por gestos  
 
-OpenCV
-MediaPipe
-🚧 Desvio de obstáculos
+Uso de visão computacional para capturar movimentos da mão e enviar comandos ao robô.  
 
-Modo autônomo usando sensor ultrassônico para detectar e evitar colisões.
+Tecnologias previstas:  
 
-Tecnologias previstas:
+- OpenCV  
+- MediaPipe  
 
-ESP32 (modelo a definir)
-Sensor ultrassônico (ex: HC-SR04)
-Ponte H (ex: L298N)
-⚙️ Status do Projeto
+### 🚧 Desvio de obstáculos  
 
-🚧 Em desenvolvimento (fase inicial)
+Modo autônomo usando sensor ultrassônico para detectar e evitar colisões.  
 
-👥 Equipe
-Yágo Amorim
-Pietro Pazini
-Dimitry Deveza
-Daniel Rodrigues
-Pedro Pavesi
+Tecnologias previstas:  
+
+- ESP32 (modelo a definir)  
+- Sensor ultrassônico (ex: HC-SR04)  
+- Ponte H (ex: L298N)  
+
+## ⚙️ Status do Projeto  
+
+🚧 Em desenvolvimento (fase inicial)  
+
+## 👥 Equipe  
+
+Yágo Amorim  
+Pietro Pazini  
+Dimitry Deveza  
+Daniel Rodrigues  
+Pedro Pavesi  
