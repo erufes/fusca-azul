@@ -41,6 +41,7 @@ void parar(){
 void esquerda(){
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
+// ================= SETUP =================
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
@@ -70,7 +71,7 @@ void loop(){
   
   Serial.println(distancia); // printa a distancia
 
-  if(distancia < 20 && distancia != 999){
+  if(distancia < 20 && distancia != 999){ //quando programa nao detecta nada, ele retorna 999, entao aqui ignoramos isso
     parar();
     delay(300); // aq é em ms
     esquerda();
