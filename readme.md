@@ -1,11 +1,14 @@
 FUSCA AZUL
 
+
 🤖 Robô com Controle por Gestos e Desvio Automático de Obstáculos
+
 
 Projeto dos trainees da Equipe de Rrobótica da UFES (ERUS) para desenvolvimento de um veículo com dois modos de operação:
 
 
 ✋ Controle por gestos (via webcam);
+
 
 🚧 Desvio automático de obstáculos;
 
@@ -43,7 +46,7 @@ Sensor ultrassônico //modelo a adicionar
 Ponte H //modelo a adicionar
 
 
-⚙️ Status do Projeto
+⚙️ Status do Projeto:
 
 
 🚧 Em desenvolvimento (fase inicial)
