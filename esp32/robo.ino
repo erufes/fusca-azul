@@ -6,17 +6,6 @@
 #define IN3 // a definir entrada 
 #define IN4 // a definir entrada 
 
-void setup(){
-  pinMode(TRIG, OUTPUT);
-  pinMode(ECHO, INPUT);
-  
-  pinMode(IN1, OUTPUT);
-  pinMode(IN2, OUTPUT);
-  pinMode(IN3, OUTPUT);
-  pinMode(IN4, OUTPUT);
-  Serial.begin(115200);
-}
-
 long distancia;
 
 medirDistancia(){
@@ -54,13 +43,32 @@ void direita(){
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, HIGH);
-  }   
-      
+  } 
+
+void setup(){
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+  
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT); 
+  pinMode(IN4, OUTPUT);
+
+  Serial.begin(115200);
+}      
+
 void loop(){
-  if(distancia < 15){
+
+  distancia = medirDistancia();
+  
+  if(distancia < 20){
     parar();
     delay(300); // aq é em ms
     esquerda();
+    delay(400); // aq é em ms
   }
-    
+  else{
+    frente();
   }
+  }
+
