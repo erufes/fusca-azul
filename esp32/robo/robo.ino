@@ -41,6 +41,7 @@ void parar(){
 void esquerda(){
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
+// ================= SETUP =================
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
