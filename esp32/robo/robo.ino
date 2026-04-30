@@ -17,7 +17,7 @@ long medirDistancia(){
 
   digitalWrite(TRIG, LOW); // termina o pulso
   
-  long duracao = pulseIn(ECHO, HIGH, 30000); // pulsein calcula quanto tempo o pino ECHO ficou em HIGH, ele espera no máximo 30ms
+  long duracao = pulseIn(ECHO, HIGH, 30000); // pulsein calcula quanto tempo o pino ECHO ficou em HIGH, ele espera no máximo 30 microssegundos
   
   if (duracao == 0) return 999; // evita erro se nao tiver leitura
 
@@ -41,7 +41,6 @@ void parar(){
 void esquerda(){
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
-// ================= SETUP =================
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
@@ -71,11 +70,11 @@ void loop(){
   
   Serial.println(distancia); // printa a distancia
 
-  if(distancia < 20 && distancia != 999){ //quando programa nao detecta nada, ele retorna 999, entao aqui ignoramos isso
+  if(distancia < 20 && distancia != 999){ //quando o robo nao detecta nada na frente dele, ele retorna 999, entao aqui ignoramos isso
     parar();
     delay(300); // aq é em ms
     esquerda();
-    delay(400); // aq é em ms
+    delay(500); // aq é em ms
   } 
   else{
     frente();
