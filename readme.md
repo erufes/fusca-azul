@@ -26,9 +26,9 @@ Modo autônomo usando sensor ultrassônico para detectar e evitar colisões.
 
 Tecnologias previstas:  
 
-- ESP32 (modelo a definir)  
-- Sensor ultrassônico (modelo a definir)  
-- Ponte H (modelo a definir)  
+- ESP-32D
+- Sensor ultrassônico (HC - SR04)
+- Ponte H
 
 ##  Status do Projeto:  
 
