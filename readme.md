@@ -28,7 +28,7 @@ Tecnologias previstas:
 
 - ESP-32D
 - Sensor ultrassônico (HC - SR04)
-- Ponte H (modelo a definir)  
+- Ponte H
 
 ##  Status do Projeto:  
 
