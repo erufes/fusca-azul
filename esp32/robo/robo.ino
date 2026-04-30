@@ -12,12 +12,12 @@ long medirDistancia(){
   digitalWrite(TRIG, LOW); // comeca desligado
   delayMicroseconds(2); 
 
-  digitalWrite(TRIG, HIGH); // envia o pulso de 10 ms (faz disparar um som ultrassonico)
+  digitalWrite(TRIG, HIGH); // envia o pulso de 10 microssegundos (faz disparar um som ultrassonico)
   delayMicroseconds(10);
 
   digitalWrite(TRIG, LOW); // termina o pulso
   
-  long duracao = pulseIn(ECHO, HIGH, 30000); // pulsein calcula quanto tempo o pino ECHO ficou em HIGH, ele espera no máximo 30 microssegundos
+  long duracao = pulseIn(ECHO, HIGH, 30000); // pulsein calcula quanto tempo o pino ECHO ficou em HIGH (enquanto o som ta indo e voltando), ele espera no máximo 30 microssegundos
   
   if (duracao == 0) return 999; // evita erro se nao tiver leitura
 
@@ -61,7 +61,7 @@ void setup(){
   pinMode(IN3, OUTPUT); 
   pinMode(IN4, OUTPUT);
 
-  Serial.begin(115200);
+  Serial.begin(115200); //bits por segundo, O VALOR TEM QUE BATER COM O MONITOR SERIAL!!!
 }      
 
 void loop(){
