@@ -634,7 +634,7 @@
         "uuid": "4addfb68-6130-4e35-b57a-c21c2da7d4db"
       }
     ],
-    "used_designators": "R1-2,#PWR1-6,5V_IN1",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [
