@@ -634,13 +634,21 @@
         "uuid": "4addfb68-6130-4e35-b57a-c21c2da7d4db"
       }
     ],
-    "used_designators": "",
+    "used_designators": "U1-2,R1-8,J1-6,5V_IN1-2,#PWR1-16",
     "variants": []
   },
   "sheets": [
     [
       "4addfb68-6130-4e35-b57a-c21c2da7d4db",
       "fusca-azul"
+    ],
+    [
+      "3e9a97c4-8e25-4110-90b1-da70c063feb6",
+      "v1-1sensor"
+    ],
+    [
+      "0db33914-9c4c-4156-a3cd-0210b1c41708",
+      "v2-3sensor"
     ]
   ],
   "text_variables": {},
