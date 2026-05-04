@@ -29,17 +29,18 @@ def mindinho_levantado(hand) -> bool:
 
 def polegar_levantado(hand, lado) -> bool:
     ponta = hand[4]
-    junta = hand[3]
-    base = hand[2]
+    mcp   = hand[2]
+    pulso = hand[0]
+    
+    # Base do indicador, se o dedão estiver colado aqui, está fechado
+    base_indicador = hand[5]
 
-    lateral = abs(ponta.x - base.x)
+    palma = distancia(pulso, mcp)
+    dedo  = distancia(pulso, ponta)
 
-    if lado == "Right":
-        direcao = ponta.x > junta.x
-    else:
-        direcao = ponta.x < junta.x
+    # Dedão colado na lateral do punho
+    colado = distancia(ponta, base_indicador) < palma * 0.52
 
-    return (
-        lateral > 0.05
-        and direcao
-    )
+    direcao = ponta.x > mcp.x if lado == "Right" else ponta.x < mcp.x
+
+    return dedo > palma * 1.3 and direcao and not colado

@@ -5,19 +5,19 @@ from mediapipe.tasks.python import vision
 import time
 from gestos import gestos
 
-base_options = python.BaseOptions(model_asset_path="utils/hand_landmarker.task")
+base_options = python.BaseOptions(model_asset_path="fusca-azul/mocap/utils/hand_landmarker.task")
 
 options = vision.HandLandmarkerOptions(
     base_options=base_options,
     running_mode=vision.RunningMode.VIDEO,
-    num_hands=2,                        
+    num_hands=1,                        
     min_hand_detection_confidence=0.5,  # confiança mínima pra detectar
     min_tracking_confidence=0.3         # confiança mínima pra rastrear
 )
 
 webcam = cv2.VideoCapture(0) # Abre a webcam. 0 = câmera padrão do sistema
-webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 420)
+webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 with vision.HandLandmarker.create_from_options(options) as landmarker:
     while webcam.isOpened():
@@ -34,23 +34,34 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
         resultado = landmarker.detect_for_video(mp_image, timestamp)
 
         if resultado.hand_landmarks:
-            for hand in (resultado.hand_landmarks):
+            for i, hand in enumerate(resultado.hand_landmarks):
+                lado = resultado.handedness[i][0].category_name
                 for landmark in hand:
                     h, w, _ = frame.shape
                     cx, cy = int(landmark.x * w), int(landmark.y * h)
                     cv2.circle(frame, (cx, cy), 10, (0, 255, 0), -1)
                     
-                    g = gestos(hand)
+                    g = gestos(hand, lado)
 
-                    if g.mao_aberta():
-                        print("Aberta")
+                    if g.frente():
+                        print("Frente")
 
-                    elif g.mao_fechada():
-                        print("Fechada")
+                    elif g.parado():
+                        print("Parado")
+
+                    elif g.re():
+                        print("re")
+
+                    elif g.direita():
+                        print("Direita")
+
+                    elif g.esquerda():
+                        print("Esquerda")
+
                     else:
-                        print("Gesto nao conhecido")    
+                        print("Gesto não conhecido")    
         else:
-            print("Mao nao detectada")
+            print("Mão não detectada")
 
         cv2.imshow("Feed", frame) # Exibe o frame numa janela chamada "Feed", Se a janela não existir, cria automaticamente
         cv2.waitKey(1) # Processa eventos
