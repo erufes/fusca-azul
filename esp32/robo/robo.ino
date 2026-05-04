@@ -31,42 +31,57 @@ long medirDistancia(){
   return duracao * 0.034 / 2; // 0.034 = velocidade do som em cm por microsegundo divide por 2 porque o som vai e volta
 }
 
-void frente(){
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
+void frente(int velocidade) { //o parametro de velocidade é definido quando chama a funcao,
+  analogWrite(ENA, velocidade);// ex: frente(100), a velocidade do motor vai ser 100 de 255 que seria o maximo
+  analogWrite(ENB, velocidade);  
+  
+  digitalWrite(esquerda1, HIGH);
+  digitalWrite(esquerda2, LOW);
+  digitalWrite(direita1, HIGH);
+  digitalWrite(direita2, LOW);
 } 
   
 void parar(){
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+  
+  digitalWrite(esquerda1, LOW);
+  digitalWrite(esquerda2, LOW);
+  digitalWrite(direita1, LOW);
+  digitalWrite(direita2, LOW);
 }
 
-void esquerda(){
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
+void esquerda(int velocidade) {
+  analogWrite(ENA, velocidade);
+  analogWrite(ENB, velocidade);
+
+  digitalWrite(esquerda1, LOW);
+  digitalWrite(esquerda2, HIGH);
+  digitalWrite(direita1, HIGH);
+  digitalWrite(direita2, LOW);
 }
 
-void direita(){
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, HIGH);
+void direita(int velocidade){ //nao usado, mas adicionei por desencargo de consciencia
+  analogWrite(ENA, velocidade);
+  analogWrite(ENB, velocidade);
+
+  digitalWrite(esquerda1, HIGH);
+  digitalWrite(esquerda2, LOW);
+  digitalWrite(direita1, LOW);
+  digitalWrite(direita2, HIGH);
 } 
 
 void setup(){
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
-  
-  pinMode(IN1, OUTPUT);
-  pinMode(IN2, OUTPUT);
-  pinMode(IN3, OUTPUT); 
-  pinMode(IN4, OUTPUT);
+
+  pinMode(esquerda1, OUTPUT);
+  pinMode(esquerda2, OUTPUT);
+  pinMode(direita1, OUTPUT);
+  pinMode(direita2, OUTPUT);
+
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
 
   Serial.begin(115200); //bits por segundo, O VALOR TEM QUE BATER COM O MONITOR SERIAL PRA CONSEGUIR MONITORAR!!!
 }      
@@ -79,11 +94,13 @@ void loop(){
 
   if(distancia < distanciaMaxima && distancia != 999){ //quando o robo nao detecta nada na frente dele, ele retorna 999, entao aqui ignoramos isso
     parar();
-    delay(300); // aq é em ms
-    esquerda();
+    delay(1000); // aq é em ms
+
+    esquerda(70); //velocidade
     delay(500); // aq é em ms
   } 
   else{
-    frente();
+    frente(70);//velocidade
   }
+  delay(100);
 }
