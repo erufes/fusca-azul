@@ -1283,7 +1283,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1301,7 +1301,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1319,7 +1319,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1337,7 +1337,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1355,7 +1355,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "5"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1373,7 +1373,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "6"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1640,12 +1640,6 @@
 		)
 	)
 	(junction
-		(at 49.53 92.71)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "132d9f48-9916-49dd-b39e-031f8991cb82")
-	)
-	(junction
 		(at 52.07 80.01)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1703,16 +1697,6 @@
 	)
 	(wire
 		(pts
-			(xy 49.53 90.17) (xy 49.53 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "69c0653e-e164-4c63-ab94-7b5643ede6a6")
-	)
-	(wire
-		(pts
 			(xy 49.53 30.48) (xy 49.53 43.18)
 		)
 		(stroke
@@ -1720,16 +1704,6 @@
 			(type default)
 		)
 		(uuid "8d037416-c9eb-4501-9f56-524cacedfd58")
-	)
-	(wire
-		(pts
-			(xy 44.45 80.01) (xy 44.45 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a0bb4547-42dd-4097-9956-c9cc5600f513")
 	)
 	(wire
 		(pts
@@ -1771,16 +1745,6 @@
 		)
 		(uuid "e56c6a4e-add2-4d6e-a873-a6f66ad95c10")
 	)
-	(wire
-		(pts
-			(xy 44.45 90.17) (xy 49.53 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f635144f-f85c-43de-b27e-424ff268806e")
-	)
 	(symbol
 		(lib_id "Device:R")
 		(at 52.07 85.09 0)
@@ -1815,7 +1779,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 50.292 85.09 90)
 			(hide yes)
 			(show_name no)
@@ -1974,7 +1938,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 48.26 78.232 90)
 			(hide yes)
 			(show_name no)
@@ -2105,6 +2069,100 @@
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/3e9a97c4-8e25-4110-90b1-da70c063feb6"
 					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "fusca-azul:L298N - Logic Jumpers")
+		(at 49.53 31.75 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "39b82791-86f9-46e5-af7c-12eb8155d2e3")
+		(property "Reference" "J1"
+			(at 55.88 20.9549 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "L298N Logic Jumpers"
+			(at 55.88 23.4949 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
+			(at 49.53 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 49.53 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 49.53 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "5"
+			(uuid "65dbaac8-a88f-434c-9c72-f695de0f2f2a")
+		)
+		(pin "3"
+			(uuid "563e91d0-fe6e-4d6b-a1f0-059924150434")
+		)
+		(pin "1"
+			(uuid "316a3ce5-d4a2-4955-9ea9-e062a00db32e")
+		)
+		(pin "4"
+			(uuid "f9d0c342-e146-4324-9199-7d60adc791ba")
+		)
+		(pin "6"
+			(uuid "aded60a1-f1f5-4ab7-8943-b8a90f2b3784")
+		)
+		(pin "2"
+			(uuid "38d10723-06dc-49e4-a125-fb9a0424f2d3")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/3e9a97c4-8e25-4110-90b1-da70c063feb6"
+					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -2263,100 +2321,6 @@
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/3e9a97c4-8e25-4110-90b1-da70c063feb6"
 					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "fusca-azul:L298N - Logic Jumpers")
-		(at 49.53 31.75 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6c463a30-ec75-4edd-b3bf-0b0174c1a4f0")
-		(property "Reference" "J1"
-			(at 55.88 20.9549 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "L298N Logic Jumpers"
-			(at 55.88 23.4949 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
-			(at 49.53 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 49.53 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 49.53 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin ""
-			(uuid "5cff34ea-deff-4842-bbae-a276ac61f978")
-		)
-		(pin ""
-			(uuid "f6e0f531-2fcd-42af-941f-dd47ee9b8dc8")
-		)
-		(pin ""
-			(uuid "d922a1a9-326c-4b5e-b950-1a96b906983f")
-		)
-		(pin ""
-			(uuid "f4edd946-6e17-4d57-92ee-88c7478fa5c0")
-		)
-		(pin ""
-			(uuid "bb6c9c19-5cf0-4b1c-99fd-5a7a45d9be25")
-		)
-		(pin ""
-			(uuid "a1a90cd0-e628-4b9a-9731-a79a290a6eba")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/3e9a97c4-8e25-4110-90b1-da70c063feb6"
-					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -2553,7 +2517,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:CERDIP-14_W7.62mm_SideBrazed"
+		(property "Footprint" "RF_Module:ESP32-C3-DevKitM-1"
 			(at 72.898 57.912 0)
 			(hide yes)
 			(show_name no)
@@ -2790,6 +2754,85 @@
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/3e9a97c4-8e25-4110-90b1-da70c063feb6"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 44.45 80.01 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "abb54000-8145-4415-981c-b6344c84f39c")
+		(property "Reference" "#PWR017"
+			(at 38.1 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 40.64 80.0099 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 44.45 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 44.45 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 44.45 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "33245298-f0cd-4284-ae59-0136144dd625")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/3e9a97c4-8e25-4110-90b1-da70c063feb6"
+					(reference "#PWR017")
 					(unit 1)
 				)
 			)

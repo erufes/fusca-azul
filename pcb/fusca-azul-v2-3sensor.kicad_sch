@@ -1283,7 +1283,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1301,7 +1301,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1319,7 +1319,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1337,7 +1337,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1355,7 +1355,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "5"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1373,7 +1373,7 @@
 							)
 						)
 					)
-					(number ""
+					(number "6"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2313,7 +2313,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 86.36 84.582 90)
 			(hide yes)
 			(show_name no)
@@ -2719,7 +2719,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 62.23 84.582 90)
 			(hide yes)
 			(show_name no)
@@ -3038,7 +3038,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 38.1 84.582 90)
 			(hide yes)
 			(show_name no)
@@ -3081,100 +3081,6 @@
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/0db33914-9c4c-4156-a3cd-0210b1c41708"
 					(reference "R3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "fusca-azul:L298N - Logic Jumpers")
-		(at 49.53 31.75 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8a516af4-1f7b-4ac5-bb96-d223de6f8798")
-		(property "Reference" "J4"
-			(at 55.88 20.9549 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "L298N Logic Jumpers"
-			(at 55.88 23.4949 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
-			(at 49.53 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 49.53 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 49.53 31.75 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin ""
-			(uuid "5cff34ea-deff-4842-bbae-a276ac61f978")
-		)
-		(pin ""
-			(uuid "f6e0f531-2fcd-42af-941f-dd47ee9b8dc8")
-		)
-		(pin ""
-			(uuid "d922a1a9-326c-4b5e-b950-1a96b906983f")
-		)
-		(pin ""
-			(uuid "f4edd946-6e17-4d57-92ee-88c7478fa5c0")
-		)
-		(pin ""
-			(uuid "bb6c9c19-5cf0-4b1c-99fd-5a7a45d9be25")
-		)
-		(pin ""
-			(uuid "a1a90cd0-e628-4b9a-9731-a79a290a6eba")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/0db33914-9c4c-4156-a3cd-0210b1c41708"
-					(reference "J4")
 					(unit 1)
 				)
 			)
@@ -3418,6 +3324,100 @@
 		)
 	)
 	(symbol
+		(lib_id "fusca-azul:L298N - Logic Jumpers")
+		(at 49.53 31.75 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d0af76d6-2b6e-4182-9f1b-c75838d53fa0")
+		(property "Reference" "J4"
+			(at 55.88 20.9549 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "L298N Logic Jumpers"
+			(at 55.88 23.4949 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
+			(at 49.53 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 49.53 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 49.53 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "c2428a87-f55d-41bc-8246-bfb7d62a3cbb")
+		)
+		(pin "6"
+			(uuid "88c6f886-3e86-4216-bf5d-51ac761f61a8")
+		)
+		(pin "3"
+			(uuid "8be51c3a-566a-45d8-a059-ba694dbb5e51")
+		)
+		(pin "1"
+			(uuid "611da83a-1ebe-434f-8ff3-2b6e922827a4")
+		)
+		(pin "5"
+			(uuid "2985a36f-78b2-4c86-81e0-0cf8125abb3d")
+		)
+		(pin "4"
+			(uuid "e555b8ec-57f8-41e0-b3c3-71d5ddc9d293")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db/0db33914-9c4c-4156-a3cd-0210b1c41708"
+					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 41.91 91.44 0)
 		(unit 1)
@@ -3451,7 +3451,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 40.132 91.44 90)
 			(hide yes)
 			(show_name no)
@@ -3533,7 +3533,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:CERDIP-14_W7.62mm_SideBrazed"
+		(property "Footprint" "RF_Module:ESP32-C3-DevKitM-1"
 			(at 72.898 57.912 0)
 			(hide yes)
 			(show_name no)
@@ -3809,7 +3809,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 64.262 91.44 90)
 			(hide yes)
 			(show_name no)
@@ -3891,7 +3891,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 88.392 91.44 90)
 			(hide yes)
 			(show_name no)
