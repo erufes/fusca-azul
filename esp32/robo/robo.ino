@@ -1,10 +1,17 @@
-#define TRIG // a definir entrada
-#define ECHO // a definir entrada
+// CODIGO FEITO POR yagwDev
 
-#define IN1 // a definir entrada
-#define IN2 // a definir entrada
-#define IN3 // a definir entrada
-#define IN4 // a definir entrada
+#define TRIG 9 //sensor
+#define ECHO 10 //sensor
+
+#define ENA 3
+#define ENB 11
+
+#define esquerda1 8 //IN1
+#define esquerda2 7 //IN2
+#define direita1 5 //IN3
+#define direita2 6 //IN4
+
+#define distanciaMaxima 10 // distancia do sensor
 
 long distancia;
 
@@ -61,7 +68,7 @@ void setup(){
   pinMode(IN3, OUTPUT); 
   pinMode(IN4, OUTPUT);
 
-  Serial.begin(115200); //bits por segundo, O VALOR TEM QUE BATER COM O MONITOR SERIAL!!!
+  Serial.begin(115200); //bits por segundo, O VALOR TEM QUE BATER COM O MONITOR SERIAL PRA CONSEGUIR MONITORAR!!!
 }      
 
 void loop(){
@@ -70,7 +77,7 @@ void loop(){
   
   Serial.println(distancia); // printa a distancia
 
-  if(distancia < 20 && distancia != 999){ //quando o robo nao detecta nada na frente dele, ele retorna 999, entao aqui ignoramos isso
+  if(distancia < distanciaMaxima && distancia != 999){ //quando o robo nao detecta nada na frente dele, ele retorna 999, entao aqui ignoramos isso
     parar();
     delay(300); // aq é em ms
     esquerda();
