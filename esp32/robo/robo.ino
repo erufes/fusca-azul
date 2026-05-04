@@ -6,10 +6,10 @@
 #define ENA 3
 #define ENB 11
 
-#define esquerda1 8 //IN1
-#define esquerda2 7 //IN2
-#define direita1 5 //IN3
-#define direita2 6 //IN4
+#define esquerda1 8 //IN1 (esquerda frente)
+#define esquerda2 7 //IN2 (esquerda trás)
+#define direita1 5 //IN3 (direita frente)
+#define direita2 6 //IN4 (direita trás)
 
 #define distanciaMaxima 10 // distancia do sensor
 
