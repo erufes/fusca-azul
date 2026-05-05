@@ -1,0 +1,1 @@
+// codigo destinado a adição de um ou mais sensores ao robô, com o objetivo de evitar pontos cegos
