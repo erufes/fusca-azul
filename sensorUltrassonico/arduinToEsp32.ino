@@ -1,6 +1,4 @@
 //codigo do arduino transformado pra esp32
-// codigo destinado a adição de um ou mais sensores ao robô, com o objetivo de evitar pontos cegos
-
 
 #define TRIG 23 // sensor frontal
 #define ECHO 22 // sensor frontal
