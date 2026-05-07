@@ -101,7 +101,7 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                         last_cmd = cmd
                         last_send = time.time()
                     except:
-                    print("Erro ao enviar")
+                        print("Erro ao enviar")
 
         cv2.imshow("Feed", frame) # Exibe o frame numa janela chamada "Feed", Se a janela não existir, cria automaticamente
         cv2.waitKey(1) # Processa eventos
