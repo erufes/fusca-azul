@@ -94,7 +94,7 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
 
            #checa ultimo cmd e tempo do ultimo comando para não sobrecarregar
 
-           if cmd is not None:
+           if cmd is not none:
                 if cmd != last_cmd and time.time() - last_send > 0.1:
                     try:
                         requests.get(f"http://{ESP32_IP}/cmd?cmd={cmd}", timeout=0.05)
