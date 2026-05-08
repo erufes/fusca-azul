@@ -8,10 +8,12 @@ from gestos import gestos
 import os
 
 # Variaveis para checar ultimo comando e tempo do ultimo comando
-last_cmd = -1
+last_send_cmd = -1
+last_print_cmd = -1
 last_send = 0
 last_unknown = False
 last_no_hand = False
+last_connection_error = False
 
 ESP32_IP = "192.168.0.135"  # ← IP do esp
 
@@ -90,18 +92,37 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                         print("Gesto não reconhecido")
                         last_unknown = True
 
-                if cmd != last_cmd and cmd is not None:
-                    print(cmd)    
+                if cmd != last_print_cmd and cmd is not None:
+                    last_print_cmd = cmd
+                    if cmd == "F":
+                        print("Frente")
+                    
+                    elif cmd == "P":
+                        print("Parado") 
+                    
+                    elif cmd == "R":
+                        print("Ré") 
+
+                    elif cmd == "D":
+                        print("Direita") 
+
+                    elif cmd == "E":
+                        print("Esquerda") 
 
            #checa ultimo cmd e tempo do ultimo comando para não sobrecarregar
             if cmd is not None:
-                    if cmd != last_cmd and time.time() - last_send > 0.1:
+                    if cmd != last_send_cmd and time.time() - last_send > 0.1:
+                        
+                        last_send_cmd = cmd
+
                         try:
                             requests.get(f"http://{ESP32_IP}/cmd?cmd={cmd}", timeout=0.05)
-                            last_cmd = cmd
                             last_send = time.time()
+                            last_connection_error = False
                         except:
-                            print("Erro ao enviar")
+                            if not last_connection_error:
+                                print("Erro ao enviar")
+                                last_connection_error = True
         
         else:
 
