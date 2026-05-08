@@ -64,7 +64,7 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                     cx, cy = int(landmark.x * w), int(landmark.y * h)
                     cv2.circle(frame, (cx, cy), 10, (0, 255, 0), -1)
 
-                # DETECTA gesto (FORA do loop dos landmarks)
+                # DETECTA gesto (FORA do loop dos landmarks) (estava checando 21 vezes por frame o que crashava o programa)
                 if g.frente():
                     cmd = "F"
                     last_unknown = False
@@ -92,6 +92,7 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                         print("Gesto não reconhecido")
                         last_unknown = True
 
+                #printa não repetidamente cada comando
                 if cmd != last_print_cmd and cmd is not None:
                     last_print_cmd = cmd
                     if cmd == "F":
@@ -124,13 +125,14 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                                 print("Erro ao enviar")
                                 last_connection_error = True
         
+        #printa não repetidamente se mao não for encontrada
         else:
 
             if not last_no_hand:
                 print("Mão não detectada")
                 last_no_hand = True
         
-        #bloco abaixo movido para esquerda para nao crashar quando nao ha mao detectada
+        #bloco abaixo movido para esquerda para não crashar quando não há mao detectada
         cv2.imshow("Feed", frame) # Exibe o frame numa janela chamada "Feed", Se a janela não existir, cria automaticamente
         cv2.waitKey(1) # Processa eventos
 
