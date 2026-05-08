@@ -5,14 +5,17 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import time
 from gestos import gestos
+import os
 
 # Variaveis para checar ultimo comando e tempo do ultimo comando
-last_cmd = None
+last_cmd = -1
+cmd = None
 last_send = 0
-ESP32_IP = "111.111.1.111"  # ← colocar IP do esp aqui
+ESP32_IP = "192.168.0.135"  # ← colocar IP do esp aqui
 
-base_options = python.BaseOptions(model_asset_path="fusca-azul/mocap/utils/hand_landmarker.task")
-
+base_options = python.BaseOptions(
+    model_asset_path="utils/hand_landmarker.task"
+)
 options = vision.HandLandmarkerOptions(
     base_options=base_options,
     running_mode=vision.RunningMode.VIDEO,
@@ -41,73 +44,58 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
 
         if resultado.hand_landmarks:
             for i, hand in enumerate(resultado.hand_landmarks):
-                
+
                 lado = resultado.handedness[i][0].category_name
                 g = gestos(hand, lado)
 
+                # DESENHA landmarks
                 for landmark in hand:
                     h, w, _ = frame.shape
                     cx, cy = int(landmark.x * w), int(landmark.y * h)
                     cv2.circle(frame, (cx, cy), 10, (0, 255, 0), -1)
 
-                    cmd = none
-                    
+                # DETECTA gesto (FORA do loop dos landmarks)
+                if g.frente():
+                    cmd = "F"
 
-                    if g.frente():
-                        cmd = "F"
-                        if cmd != last_cmd:
-                            print("Frente")
+                elif g.parado():
+                    cmd = "P"
+
+                elif g.re():
+                    cmd = "R"
+
+                elif g.direita():
+                    cmd = "D"
+
+                elif g.esquerda():
+                    cmd = "E"
+
+                else:
+                    cmd = None
+
+                if cmd != last_cmd and cmd is not None:
+                    print(cmd)
+
+                else:
+                    print("Gesto não reconhecido")
                         
-
-                    elif g.parado():
-                        cmd = "S"
-                        
-                        if cmd != last_cmd:
-                            print("Parado")
-                        
-
-                    elif g.re():
-                        cmd = "B"
-
-                        if cmd != last_cmd:
-                            print("Re")
-
-                    elif g.direita():
-                        cmd = "R"
-                        
-                        if cmd != last_cmd:
-                            print("Direita")
-                        
-
-
-                    elif g.esquerda():
-                        cmd = "L"
-                        
-                        if cmd != last_cmd:
-                            print("Esquerda")
-                        
-
-                    else:
-                        print("Gesto não conhecido")    
-        else:
-            print("Mão não detectada")
 
            #checa ultimo cmd e tempo do ultimo comando para não sobrecarregar
+            if cmd is not None:
+                    if cmd != last_cmd and time.time() - last_send > 0.1:
+                        try:
+                            requests.get(f"http://{ESP32_IP}/cmd?cmd={cmd}", timeout=0.05)
+                            last_cmd = cmd
+                            last_send = time.time()
+                        except:
+                            print("Erro ao enviar")
 
-           if cmd is not none:
-                if cmd != last_cmd and time.time() - last_send > 0.1:
-                    try:
-                        requests.get(f"http://{ESP32_IP}/cmd?cmd={cmd}", timeout=0.05)
-                        last_cmd = cmd
-                        last_send = time.time()
-                    except:
-                        print("Erro ao enviar")
+            cv2.imshow("Feed", frame) # Exibe o frame numa janela chamada "Feed", Se a janela não existir, cria automaticamente
+            cv2.waitKey(1) # Processa eventos
 
-        cv2.imshow("Feed", frame) # Exibe o frame numa janela chamada "Feed", Se a janela não existir, cria automaticamente
-        cv2.waitKey(1) # Processa eventos
-
-        if cv2.getWindowProperty("Feed", cv2.WND_PROP_VISIBLE) < 1:
-            break
+            if cv2.getWindowProperty("Feed", cv2.WND_PROP_VISIBLE) < 1:
+                break
 
 webcam.release() # Libera a câmera para outros programas poderem usá-la
+cv2.destroyAllWindows() # Fecha todas as janelas abertas pelo OpenCVs poderem usá-la
 cv2.destroyAllWindows() # Fecha todas as janelas abertas pelo OpenCV
