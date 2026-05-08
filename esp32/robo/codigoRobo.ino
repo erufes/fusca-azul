@@ -13,6 +13,13 @@
 
 #define distanciaMaxima 10 // distancia do sensor
 
+// configuração PWM ESP32
+const int canalA = 0;
+const int canalB = 1;
+
+const int freqPWM = 5000;
+const int resolucao = 8;
+
 long distancia;
 
 long medirDistancia(){
@@ -32,8 +39,8 @@ long medirDistancia(){
 }
 
 void frente(int velocidade) { //o parametro de velocidade é definido quando chama a funcao,
-  analogWrite(ENA, velocidade);// ex: frente(100), a velocidade do motor vai ser 100 de 255 que seria o maximo
-  analogWrite(ENB, velocidade);  
+  ledcWrite(canalA, velocidade);// ex: frente(100), a velocidade do motor vai ser 100 de 255 que seria o maximo
+  ledcWrite(canalB, velocidade);  
   
   digitalWrite(esquerda1, HIGH);
   digitalWrite(esquerda2, LOW);
@@ -42,8 +49,8 @@ void frente(int velocidade) { //o parametro de velocidade é definido quando cha
 } 
   
 void parar(){
-  analogWrite(ENA, 0);
-  analogWrite(ENB, 0);
+  ledcWrite(canalA, 0);
+  ledcWrite(canalB, 0);
   
   digitalWrite(esquerda1, LOW);
   digitalWrite(esquerda2, LOW);
@@ -52,8 +59,8 @@ void parar(){
 }
 
 void esquerda(int velocidade) {
-  analogWrite(ENA, velocidade);
-  analogWrite(ENB, velocidade);
+  ledcWrite(canalA, velocidade);
+  ledcWrite(canalB, velocidade);
 
   digitalWrite(esquerda1, LOW);
   digitalWrite(esquerda2, HIGH);
@@ -62,8 +69,8 @@ void esquerda(int velocidade) {
 }
 
 void direita(int velocidade){ //nao usado, mas adicionei por desencargo de consciencia
-  analogWrite(ENA, velocidade);
-  analogWrite(ENB, velocidade);
+  ledcWrite(canalA, velocidade);
+  ledcWrite(canalB, velocidade);
 
   digitalWrite(esquerda1, HIGH);
   digitalWrite(esquerda2, LOW);
@@ -80,8 +87,12 @@ void setup(){
   pinMode(direita1, OUTPUT);
   pinMode(direita2, OUTPUT);
 
-  pinMode(ENA, OUTPUT);
-  pinMode(ENB, OUTPUT);
+  // configuração PWM ESP32
+  ledcSetup(canalA, freqPWM, resolucao);
+  ledcSetup(canalB, freqPWM, resolucao);
+
+  ledcAttachPin(ENA, canalA);
+  ledcAttachPin(ENB, canalB);
 
   Serial.begin(115200); //bits por segundo, O VALOR TEM QUE BATER COM O MONITOR SERIAL PRA CONSEGUIR MONITORAR!!!
 }      
