@@ -9,8 +9,10 @@ import os
 
 # Variaveis para checar ultimo comando e tempo do ultimo comando
 last_cmd = -1
-cmd = None
 last_send = 0
+last_unknown = False
+last_no_hand = False
+
 ESP32_IP = "192.168.0.135"  # ← IP do esp
 
 base_options = python.BaseOptions(
@@ -30,6 +32,9 @@ webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 with vision.HandLandmarker.create_from_options(options) as landmarker:
     while webcam.isOpened():
+
+        cmd = None
+
         ret, frame = webcam.read() # ret → booleano: True se o frame foi capturado com sucesso,  frame → a imagem em si (ndarray NumPy de shape (altura, largura, 3))
 
         if not ret:
@@ -43,6 +48,9 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
         resultado = landmarker.detect_for_video(mp_image, timestamp)
 
         if resultado.hand_landmarks:
+
+            last_no_hand = False
+
             for i, hand in enumerate(resultado.hand_landmarks):
 
                 lado = resultado.handedness[i][0].category_name
@@ -54,31 +62,36 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                     cx, cy = int(landmark.x * w), int(landmark.y * h)
                     cv2.circle(frame, (cx, cy), 10, (0, 255, 0), -1)
 
-                # DETECTA gesto (FORA do loop dos landmarks para não sobrecarregar)
+                # DETECTA gesto (FORA do loop dos landmarks)
                 if g.frente():
                     cmd = "F"
+                    last_unknown = False
 
                 elif g.parado():
                     cmd = "P"
+                    last_unknown = False
 
                 elif g.re():
                     cmd = "R"
+                    last_unknown = False
 
                 elif g.direita():
                     cmd = "D"
+                    last_unknown = False
 
                 elif g.esquerda():
                     cmd = "E"
+                    last_unknown = False
 
                 else:
                     cmd = None
 
-                if cmd != last_cmd and cmd is not None:
-                    print(cmd)
+                    if not last_unknown:
+                        print("Gesto não reconhecido")
+                        last_unknown = True
 
-                else:
-                    print("Gesto não reconhecido")
-                        
+                if cmd != last_cmd and cmd is not None:
+                    print(cmd)    
 
            #checa ultimo cmd e tempo do ultimo comando para não sobrecarregar
             if cmd is not None:
@@ -89,13 +102,19 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                             last_send = time.time()
                         except:
                             print("Erro ao enviar")
+        
+        else:
 
-            cv2.imshow("Feed", frame) # Exibe o frame numa janela chamada "Feed", Se a janela não existir, cria automaticamente
-            cv2.waitKey(1) # Processa eventos
+            if not last_no_hand:
+                print("Mão não detectada")
+                last_no_hand = True
+        
+        #bloco abaixo movido para esquerda para nao crashar quando nao ha mao detectada
+        cv2.imshow("Feed", frame) # Exibe o frame numa janela chamada "Feed", Se a janela não existir, cria automaticamente
+        cv2.waitKey(1) # Processa eventos
 
-            if cv2.getWindowProperty("Feed", cv2.WND_PROP_VISIBLE) < 1:
-                break
+        if cv2.getWindowProperty("Feed", cv2.WND_PROP_VISIBLE) < 1:
+            break
 
 webcam.release() # Libera a câmera para outros programas poderem usá-la
-cv2.destroyAllWindows() # Fecha todas as janelas abertas pelo OpenCVs poderem usá-la
 cv2.destroyAllWindows() # Fecha todas as janelas abertas pelo OpenCV
