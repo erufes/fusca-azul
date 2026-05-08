@@ -11,7 +11,7 @@ import os
 last_cmd = -1
 cmd = None
 last_send = 0
-ESP32_IP = "192.168.0.135"  # ← colocar IP do esp aqui
+ESP32_IP = "192.168.0.135"  # ← IP do esp
 
 base_options = python.BaseOptions(
     model_asset_path="utils/hand_landmarker.task"
@@ -54,7 +54,7 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                     cx, cy = int(landmark.x * w), int(landmark.y * h)
                     cv2.circle(frame, (cx, cy), 10, (0, 255, 0), -1)
 
-                # DETECTA gesto (FORA do loop dos landmarks)
+                # DETECTA gesto (FORA do loop dos landmarks para não sobrecarregar)
                 if g.frente():
                     cmd = "F"
 
