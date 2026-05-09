@@ -1,0 +1,4 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "fusca-azul") (type "KiCad") (uri "${KIPRJMOD}/fusca-azul.pretty") (options "") (descr ""))
+)
