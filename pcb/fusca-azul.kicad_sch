@@ -1524,444 +1524,448 @@
 		)
 	)
 	(junction
-		(at 49.53 66.04)
+		(at 104.14 64.77)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "00d7298b-16a6-4b7f-b9ac-80ad06bae4dc")
+		(uuid "90a29080-b79f-4c08-a594-b55777122308")
 	)
 	(junction
-		(at 39.37 73.66)
+		(at 60.96 74.93)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "14b1c0e1-40bc-4307-8397-877fa1fd005c")
+		(uuid "b6e69ee1-6204-4eb3-92a8-32a978653162")
 	)
 	(junction
-		(at 102.87 62.23)
+		(at 69.85 74.93)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "4a8deaf7-56fa-493c-a0d1-ceaa056fcb33")
+		(uuid "c0537ce8-4548-4a50-ba53-3c778936bdbf")
 	)
 	(junction
-		(at 76.2 86.36)
+		(at 104.14 80.01)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "8ce858cd-4192-4307-892f-ae539c79a02b")
+		(uuid "c8bbd7a4-4556-4a34-aa23-430df024fcec")
 	)
 	(junction
-		(at 88.9 59.69)
+		(at 76.2 50.8)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "c698d35b-275c-4f33-9d5b-9261f50941c5")
-	)
-	(junction
-		(at 72.39 78.74)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d654d3d7-3d99-4ac9-95a4-f6b5335cb88f")
+		(uuid "e36f1eab-d220-4b11-987e-95861ab8a7a2")
 	)
 	(wire
 		(pts
-			(xy 82.55 77.47) (xy 72.39 77.47)
+			(xy 71.12 80.01) (xy 71.12 77.47)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "0625f899-c251-4ef0-baef-529d932d9bdd")
+		(uuid "0166a8fc-1c0a-45e1-8a07-c0ea73126f82")
 	)
 	(wire
 		(pts
-			(xy 93.98 43.18) (xy 90.17 43.18)
+			(xy 60.96 72.39) (xy 60.96 74.93)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "068905d1-c649-47de-8a29-6e12a7bdc07b")
+		(uuid "08149b4a-ff4c-4f2f-a547-17506a074888")
 	)
 	(wire
 		(pts
-			(xy 85.09 60.96) (xy 85.09 59.69)
+			(xy 63.5 72.39) (xy 60.96 72.39)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "0785cb55-0474-4e52-92ed-2f4c022f4618")
+		(uuid "0d20abf7-5817-41e4-afd1-2a69f9b2db9f")
 	)
 	(wire
 		(pts
-			(xy 53.34 60.96) (xy 55.88 60.96)
+			(xy 69.85 74.93) (xy 74.93 74.93)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "085bc1b9-48f6-4690-add7-1f6e3f78e106")
+		(uuid "100f0a0e-337d-408b-897b-0c8f302ec4e9")
 	)
 	(wire
 		(pts
-			(xy 53.34 68.58) (xy 55.88 68.58)
+			(xy 60.96 74.93) (xy 62.23 74.93)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "096fe0f0-d096-4c78-8ad7-3d2f2e7c5f94")
+		(uuid "10f3cf90-9fcc-40f1-943a-4a77f8db6412")
 	)
 	(wire
 		(pts
-			(xy 72.39 86.36) (xy 76.2 86.36)
+			(xy 74.93 97.79) (xy 67.31 97.79)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "09f08f37-4c94-4fb9-9518-8280df33ca89")
+		(uuid "1b68a4da-a45f-47da-baba-9f5783b9d839")
 	)
 	(wire
 		(pts
-			(xy 81.28 55.88) (xy 93.98 55.88)
+			(xy 66.04 80.01) (xy 71.12 80.01)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "0c4f5283-bb6b-4ff8-b196-742e8411c156")
+		(uuid "20c3f7d6-342a-430b-9991-e22cf114e58f")
 	)
 	(wire
 		(pts
-			(xy 86.36 58.42) (xy 81.28 58.42)
+			(xy 109.22 80.01) (xy 109.22 78.74)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "0daa332f-0db8-4719-a136-c4c5358fcccf")
+		(uuid "2e5b0667-7e96-4048-9d40-9d82bf854d8b")
 	)
 	(wire
 		(pts
-			(xy 88.9 59.69) (xy 95.25 59.69)
+			(xy 66.04 85.09) (xy 74.93 85.09)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "161805ed-49a9-4482-bbf0-3f50c5ff28a8")
+		(uuid "305d1630-ad8a-44d9-af12-d21ea8332547")
 	)
 	(wire
 		(pts
-			(xy 81.28 53.34) (xy 93.98 53.34)
+			(xy 63.5 67.31) (xy 69.85 67.31)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "188fe9cd-bcaa-4420-82b9-aa561904515f")
+		(uuid "30eccef6-a926-4d3f-9562-236f7f0d3575")
 	)
 	(wire
 		(pts
-			(xy 67.31 77.47) (xy 67.31 86.36)
+			(xy 66.04 90.17) (xy 68.58 90.17)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1a7d8dc3-7ced-4bec-bd4b-6a5dd886f6ee")
+		(uuid "396dc3b7-3a63-451d-9fed-31340e24f2af")
 	)
 	(wire
 		(pts
-			(xy 88.9 67.31) (xy 91.44 67.31)
+			(xy 67.31 97.79) (xy 67.31 92.71)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1c9d6aa4-e086-4aed-acef-81ede47c2791")
+		(uuid "3b66fe52-7d60-41f9-97ee-6d46689ee413")
 	)
 	(wire
 		(pts
-			(xy 81.28 45.72) (xy 93.98 45.72)
+			(xy 104.14 71.12) (xy 104.14 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "28895099-9c9f-4f0f-b7bf-285cc7bdbf74")
+		(uuid "3e0256a0-0cc5-425d-8973-61dd16eece7c")
 	)
 	(wire
 		(pts
-			(xy 82.55 63.5) (xy 82.55 77.47)
+			(xy 104.14 64.77) (xy 105.41 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "355c73e8-a123-47f0-9ade-23b6d036635b")
+		(uuid "45317b27-5f10-441e-8131-68356e94a1b6")
 	)
 	(wire
 		(pts
-			(xy 39.37 73.66) (xy 49.53 73.66)
+			(xy 109.22 64.77) (xy 119.38 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "37cadbb3-6c7b-45c3-9674-f3ed40ce1026")
+		(uuid "46189505-ae50-4752-a104-47291e077d28")
 	)
 	(wire
 		(pts
-			(xy 91.44 69.85) (xy 86.36 69.85)
+			(xy 63.5 64.77) (xy 71.12 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "37df4667-7831-46f7-a210-748a5b6b9120")
+		(uuid "49ef0aad-83b6-4a67-9882-23921d072ec9")
 	)
 	(wire
 		(pts
-			(xy 85.09 59.69) (xy 88.9 59.69)
+			(xy 109.22 71.12) (xy 109.22 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3d5d5bd5-e233-4d01-856f-783d3b392b95")
+		(uuid "4eb95436-5742-4ecb-8dac-e487c9da505c")
 	)
 	(wire
 		(pts
-			(xy 72.39 77.47) (xy 72.39 78.74)
+			(xy 71.12 77.47) (xy 74.93 77.47)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3e594098-66f9-413e-aaac-17601b77bc4c")
+		(uuid "5680c666-3b0f-45ef-99ed-943d10730519")
 	)
 	(wire
 		(pts
-			(xy 69.85 78.74) (xy 72.39 78.74)
+			(xy 100.33 64.77) (xy 104.14 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3e5eeb6d-4e22-44c6-a6b5-2c3afa784e61")
+		(uuid "5dcb4669-95a3-4df3-8aa6-7f170cce0d5f")
 	)
 	(wire
 		(pts
-			(xy 53.34 63.5) (xy 53.34 60.96)
+			(xy 100.33 80.01) (xy 104.14 80.01)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "66b8d616-5199-48a2-a7e2-9a20a8e3ed04")
+		(uuid "650e8025-0a63-47da-912a-7c35667c078f")
 	)
 	(wire
 		(pts
-			(xy 81.28 50.8) (xy 93.98 50.8)
+			(xy 83.82 46.99) (xy 76.2 46.99)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7fb68442-9b0e-4983-acce-e0d2c413dc58")
+		(uuid "70ac59a8-da1f-4156-9495-35f02f79adad")
 	)
 	(wire
 		(pts
-			(xy 102.87 62.23) (xy 102.87 59.69)
+			(xy 86.36 46.99) (xy 86.36 48.26)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "812f93c4-b185-42e5-a412-e89d42e8646e")
+		(uuid "779d048c-2340-4580-bda4-3ff389ffd744")
 	)
 	(wire
 		(pts
-			(xy 39.37 63.5) (xy 53.34 63.5)
+			(xy 68.58 90.17) (xy 68.58 95.25)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "8a00f0b1-7c73-40a9-acdd-57de97915ec7")
+		(uuid "804d43d9-e1ed-4cb6-9541-e916943a6f53")
 	)
 	(wire
 		(pts
-			(xy 76.2 86.36) (xy 78.74 86.36)
+			(xy 66.04 82.55) (xy 74.93 82.55)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "8e1f8a35-c908-49b4-a408-1c5c51cca831")
+		(uuid "8c74e49f-f804-4b69-94bc-939999f82685")
 	)
 	(wire
 		(pts
-			(xy 90.17 43.18) (xy 90.17 40.64)
+			(xy 83.82 57.15) (xy 86.36 57.15)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "954a6655-2cba-4ef7-afdc-9712a7f858c4")
+		(uuid "95c9ebba-3748-4c79-8ccb-02c2b0d3f6a3")
 	)
 	(wire
 		(pts
-			(xy 55.88 71.12) (xy 54.61 71.12)
+			(xy 114.3 67.31) (xy 119.38 67.31)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9592a400-e700-413d-a8a2-e0827bf98767")
+		(uuid "98f3c6e2-7145-472b-b13c-a4b05ed64b47")
 	)
 	(wire
 		(pts
-			(xy 39.37 68.58) (xy 39.37 73.66)
+			(xy 74.93 50.8) (xy 76.2 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9795191f-a99e-4cf7-b5f1-6d544cea80bb")
+		(uuid "a3ff15d2-31b0-443b-8ede-fdeb53f05380")
 	)
 	(wire
 		(pts
-			(xy 90.17 40.64) (xy 81.28 40.64)
+			(xy 104.14 80.01) (xy 109.22 80.01)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9a317f6e-b252-42eb-bed5-9f56416de726")
+		(uuid "a8a55430-6bab-42a9-bf6f-3ae193580a6f")
 	)
 	(wire
 		(pts
-			(xy 81.28 63.5) (xy 82.55 63.5)
+			(xy 114.3 82.55) (xy 114.3 67.31)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b1b0b474-2e97-49c4-ae94-6df2e2506d5e")
+		(uuid "b00dec6b-59f3-4af9-8009-2631309190c4")
 	)
 	(wire
 		(pts
-			(xy 53.34 66.04) (xy 53.34 68.58)
+			(xy 66.04 87.63) (xy 74.93 87.63)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b6062393-9473-4d52-b36a-efbd158726bc")
+		(uuid "b1886e00-0187-436f-a54e-e7142b8c39f7")
 	)
 	(wire
 		(pts
-			(xy 81.28 48.26) (xy 93.98 48.26)
+			(xy 63.5 69.85) (xy 63.5 72.39)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b8421492-95e4-45ea-af39-e1f17793c177")
+		(uuid "b5f06c2a-cc8e-4fa5-ab6c-f8b7cebc9556")
 	)
 	(wire
 		(pts
-			(xy 54.61 77.47) (xy 67.31 77.47)
+			(xy 68.58 95.25) (xy 74.93 95.25)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "bac56d50-7549-47de-8aa1-06989c4a01ec")
+		(uuid "b70f4ec0-7714-43f4-b163-15b782b88687")
 	)
 	(wire
 		(pts
-			(xy 46.99 66.04) (xy 49.53 66.04)
+			(xy 76.2 46.99) (xy 76.2 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c6d343b9-f068-4834-adac-3cd72ed8d683")
+		(uuid "b8fb9262-f906-4404-91a9-4a5cb24c4f63")
 	)
 	(wire
 		(pts
-			(xy 81.28 60.96) (xy 85.09 60.96)
+			(xy 58.42 74.93) (xy 60.96 74.93)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cc297554-acd1-4a38-b460-daa2dace13b2")
+		(uuid "d1d699fc-08cb-4c94-9caf-8f7eb7d12786")
 	)
 	(wire
 		(pts
-			(xy 54.61 71.12) (xy 54.61 77.47)
+			(xy 71.12 64.77) (xy 71.12 67.31)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "dc83c498-1cda-4d54-8ad0-8b1b3fc31a74")
+		(uuid "db0b5558-2787-40c7-9163-69776a8ce144")
 	)
 	(wire
 		(pts
-			(xy 49.53 66.04) (xy 53.34 66.04)
+			(xy 76.2 50.8) (xy 76.2 57.15)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e279d6a6-f73b-4e9b-9dc4-d1a6fc53df14")
+		(uuid "dd895da7-174f-479d-a1e0-d7660a74086e")
 	)
 	(wire
 		(pts
-			(xy 86.36 69.85) (xy 86.36 58.42)
+			(xy 104.14 78.74) (xy 104.14 80.01)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e546be71-6d5a-4832-a9cf-e4fca690771c")
+		(uuid "e5cfd138-09df-48dd-84d5-8eb45187d905")
 	)
 	(wire
 		(pts
-			(xy 91.44 64.77) (xy 91.44 62.23)
+			(xy 71.12 67.31) (xy 74.93 67.31)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ec67eac2-69e0-4ab6-8c21-60509db2b68e")
+		(uuid "e9c9b945-b4ca-4c56-acf7-a41d75b26857")
 	)
 	(wire
 		(pts
-			(xy 91.44 62.23) (xy 102.87 62.23)
+			(xy 86.36 57.15) (xy 86.36 55.88)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f9c71fad-ea38-4ae7-8692-108ed7d04799")
+		(uuid "f089fd53-d34a-4bb8-a3d6-aca3c66f0be5")
 	)
 	(wire
 		(pts
-			(xy 72.39 78.74) (xy 76.2 78.74)
+			(xy 100.33 82.55) (xy 114.3 82.55)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "fe54553c-0e76-484e-96bc-0e0db3f0eec0")
+		(uuid "f1ff2db3-f3c4-49e4-8842-c9123488d4c6")
+	)
+	(wire
+		(pts
+			(xy 67.31 92.71) (xy 66.04 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fa4731c3-3abf-4c64-aa7a-f2fef1176ab9")
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 49.53 69.85 0)
+		(lib_id "power:GND")
+		(at 119.38 62.23 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1969,9 +1973,89 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "3829379c-bc0e-47b3-9650-760f592ac601")
-		(property "Reference" "R3"
-			(at 52.07 68.5799 0)
+		(fields_autoplaced yes)
+		(uuid "05150a02-5dda-48d3-b743-d75f279cf8f2")
+		(property "Reference" "#PWR018"
+			(at 113.03 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 115.57 62.2299 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 119.38 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 119.38 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 119.38 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "719fabeb-e79d-40fe-8029-6c316be960e5")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "#PWR018")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 109.22 74.93 0)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "08dd3d5f-2f37-4e25-8dc5-6ff84310f402")
+		(property "Reference" "R6"
+			(at 111.76 76.2001 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1981,8 +2065,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2k"
-			(at 52.07 71.1199 0)
+		(property "Value" "1k"
+			(at 111.76 73.6601 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1993,7 +2077,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 47.752 69.85 90)
+			(at 107.442 74.93 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2004,7 +2088,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 49.53 69.85 0)
+			(at 109.22 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2015,7 +2099,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 49.53 69.85 0)
+			(at 109.22 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2026,24 +2110,23 @@
 			)
 		)
 		(pin "2"
-			(uuid "aafc3c3e-fd29-4bb5-ba2d-54060423be91")
+			(uuid "9fd644f4-d002-410d-ba7f-27a2bda12008")
 		)
 		(pin "1"
-			(uuid "5d50f4a5-7fb7-422b-ace9-52744b787950")
+			(uuid "e5157c77-37fd-4d92-bf84-777b1c7164a9")
 		)
 		(instances
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "R3")
+					(reference "R6")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "fusca-azul:HC-SR04")
-		(at 67.31 91.44 90)
-		(mirror x)
+		(lib_id "power:GND")
+		(at 74.93 64.77 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2051,31 +2134,32 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "3e34d982-c041-43e6-b421-cf7feffda6f7")
-		(property "Reference" "J5"
-			(at 62.23 92.7099 90)
+		(fields_autoplaced yes)
+		(uuid "226e45ef-f90b-4dee-a815-508b9be527d6")
+		(property "Reference" "#PWR021"
+			(at 68.58 64.77 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "HC-SR04"
-			(at 62.23 95.2499 90)
+		(property "Value" "GND"
+			(at 71.12 64.7699 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
-			(at 67.31 91.44 0)
+		(property "Footprint" ""
+			(at 74.93 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2086,7 +2170,165 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 67.31 91.44 0)
+			(at 74.93 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 74.93 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f3cb5fcc-6789-4de3-9541-28d3a0fbaa69")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "#PWR021")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 74.93 50.8 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2b7b6db7-65c7-47b3-a31e-e3f0accd69e6")
+		(property "Reference" "#PWR019"
+			(at 68.58 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 71.12 50.7999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 74.93 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 74.93 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 74.93 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e0b865bb-60ac-4b21-982d-f62d47953a31")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "#PWR019")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "fusca-azul:HC-SR04")
+		(at 58.42 64.77 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "2dcd81f2-8741-49e9-9f9d-b93feedc0830")
+		(property "Reference" "J6"
+			(at 50.546 65.278 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "HC-SR04"
+			(at 51.054 68.834 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
+			(at 58.42 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.42 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2097,7 +2339,252 @@
 			)
 		)
 		(property "Description" "Sensor ultrassônico HC-SR04"
-			(at 55.372 94.234 0)
+			(at 55.626 52.832 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "4"
+			(uuid "3ef1f7fe-8ffa-487c-8b16-dca7a5c99dec")
+		)
+		(pin "2"
+			(uuid "e974e381-2589-402f-9a06-35c3f9ab0bb5")
+		)
+		(pin "3"
+			(uuid "efd4fa65-678c-4bc8-8563-108bcffca3dc")
+		)
+		(pin "1"
+			(uuid "c81eb0ef-410d-48e3-b4ea-d5825ccf18f7")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 91.44 46.99 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "326b167d-3c8a-410d-aba6-05d130345bcd")
+		(property "Reference" "#PWR013"
+			(at 91.44 43.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+5V"
+			(at 91.44 52.07 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 91.44 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 91.44 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 91.44 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f00f6769-7b92-429c-9302-b892fa68b034")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "#PWR013")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 58.42 74.93 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3e317733-37e3-405f-bd06-ee77c45f6315")
+		(property "Reference" "#PWR020"
+			(at 52.07 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 54.61 74.9299 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 58.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 58.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "11efc006-9a47-4637-9185-1fb543cfb4d0")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "#PWR020")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "fusca-azul:HC-SR04")
+		(at 124.46 67.31 0)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "3e34d982-c041-43e6-b421-cf7feffda6f7")
+		(property "Reference" "J5"
+			(at 132.588 66.802 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "HC-SR04"
+			(at 132.588 69.342 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
+			(at 124.46 67.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 124.46 67.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Sensor ultrassônico HC-SR04"
+			(at 127.254 79.248 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2130,7 +2617,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 97.79 33.02 270)
+		(at 121.92 92.71 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2141,7 +2628,7 @@
 		(fields_autoplaced yes)
 		(uuid "442a864f-f823-4768-b3f5-edc3cd1658dc")
 		(property "Reference" "#PWR08"
-			(at 91.44 33.02 0)
+			(at 115.57 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2152,7 +2639,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 93.98 33.0199 90)
+			(at 118.11 92.7099 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2163,7 +2650,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 97.79 33.02 0)
+			(at 121.92 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2174,7 +2661,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 97.79 33.02 0)
+			(at 121.92 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2185,7 +2672,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 97.79 33.02 0)
+			(at 121.92 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2209,7 +2696,8 @@
 	)
 	(symbol
 		(lib_id "fusca-azul:L298N - Logic Jumpers")
-		(at 92.71 53.34 0)
+		(at 67.31 90.17 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2219,7 +2707,7 @@
 		(dnp no)
 		(uuid "5069c099-2e77-405d-aa61-9b9b461e4331")
 		(property "Reference" "J4"
-			(at 109.982 44.196 0)
+			(at 50.038 81.026 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2229,7 +2717,7 @@
 			)
 		)
 		(property "Value" "L298N Logic Jumpers"
-			(at 119.126 46.228 0)
+			(at 40.894 83.058 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2239,7 +2727,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical"
-			(at 92.71 53.34 0)
+			(at 67.31 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2250,7 +2738,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 92.71 53.34 0)
+			(at 67.31 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2261,7 +2749,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 92.71 53.34 0)
+			(at 67.31 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2300,7 +2788,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 81.28 35.56 270)
+		(at 100.33 62.23 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2311,7 +2799,7 @@
 		(fields_autoplaced yes)
 		(uuid "543b2978-6440-4fdb-98b8-88062c1d1d37")
 		(property "Reference" "#PWR09"
-			(at 77.47 35.56 0)
+			(at 96.52 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2322,7 +2810,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 85.09 35.5599 90)
+			(at 104.14 62.2299 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2333,7 +2821,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 81.28 35.56 0)
+			(at 100.33 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2344,7 +2832,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 81.28 35.56 0)
+			(at 100.33 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2355,7 +2843,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 81.28 35.56 0)
+			(at 100.33 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2379,8 +2867,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 76.2 82.55 0)
-		(mirror x)
+		(at 69.85 71.12 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2388,31 +2875,29 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "5f18038f-68ba-4adc-932e-24b0193126f8")
-		(property "Reference" "R5"
-			(at 78.232 83.82 0)
+		(uuid "5fb7ea5d-a7c6-422d-9813-eae3be690a44")
+		(property "Reference" "R4"
+			(at 67.31 72.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "2k"
-			(at 77.978 81.28 0)
+		(property "Value" "1k"
+			(at 67.31 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 74.422 82.55 90)
+			(at 71.628 71.12 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2423,7 +2908,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 76.2 82.55 0)
+			(at 69.85 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2434,7 +2919,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 76.2 82.55 0)
+			(at 69.85 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2445,15 +2930,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "986701f3-62e7-45fc-a8e5-6d90d5351eea")
+			(uuid "bb6b71a2-fced-4f9a-b233-b6b6db1f435c")
 		)
 		(pin "1"
-			(uuid "3a94ed3f-52db-4ada-b8d4-d658496a0eb7")
+			(uuid "d7633f32-fdc4-40ad-937b-35c9968e767b")
 		)
 		(instances
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "R5")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -2461,85 +2946,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 64.77 86.36 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "619c0e74-cee2-4751-9d74-c1fd225871f6")
-		(property "Reference" "#PWR017"
-			(at 64.77 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+5V"
-			(at 60.706 85.09 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 64.77 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 64.77 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 64.77 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1c254d63-6f2f-4f25-8826-1b6db97bbe91")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "#PWR017")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 39.37 73.66 270)
+		(at 63.5 62.23 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2548,88 +2955,9 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "749b96d1-2a93-47a2-9c9b-13e2861c21bb")
-		(property "Reference" "#PWR010"
-			(at 33.02 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 35.56 73.6599 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 39.37 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 39.37 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 39.37 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "525bf5a8-59c1-4b7f-bbff-61abd7e107c2")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "#PWR010")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5V")
-		(at 39.37 60.96 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "903d8910-bf21-43a2-9689-342dff1842dc")
+		(uuid "6a0edab4-466b-470e-92a5-28e3aade1db8")
 		(property "Reference" "#PWR011"
-			(at 35.56 60.96 0)
+			(at 59.69 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2640,7 +2968,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 43.18 60.9599 90)
+			(at 67.31 62.2299 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2651,7 +2979,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 39.37 60.96 0)
+			(at 63.5 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2662,7 +2990,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 39.37 60.96 0)
+			(at 63.5 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2673,7 +3001,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 39.37 60.96 0)
+			(at 63.5 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2684,7 +3012,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "3a145729-0baf-480e-8744-8e4bf2a7351c")
+			(uuid "b8916506-b7d5-410e-b219-3cb758b90b0d")
 		)
 		(instances
 			(project "fusca-azul"
@@ -2697,8 +3025,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 91.44 72.39 90)
-		(mirror x)
+		(at 119.38 69.85 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2707,9 +3034,9 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "96afb6ba-5aad-4401-a19d-903ddc986e8a")
-		(property "Reference" "#PWR016"
-			(at 95.25 72.39 0)
+		(uuid "75780e12-b7f7-4953-bef7-67255eec5762")
+		(property "Reference" "#PWR010"
+			(at 123.19 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2720,17 +3047,18 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 90.17 74.93 90)
+			(at 115.57 69.8499 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 91.44 72.39 0)
+			(at 119.38 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2741,7 +3069,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 91.44 72.39 0)
+			(at 119.38 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2752,7 +3080,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 91.44 72.39 0)
+			(at 119.38 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2763,179 +3091,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "31956fdd-fb95-419f-aad4-0432bb4a5a5a")
+			(uuid "d05a7a81-1996-4c7d-ba97-a454dbaef4f9")
 		)
 		(instances
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "#PWR016")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "fusca-azul:HC-SR04")
-		(at 96.52 69.85 0)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "b43e43d7-df98-4f6f-b695-225765b55f44")
-		(property "Reference" "J6"
-			(at 104.394 69.342 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "HC-SR04"
-			(at 103.886 65.786 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
-			(at 96.52 69.85 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 96.52 69.85 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Sensor ultrassônico HC-SR04"
-			(at 99.314 81.788 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "4"
-			(uuid "dc601070-64c7-4200-8eca-053892936f4b")
-		)
-		(pin "2"
-			(uuid "6ecb7fc5-becf-45a8-b766-5a153c68e5ef")
-		)
-		(pin "3"
-			(uuid "4f0e2974-dd7f-4f04-b8f2-63a880c0a0b0")
-		)
-		(pin "1"
-			(uuid "5304f180-2fa9-465a-9140-e475c1eaf2f4")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "J6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 55.88 38.1 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b5a32142-faf1-498f-80a8-c6838d24c195")
-		(property "Reference" "#PWR018"
-			(at 49.53 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 52.07 38.0999 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 55.88 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 55.88 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 55.88 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "ceb8ba37-909a-4d4d-bfcc-a4c21fe481db")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "#PWR018")
+					(reference "#PWR010")
 					(unit 1)
 				)
 			)
@@ -2943,8 +3104,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 88.9 63.5 0)
-		(mirror y)
+		(at 66.04 74.93 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2952,92 +3112,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b9ead22f-d1b3-40a3-86dc-305abdcb1ec8")
-		(property "Reference" "R8"
-			(at 86.36 62.2299 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1k"
-			(at 86.36 64.7699 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 90.678 63.5 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 88.9 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 88.9 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "e8cca3b9-7b9a-4605-9255-2f9ad1f61d50")
-		)
-		(pin "1"
-			(uuid "b03274b7-2eaf-4d1e-aa72-bcc88ce7bc17")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "R8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 99.06 59.69 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "bc2d6365-774d-48ac-bb35-8a9b89fe6ab9")
-		(property "Reference" "R7"
-			(at 97.536 60.706 0)
+		(uuid "7c06b77d-96d5-4264-9733-8c3955f21ab4")
+		(property "Reference" "R3"
+			(at 67.3101 77.47 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3048,7 +3125,7 @@
 			)
 		)
 		(property "Value" "2k"
-			(at 99.822 60.96 0)
+			(at 64.7701 77.47 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3059,7 +3136,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 99.06 57.912 90)
+			(at 66.04 73.152 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3070,7 +3147,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 99.06 59.69 0)
+			(at 66.04 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3081,7 +3158,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 99.06 59.69 0)
+			(at 66.04 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3092,10 +3169,171 @@
 			)
 		)
 		(pin "2"
-			(uuid "d9a92949-499d-44c5-a335-af2aa1955c04")
+			(uuid "54965393-912e-49c2-98a9-af12fc41d911")
 		)
 		(pin "1"
-			(uuid "370f4a65-d47d-4ccc-b64e-854257ee6300")
+			(uuid "be2dd4ac-20e4-40c6-9218-9187f450368f")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 105.41 64.77 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8fc57d1a-567f-42a1-a5be-44f58abe62f0")
+		(property "Reference" "#PWR014"
+			(at 111.76 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 109.22 64.7699 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 105.41 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 105.41 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 105.41 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "73c77936-9148-4fdb-b4e3-db8510cc54bb")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "#PWR014")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 80.01 57.15 270)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "a210b3bc-d235-4fcf-90db-61a713d87a93")
+		(property "Reference" "R7"
+			(at 81.534 56.134 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2k"
+			(at 79.248 55.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
+			(at 80.01 58.928 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 80.01 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 80.01 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "9c159191-3105-4d3a-80f3-aaf30b4f7ec2")
+		)
+		(pin "1"
+			(uuid "19b8b3cb-f380-4fd7-ab8f-ba1612bc1ca8")
 		)
 		(instances
 			(project "fusca-azul"
@@ -3108,7 +3346,8 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 43.18 66.04 270)
+		(at 104.14 74.93 0)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3116,29 +3355,31 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "bc7aa570-133d-451f-b029-15d64168355c")
-		(property "Reference" "R4"
-			(at 44.45 68.58 0)
+		(uuid "a531184b-6235-4ac5-aacf-94679d3e03f9")
+		(property "Reference" "R5"
+			(at 106.172 76.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "1k"
-			(at 41.91 68.58 0)
+		(property "Value" "2k"
+			(at 105.918 73.66 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 43.18 64.262 90)
+			(at 102.362 74.93 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3149,7 +3390,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 43.18 66.04 0)
+			(at 104.14 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3160,7 +3401,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 43.18 66.04 0)
+			(at 104.14 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3171,23 +3412,23 @@
 			)
 		)
 		(pin "2"
-			(uuid "6e2b42ed-fad4-4731-8e1f-966e356705c5")
+			(uuid "6fa955ef-5220-4715-aa5d-7bc3d13e91f7")
 		)
 		(pin "1"
-			(uuid "2c6c2950-7698-467c-b4d1-c4028ea4d4cf")
+			(uuid "6c0ef2ec-0db0-4410-a10d-19a9bdbe532e")
 		)
 		(instances
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "R4")
+					(reference "R5")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "fusca-azul:HC-SR04")
-		(at 34.29 63.5 0)
+		(lib_id "Device:R")
+		(at 86.36 52.07 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -3196,9 +3437,10 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(uuid "bfef0e98-2dcd-4b20-a783-ac3dc73f1f69")
-		(property "Reference" "J3"
-			(at 26.67 63.4999 0)
+		(fields_autoplaced yes)
+		(uuid "b52b13c9-eb63-465f-a90f-1cb5bc81a75d")
+		(property "Reference" "R8"
+			(at 83.82 50.7999 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3208,8 +3450,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "HC-SR04"
-			(at 26.67 66.0399 0)
+		(property "Value" "1k"
+			(at 83.82 53.3399 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3219,8 +3461,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
-			(at 34.29 63.5 0)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
+			(at 88.138 52.07 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3231,7 +3473,89 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 34.29 63.5 0)
+			(at 86.36 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 86.36 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "a2c4c222-9932-4dd1-a5e7-3610424852ff")
+		)
+		(pin "1"
+			(uuid "492705de-6c8c-4630-a614-81b48323f71c")
+		)
+		(instances
+			(project "fusca-azul"
+				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
+					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "fusca-azul:HC-SR04")
+		(at 88.9 41.91 270)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "bfef0e98-2dcd-4b20-a783-ac3dc73f1f69")
+		(property "Reference" "J3"
+			(at 82.55 30.988 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "HC-SR04"
+			(at 82.55 33.528 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
+			(at 88.9 41.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 41.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3242,7 +3566,7 @@
 			)
 		)
 		(property "Description" "Sensor ultrassônico HC-SR04"
-			(at 31.496 51.562 0)
+			(at 100.838 39.116 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3275,7 +3599,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 97.79 35.56 90)
+		(at 121.92 95.25 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3286,7 +3610,7 @@
 		(fields_autoplaced yes)
 		(uuid "c76069e3-8af8-42c2-a921-ce3a279193df")
 		(property "Reference" "#PWR07"
-			(at 101.6 35.56 0)
+			(at 125.73 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3297,7 +3621,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 93.98 35.5599 90)
+			(at 118.11 95.2499 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3308,7 +3632,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 97.79 35.56 0)
+			(at 121.92 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3319,7 +3643,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 97.79 35.56 0)
+			(at 121.92 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3330,7 +3654,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 97.79 35.56 0)
+			(at 121.92 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3354,7 +3678,7 @@
 	)
 	(symbol
 		(lib_id "fusca-azul:5V_IN")
-		(at 99.06 35.56 0)
+		(at 123.19 95.25 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3365,7 +3689,7 @@
 		(fields_autoplaced yes)
 		(uuid "c7b6a110-0bb6-400c-82a3-b3d4058b07c8")
 		(property "Reference" "5V_IN1"
-			(at 107.95 33.0199 0)
+			(at 132.08 92.7099 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3376,7 +3700,7 @@
 			)
 		)
 		(property "Value" "J3"
-			(at 107.95 35.5599 0)
+			(at 132.08 95.2499 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3387,7 +3711,7 @@
 			)
 		)
 		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal"
-			(at 99.06 35.56 0)
+			(at 123.19 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3398,7 +3722,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 99.06 35.56 0)
+			(at 123.19 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3409,7 +3733,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 99.06 35.56 0)
+			(at 123.19 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3437,7 +3761,7 @@
 	(symbol
 		(lib_name "ESP32_-_HW_394_1")
 		(lib_id "fusca-azul:ESP32_-_HW_394")
-		(at 62.23 80.01 0)
+		(at 81.28 106.68 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3445,10 +3769,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "c9c8df01-8818-4a3c-849e-fd1082c19cd0")
 		(property "Reference" "U2"
-			(at 68.58 27.94 0)
+			(at 88.138 103.632 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3458,7 +3781,7 @@
 			)
 		)
 		(property "Value" "ESP32 - HW-394"
-			(at 68.58 30.48 0)
+			(at 88.138 106.172 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3468,7 +3791,7 @@
 			)
 		)
 		(property "Footprint" "fusca-azul:ESP32-HW-394"
-			(at 69.088 30.734 0)
+			(at 88.138 57.404 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3479,7 +3802,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 62.23 80.01 0)
+			(at 81.28 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3490,7 +3813,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 62.23 80.01 0)
+			(at 81.28 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3594,326 +3917,6 @@
 			(project "fusca-azul"
 				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
 					(reference "U2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 102.87 62.23 90)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d4e013fd-0424-40c4-8ec7-58504c921b2d")
-		(property "Reference" "#PWR015"
-			(at 109.22 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 106.68 62.2299 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 102.87 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 102.87 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 102.87 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "365bde90-efba-4aca-b1df-c9e64e9515d8")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "#PWR015")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 69.85 82.55 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e724ea1d-329f-4926-b657-61046582c139")
-		(property "Reference" "R6"
-			(at 72.39 81.2799 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1k"
-			(at 72.39 83.8199 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
-			(at 68.072 82.55 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 69.85 82.55 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 69.85 82.55 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "9cdc25bb-eeeb-4474-adfd-5deb53b57663")
-		)
-		(pin "1"
-			(uuid "68700fe8-324c-4bca-81d7-01c3ada4c2f4")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "R6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 78.74 86.36 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ea02ac43-494c-4d46-9174-cd48ee56e5bd")
-		(property "Reference" "#PWR012"
-			(at 85.09 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 82.55 86.3599 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 78.74 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 78.74 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 78.74 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3cd940c0-58e0-4f6b-9e6a-ac28786d4b3b")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "#PWR012")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 81.28 38.1 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f312096a-4556-4801-b365-d66a4f42a7bf")
-		(property "Reference" "#PWR014"
-			(at 87.63 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 85.09 38.0999 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 81.28 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 81.28 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 81.28 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5bc28b0e-b54b-41bd-bd45-5fe096500acf")
-		)
-		(instances
-			(project "fusca-azul"
-				(path "/4addfb68-6130-4e35-b57a-c21c2da7d4db"
-					(reference "#PWR014")
 					(unit 1)
 				)
 			)
