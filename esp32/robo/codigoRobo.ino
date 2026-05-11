@@ -35,7 +35,7 @@ long medirDistancia(){
 void frente(int velocidade){
 
   analogWrite(ENA, velocidade);      // motor esquerdo
-  analogWrite(ENB, velocidade - 10); // motor direito corrigido
+  analogWrite(ENB, velocidade - 15); // motor direito corrigido
 
   digitalWrite(esquerda1, LOW);
   digitalWrite(esquerda2, HIGH);
