@@ -11,7 +11,7 @@
 #define direita1 21 //IN3 (direita frente)
 #define direita2 22 //IN4 (direita trás)
 
-#define distanciaMaxima 20 // distancia do sensor
+#define distanciaMaxima 25 // distancia do sensor
 
 long distancia;
 
@@ -32,10 +32,10 @@ long medirDistancia(){
   return duracao * 0.034 / 2;
 }
 
-void frente(int velocidade){
+void frente(float velocidade){
 
   analogWrite(ENA, velocidade);      // motor esquerdo
-  analogWrite(ENB, velocidade - 15); // motor direito corrigido
+  analogWrite(ENB, velocidade - 10.5); // motor direito corrigido
 
   digitalWrite(esquerda1, LOW);
   digitalWrite(esquerda2, HIGH);
