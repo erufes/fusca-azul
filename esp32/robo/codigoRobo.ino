@@ -1,117 +1,121 @@
 // CODIGO FEITO POR yagwDev
 
-#define TRIG 9 //sensor
-#define ECHO 10 //sensor
+#define TRIG 27 //sensor
+#define ECHO 26 //sensor
 
-#define ENA 3
-#define ENB 11
+#define ENA 17
+#define ENB 23
 
-#define esquerda1 8 //IN1 (esquerda frente)
-#define esquerda2 7 //IN2 (esquerda trás)
-#define direita1 5 //IN3 (direita frente)
-#define direita2 6 //IN4 (direita trás)
+#define esquerda1 18 //IN1 (esquerda frente)
+#define esquerda2 19 //IN2 (esquerda trás)
+#define direita1 21 //IN3 (direita frente)
+#define direita2 22 //IN4 (direita trás)
 
-#define distanciaMaxima 10 // distancia do sensor
-
-// configuração PWM ESP32
-const int canalA = 0;
-const int canalB = 1;
-
-const int freqPWM = 5000;
-const int resolucao = 8;
+#define distanciaMaxima 20 // distancia do sensor
 
 long distancia;
 
 long medirDistancia(){
-  digitalWrite(TRIG, LOW); // comeca desligado
-  delayMicroseconds(2); 
 
-  digitalWrite(TRIG, HIGH); // envia o pulso de 10 microssegundos (faz disparar um som ultrassonico)
+  digitalWrite(TRIG, LOW); // comeca desligado
+  delayMicroseconds(2);
+
+  digitalWrite(TRIG, HIGH); // envia o pulso de 10 microssegundos
   delayMicroseconds(10);
 
   digitalWrite(TRIG, LOW); // termina o pulso
-  
-  long duracao = pulseIn(ECHO, HIGH, 30000); // pulsein calcula quanto tempo o pino ECHO ficou em HIGH (enquanto o som ta indo e voltando), ele espera no máximo 30 microssegundos
-  
-  if (duracao == 0) return 999; // evita erro se nao tiver leitura
 
-  return duracao * 0.034 / 2; // 0.034 = velocidade do som em cm por microsegundo divide por 2 porque o som vai e volta
+  long duracao = pulseIn(ECHO, HIGH, 30000);
+
+  if(duracao == 0) return 999; // evita erro se nao tiver leitura
+
+  return duracao * 0.034 / 2;
 }
 
-void frente(int velocidade) { //o parametro de velocidade é definido quando chama a funcao,
-  ledcWrite(canalA, velocidade);// ex: frente(100), a velocidade do motor vai ser 100 de 255 que seria o maximo
-  ledcWrite(canalB, velocidade);  
-  
-  digitalWrite(esquerda1, HIGH);
-  digitalWrite(esquerda2, LOW);
-  digitalWrite(direita1, HIGH);
-  digitalWrite(direita2, LOW);
-} 
-  
-void parar(){
-  ledcWrite(canalA, 0);
-  ledcWrite(canalB, 0);
-  
-  digitalWrite(esquerda1, LOW);
-  digitalWrite(esquerda2, LOW);
-  digitalWrite(direita1, LOW);
-  digitalWrite(direita2, LOW);
-}
+void frente(int velocidade){
 
-void esquerda(int velocidade) {
-  ledcWrite(canalA, velocidade);
-  ledcWrite(canalB, velocidade);
+  analogWrite(ENA, velocidade);      // motor esquerdo
+  analogWrite(ENB, velocidade - 10); // motor direito corrigido
 
   digitalWrite(esquerda1, LOW);
   digitalWrite(esquerda2, HIGH);
+
   digitalWrite(direita1, HIGH);
   digitalWrite(direita2, LOW);
 }
 
-void direita(int velocidade){ //nao usado, mas adicionei por desencargo de consciencia
-  ledcWrite(canalA, velocidade);
-  ledcWrite(canalB, velocidade);
+void parar(){
+
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+
+  digitalWrite(esquerda1, LOW);
+  digitalWrite(esquerda2, LOW);
+
+  digitalWrite(direita1, LOW);
+  digitalWrite(direita2, LOW);
+}
+
+void esquerda(int velocidade){
+
+  analogWrite(ENA, velocidade);
+  analogWrite(ENB, velocidade);
 
   digitalWrite(esquerda1, HIGH);
   digitalWrite(esquerda2, LOW);
+
+  digitalWrite(direita1, HIGH);
+  digitalWrite(direita2, LOW);
+}
+
+void direita(int velocidade){
+
+  analogWrite(ENA, velocidade);
+  analogWrite(ENB, velocidade);
+
+  digitalWrite(esquerda1, HIGH);
+  digitalWrite(esquerda2, LOW);
+
   digitalWrite(direita1, LOW);
   digitalWrite(direita2, HIGH);
-} 
+}
 
 void setup(){
+
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
 
   pinMode(esquerda1, OUTPUT);
   pinMode(esquerda2, OUTPUT);
+
   pinMode(direita1, OUTPUT);
   pinMode(direita2, OUTPUT);
 
-  // configuração PWM ESP32
-  ledcSetup(canalA, freqPWM, resolucao);
-  ledcSetup(canalB, freqPWM, resolucao);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
 
-  ledcAttachPin(ENA, canalA);
-  ledcAttachPin(ENB, canalB);
-
-  Serial.begin(115200); //bits por segundo, O VALOR TEM QUE BATER COM O MONITOR SERIAL PRA CONSEGUIR MONITORAR!!!
-}      
+  Serial.begin(115200);
+}
 
 void loop(){
 
   distancia = medirDistancia();
-  
-  Serial.println(distancia); // printa a distancia
 
-  if(distancia < distanciaMaxima && distancia != 999){ //quando o robo nao detecta nada na frente dele, ele retorna 999, entao aqui ignoramos isso
+  Serial.println(distancia);
+
+  if(distancia < distanciaMaxima && distancia != 999){
+
     parar();
-    delay(1000); // aq é em ms
+    delay(1000);
 
-    esquerda(70); //velocidade
-    delay(500); // aq é em ms
-  } 
-  else{
-    frente(70);//velocidade
+    esquerda(70);
+    delay(500);
   }
+
+  else{
+
+    frente(70);
+  }
+
   delay(100);
 }
