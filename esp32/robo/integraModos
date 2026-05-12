@@ -1,237 +1,238 @@
-    //codigo feito com objetivo de integrar os 2 modos do robo
-
-    #include <WiFi.h>
-    #include <WebServer.h>
-
-    const char* ssid = "FUSCA_AZUL";
-    const char* password = "bacanademais";
-
-    WebServer server(80);
-
-    #define TRIG 27 //sensor
-    #define ECHO 26 //sensor
-
-    #define ENA 17 // motor esquerdo
-    #define ENB 23 // motor direito
-
-    #define esquerda1 18 //IN1 (esquerda frente)
-    #define esquerda2 19 //IN2 (esquerda trás)
-    #define direita1 21 //IN3 (direita frente)
-    #define direita2 22 //IN4 (direita trás)
-
-    #define distanciaMaxima 25 // distancia do sensor
-
-    // controla se o robo esta em modo automatico ou gestos
-    bool modoAutomatico = true;
-
-    // guarda o tempo do ultimo comando recebido
-    unsigned long ultimoComando = 0;
-
-    // tempo maximo sem receber comando antes de parar
-    const int timeout = 1000;
+        //codigo feito com objetivo de integrar os 2 modos do robo
 
 
-    long distancia;
+        #include <WiFi.h>
+        #include <WebServer.h>
 
-    long medirDistancia(){
+        const char* ssid = "yagwthekid";
+        const char* password = "12345678";
 
-    digitalWrite(TRIG, LOW); // comeca desligado
-    delayMicroseconds(2);
+        WebServer server(80);
 
-    digitalWrite(TRIG, HIGH); // envia o pulso de 10 microssegundos
-    delayMicroseconds(10);
+        #define TRIG 27 //sensor
+        #define ECHO 26 //sensor
 
-    digitalWrite(TRIG, LOW); // termina o pulso
+        #define ENA 17 // motor esquerdo
+        #define ENB 23 // motor direito
 
-    long duracao = pulseIn(ECHO, HIGH, 30000);
+        #define esquerda1 18 //IN1 (esquerda frente)
+        #define esquerda2 19 //IN2 (esquerda trás)
+        #define direita1 21 //IN3 (direita frente)
+        #define direita2 22 //IN4 (direita trás)
 
-    if(duracao == 0) return 999; // evita erro se nao tiver leitura
+        #define distanciaMaxima 25 // distancia do sensor
 
-    return duracao * 0.034 / 2;
-    }
+        // controla se o robo esta em modo automatico ou gestos
+        bool modoAutomatico = true;
 
-    void frente(float velocidade){
+        // guarda o tempo do ultimo comando recebido
+        unsigned long ultimoComando = 0;
 
-    analogWrite(ENA, velocidade);  // motor esquerdo
-    analogWrite(ENB, velocidade - 10.5); // motor direito corrigido
+        // tempo maximo sem receber comando antes de parar
+        const int timeout = 1000;
 
-    digitalWrite(esquerda1, LOW);
-    digitalWrite(esquerda2, HIGH);
+        const float correcaoMotorDireito = 10.5;
 
-    digitalWrite(direita1, HIGH);
-    digitalWrite(direita2, LOW);
-    }
+        long distancia;
 
-    void parar(){
+        long medirDistancia(){
 
-    analogWrite(ENA, 0);
-    analogWrite(ENB, 0);
+        digitalWrite(TRIG, LOW); // comeca desligado
+        delayMicroseconds(2);
 
-    digitalWrite(esquerda1, LOW);
-    digitalWrite(esquerda2, LOW);
+        digitalWrite(TRIG, HIGH); // envia o pulso de 10 microssegundos
+        delayMicroseconds(10);
 
-    digitalWrite(direita1, LOW);
-    digitalWrite(direita2, LOW);
-    }
+        digitalWrite(TRIG, LOW); // termina o pulso
 
-    void esquerda(int velocidade){
+        long duracao = pulseIn(ECHO, HIGH, 30000);
 
-    analogWrite(ENA, velocidade);
-    analogWrite(ENB, velocidade);
+        if(duracao == 0) return 999; // evita erro se nao tiver leitura
 
-    digitalWrite(esquerda1, HIGH);
-    digitalWrite(esquerda2, LOW);
-
-    digitalWrite(direita1, HIGH);
-    digitalWrite(direita2, LOW);
-    }
-
-    void direita(int velocidade){
-
-    analogWrite(ENA, velocidade);
-    analogWrite(ENB, velocidade);
-
-    digitalWrite(esquerda1, HIGH);
-    digitalWrite(esquerda2, LOW);
-
-    digitalWrite(direita1, LOW);
-    digitalWrite(direita2, HIGH);
-    }
-
-    void re(float velocidade){
-
-    analogWrite(ENA, velocidade); // motor esquerdo
-    analogWrite(ENB, velocidade - 10.5); // motor direito corrigido
-
-    digitalWrite(esquerda1, HIGH);
-    digitalWrite(esquerda2, LOW);
-
-    digitalWrite(direita1, LOW);
-    digitalWrite(direita2, HIGH);
-    }
-
-    void receberComando(){
-
-        String action = server.arg("action");
-
-        ultimoComando = millis();
-
-
-        Serial.println(action);
-
-
-        if(action == "modo_auto"){
-
-            modoAutomatico = true;
-
+        return duracao * 0.034 / 2;
         }
 
-        else if(action == "modo_gesto"){
+        void frente(float velocidade){
 
-            modoAutomatico = false;
+        analogWrite(ENA, velocidade); //motor esquerdo
+        analogWrite(ENB, velocidade - correcaoMotorDireito);//motor direito
 
+        digitalWrite(esquerda1, LOW);
+        digitalWrite(esquerda2, HIGH);
+
+        digitalWrite(direita1, HIGH);
+        digitalWrite(direita2, LOW);
         }
 
-        if(!modoAutomatico){
-            if(action == "frente"){
-                frente(70.0);
-            }
-            else if(action == "esquerda"){
-                esquerda(70);
-            }
-            else if(action == "direita"){
-                direita(70);
-            }
-            else if(action == "re"){
-                re(70.0);
-            }
-            else if(action == "parar"){
-                parar();
-            }
+        void parar(){
+
+        analogWrite(ENA, 0);
+        analogWrite(ENB, 0);
+
+        digitalWrite(esquerda1, LOW);
+        digitalWrite(esquerda2, LOW);
+
+        digitalWrite(direita1, LOW);
+        digitalWrite(direita2, LOW);
         }
 
-        server.send(200, "text/plain", "OK");
-    }
+        void esquerda(float velocidade){
+
+        analogWrite(ENA, velocidade); //motor esquerdo
+        analogWrite(ENB, velocidade - correcaoMotorDireito);//motor direito
+
+        digitalWrite(esquerda1, HIGH);
+        digitalWrite(esquerda2, LOW);
+
+        digitalWrite(direita1, HIGH);
+        digitalWrite(direita2, LOW);
+        }
+
+        void direita(float velocidade){
+
+        analogWrite(ENA, velocidade); //motor esquerdo
+        analogWrite(ENB, velocidade - correcaoMotorDireito);//motor direito
+
+        digitalWrite(esquerda1, LOW);
+        digitalWrite(esquerda2, HIGH);
+
+        digitalWrite(direita1, LOW);
+        digitalWrite(direita2, HIGH);
+        }
+
+        void re(float velocidade){
+
+        analogWrite(ENA, velocidade); //motor esquerdo
+        analogWrite(ENB, velocidade - correcaoMotorDireito);//motor direito
+
+        digitalWrite(esquerda1, HIGH);
+        digitalWrite(esquerda2, LOW);
+
+        digitalWrite(direita1, LOW);
+        digitalWrite(direita2, HIGH);
+        }
+
+        void receberComando(){
+
+            String action = server.arg("action");
+
+            ultimoComando = millis();
 
 
-    void setup(){
+            Serial.println(action);
 
-    pinMode(TRIG, OUTPUT);
-    pinMode(ECHO, INPUT);
 
-    pinMode(esquerda1, OUTPUT);
-    pinMode(esquerda2, OUTPUT);
+            if(action == "modo_auto"){
 
-    pinMode(direita1, OUTPUT);
-    pinMode(direita2, OUTPUT);
+                modoAutomatico = true;
 
-    pinMode(ENA, OUTPUT);
-    pinMode(ENB, OUTPUT);
+            }
 
-    Serial.begin(115200);
+            else if(action == "modo_gesto"){
 
-    WiFi.begin(ssid, password);
+                modoAutomatico = false;
 
-    Serial.print("Ligando o Rádio"); // conectando no wifi
+            }
 
-    while(WiFi.status() != WL_CONNECTED){
+            if(!modoAutomatico){
+                if(action == "frente"){
+                    frente(70.0);
+                }
+                else if(action == "esquerda"){
+                    esquerda(70.0);
+                }
+                else if(action == "direita"){
+                    direita(70.0);
+                }
+                else if(action == "re"){
+                    re(70.0);
+                }
+                else if(action == "parar"){
+                    parar();
+                }
+            }
 
-        delay(500);
-        Serial.print(".");
+            server.send(200, "text/plain", "OK");
+        }
+
+
+        void setup(){
+
+        pinMode(TRIG, OUTPUT);
+        pinMode(ECHO, INPUT);
+
+        pinMode(esquerda1, OUTPUT);
+        pinMode(esquerda2, OUTPUT);
+
+        pinMode(direita1, OUTPUT);
+        pinMode(direita2, OUTPUT);
+
+        pinMode(ENA, OUTPUT);
+        pinMode(ENB, OUTPUT);
+
+        Serial.begin(115200);
+
+        WiFi.begin(ssid, password);
+
+        Serial.print("Ligando o Rádio"); // conectando no wifi
+
+        while(WiFi.status() != WL_CONNECTED){
+
+            delay(500);
+            Serial.print(".");
+            
+        }
         
-    }
-    
-    Serial.println("");
-    Serial.println("Radio Ligado"); // wifi conectado
+        Serial.println("");
+        Serial.println("Radio Ligado"); // wifi conectado
 
-    Serial.println("IP DO FUSCA: "); // ip do esp32
-    Serial.println(WiFi.localIP());
+        Serial.println("IP DO FUSCA: "); // ip do esp32
+        Serial.println(WiFi.localIP());
 
 
-    server.on("/cmd", receberComando); // cria rota para receber comandos
+        server.on("/cmd", receberComando); // cria rota para receber comandos
 
-    server.begin(); // inicia o server
-    
+        server.begin(); // inicia o server
+        
 
 
-    Serial.println("Fusca Ligado e Fumaçando"); //servidor iniciado
+        Serial.println("Fusca Ligado e Fumaçando"); //servidor iniciado
 
-    }
+        }
 
-    void loop(){
+        void loop(){
 
-    server.handleClient(); // processa requests vindos do python
+        server.handleClient(); // processa requests vindos do python
 
-    if(millis() - ultimoComando > timeout && !modoAutomatico){
+        if(millis() - ultimoComando > timeout && !modoAutomatico){
 
-        parar();
+            parar();
 
-    }
+        }
 
-    if(modoAutomatico){
+        if(modoAutomatico){
 
-    distancia = medirDistancia();
+        distancia = medirDistancia();
 
-    Serial.println(distancia);
+        //Serial.println(distancia);
 
-    if(distancia < distanciaMaxima && distancia != 999){
+        if(distancia < distanciaMaxima && distancia != 999){
 
-        parar();
-        delay(1000);
+            parar();
+            delay(1000);
 
-        esquerda(70);
-        delay(600);
+            esquerda(70.0);
+            delay(600);
 
-    }
+        }
 
-    else{
+        else{
 
-        frente(70.0);
+            frente(70.0);
 
-    }
+        }
 
-    delay(100);
+        delay(100);
 
-    }
-    }
-
+        }
+        }
