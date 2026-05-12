@@ -1,5 +1,5 @@
 // codigo destinado a adição de um ou mais sensores ao robô, com o objetivo de evitar pontos cegos
-
+// codigo nao foi utilizado, foi decidido utilizar 3 sensores
 
 #define TRIG 9 // sensor frontal
 #define ECHO 10 // sensor frontal
