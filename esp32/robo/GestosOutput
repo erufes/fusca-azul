@@ -140,7 +140,7 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
         tecla = cv2.waitKey(1) & 0xFF
 
         # tecla M ativa modo automatico
-        if tecla == ord('m'):
+        if tecla == ord('m'): // add by yago
 
           enviar_comando("modo_auto")
           modoAutomatico = True
