@@ -128,7 +128,7 @@
 
         else if(action == "modo_gesto"){
 
-            modoAutomatico = false
+            modoAutomatico = false;
 
         }
 
@@ -145,9 +145,12 @@
             else if(action == "re"){
                 re(70.0);
             }
+            else if(action == "parar"){
+                parar();
+            }
         }
 
-        server.send(200, "text/plain, OK");
+        server.send(200, "text/plain", "OK");
     }
 
 
@@ -173,7 +176,7 @@
 
     while(WiFi.status() != WL_CONNECTED){
 
-        delay(500)
+        delay(500);
         Serial.print(".");
         
     }
