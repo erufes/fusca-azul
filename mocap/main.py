@@ -1,19 +1,17 @@
 import cv2
 import mediapipe as mp
-import requests
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import time
 from gestos import gestos
+from comunicacao import enviar_comando
 
-# Variaveis para checar ultimo comando e tempo do ultimo comando
-last_print_action = ""
-last_send = 0
-last_unknown = False
-last_no_hand = False
-last_connection_error = False
+# Variaveis para checar o estado atual do programa
 
-ESP32_IP = "192.168.0.135"  # ← IP do esp
+last_send = 0 # Úlimo envio de requisição
+ultimo_toggle = 0 # Modo atual
+cooldown_toggle = 3.0 #tempo de demora da troca de modos
+modoAutomatico = True
 
 base_options = python.BaseOptions(
     model_asset_path="utils/hand_landmarker.task"
@@ -21,15 +19,20 @@ base_options = python.BaseOptions(
 options = vision.HandLandmarkerOptions(
     base_options=base_options,
     running_mode=vision.RunningMode.VIDEO,
-    num_hands=1,                        
+    num_hands=1, # Num de mãos                    
     min_hand_detection_confidence=0.5,  # confiança mínima pra detectar
     min_tracking_confidence=0.3         # confiança mínima pra rastrear
 )
 
 webcam = cv2.VideoCapture(0) # Abre a webcam. 0 = câmera padrão do sistema
+
+# Resolução
 webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
+enviar_comando("modo_gesto", last_send)
+
+# Event Loop
 with vision.HandLandmarker.create_from_options(options) as landmarker:
     while webcam.isOpened():
 
@@ -48,13 +51,10 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
         resultado = landmarker.detect_for_video(mp_image, timestamp)
 
         if resultado.hand_landmarks:
-
-            last_no_hand = False
-
             for i, hand in enumerate(resultado.hand_landmarks):
 
-                lado = resultado.handedness[i][0].category_name
-                g = gestos(hand, lado)
+                lado = resultado.handedness[i][0].category_name # Mão esquerda/direita
+                gesto = gestos(hand, lado)
 
                 # DESENHA landmarks
                 for landmark in hand:
@@ -63,56 +63,40 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                     cv2.circle(frame, (cx, cy), 10, (0, 255, 0), -1)
 
                 # DETECTA gesto (FORA do loop dos landmarks) (estava checando 21 vezes por frame o que crashava o programa)
-                if g.frente():
-                    action = "frente"
-                    last_unknown = False
-
-                elif g.parado():
-                    action = "parar"
-                    last_unknown = False
-
-                elif g.re():
-                    action = "re"
-                    last_unknown = False
-
-                elif g.direita():
-                    action = "direita"
-                    last_unknown = False
-
-                elif g.esquerda():
-                    action = "esquerda"
-                    last_unknown = False
+                if modoAutomatico:
+                    if gesto.fazOL() and time.time() - ultimo_toggle > cooldown_toggle:
+                        action = "modo_gesto"
+                        modoAutomatico = False
+                        ultimo_toggle = time.time()
+                        print("Modo Gestos")
 
                 else:
+                    if gesto.fazOL():
+                        if time.time() - ultimo_toggle > cooldown_toggle:
+                            action = "modo_auto"
+                            modoAutomatico = True
+                            ultimo_toggle = time.time()
+                            print("Modo auto")
 
-                    if not last_unknown:
-                        print("Gesto não reconhecido")
-                        last_unknown = True
+                    elif gesto.frente():
+                        action = "frente"
 
-                #printa não repetidamente cada comando
-                if action != last_print_action and action is not None:
-                    last_print_action = action
-                    print(action)
+                    elif gesto.parado():
+                        action = "parar"
 
-                #checa ultimo action e tempo do ultimo comando para não sobrecarregar
+                    elif gesto.re():
+                        action = "re"
+
+                    elif gesto.direita():
+                        action = "direita"
+
+                    elif gesto.esquerda():
+                        action = "esquerda"
+
+                    #checa ultimo action e tempo do ultimo comando para não sobrecarregar
                 if action is not None:
                      if time.time() - last_send > 0.1:
-
-                        try:
-                            requests.get(f"http://{ESP32_IP}/cmd?action={action}", timeout=0.1)
-                            last_send = time.time()
-                            last_connection_error = False
-                        except requests.exceptions.RequestException as e:
-                            if not last_connection_error:
-                                print(f"Erro ao enviar: {e}")
-                                last_connection_error = True
-        
-        #printa não repetidamente se mao não for encontrada
-        else:
-
-            if not last_no_hand:
-                print("Mão não detectada")
-                last_no_hand = True
+                        last_send = enviar_comando(action, last_send)
         
         #bloco abaixo movido para esquerda para não crashar quando não há mao detectada
         cv2.imshow("Feed", frame) # Exibe o frame numa janela chamada "Feed", Se a janela não existir, cria automaticamente

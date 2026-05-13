@@ -1,6 +1,6 @@
 import cv2
 import mediapipe as mp
-import requests
+import comunicacao
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import time
@@ -30,7 +30,7 @@ def enviar_comando(comando):
 
     try:
 
-        requests.get(
+        comunicacao.get(
             f"http://{ESP32_IP}/cmd?action={comando}",
             timeout=0.1
         )
@@ -38,7 +38,7 @@ def enviar_comando(comando):
         last_send = time.time()
         last_connection_error = False
 
-    except requests.exceptions.RequestException as e:
+    except comunicacao.exceptions.RequestException as e:
 
         if not last_connection_error:
 
