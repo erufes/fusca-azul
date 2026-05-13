@@ -4,8 +4,8 @@
         #include <WiFi.h>
         #include <WebServer.h>
 
-        const char* ssid = "yagwthekid";
-        const char* password = "12345678";
+        const char* ssid = "ERUS 2.4GHz";
+        const char* password = "ultrabots3";
 
         WebServer server(80);
 
@@ -47,19 +47,19 @@
         long medirDistancia(int trigPin, int echoPin){
 
          digitalWrite(trigPin, LOW);
-        delayMicroseconds(2);
+         delayMicroseconds(2);
 
-        digitalWrite(trigPin, HIGH);
+         digitalWrite(trigPin, HIGH);
          delayMicroseconds(10);
 
-        digitalWrite(trigPin, LOW);
+          digitalWrite(trigPin, LOW);
 
-        long duracao = pulseIn(echoPin, HIGH, 30000);
+         long duracao = pulseIn(echoPin, HIGH, 30000);
 
-        if(duracao == 0) return 999;
+          if(duracao == 0) return 999;
 
-        return duracao * 0.034 / 2;
-    }
+          return duracao * 0.034 / 2;
+        }
 
         void frente(float velocidade){
 
@@ -165,86 +165,93 @@
         }
 
 
-    void setup(){
+        void setup(){
 
-        pinMode(TRIG_ESQ, OUTPUT);
-        pinMode(ECHO_ESQ, INPUT);
+            pinMode(TRIG_ESQ, OUTPUT);
+            pinMode(ECHO_ESQ, INPUT);
 
-        pinMode(TRIG_DIR, OUTPUT);
-        pinMode(ECHO_DIR, INPUT);
+            pinMode(TRIG_DIR, OUTPUT);
+            pinMode(ECHO_DIR, INPUT);
 
-        pinMode(esquerda1, OUTPUT);
-        pinMode(esquerda2, OUTPUT);
+            pinMode(esquerda1, OUTPUT);
+            pinMode(esquerda2, OUTPUT);
 
-        pinMode(direita1, OUTPUT);
-        pinMode(direita2, OUTPUT);
+            pinMode(direita1, OUTPUT);
+            pinMode(direita2, OUTPUT);
 
-        pinMode(ENA, OUTPUT);
-        pinMode(ENB, OUTPUT);
+            pinMode(ENA, OUTPUT);
+            pinMode(ENB, OUTPUT);
 
-        Serial.begin(115200);
+            Serial.begin(115200);
 
-        WiFi.begin(ssid, password);
+            WiFi.begin(ssid, password);
 
-        Serial.print("Ligando o Rádio"); // conectando no wifi
+            Serial.print("Ligando o Rádio"); // conectando no wifi
 
-        while(WiFi.status() != WL_CONNECTED){
+            while(WiFi.status() != WL_CONNECTED){
 
-            delay(500);
-            Serial.print(".");
+                delay(500);
+                Serial.print(".");
             
-        }
+            }
         
-        Serial.println("");
-        Serial.println("Radio Ligado"); // wifi conectado
+            Serial.println("");
+            Serial.println("Radio Ligado"); // wifi conectado
 
-        Serial.println("IP DO FUSCA: "); // ip do esp32
-        Serial.println(WiFi.localIP());
+            Serial.println("IP DO FUSCA: "); // ip do esp32
+            Serial.println(WiFi.localIP());
 
 
-        server.on("/cmd", receberComando); // cria rota para receber comandos
+            server.on("/cmd", receberComando); // cria rota para receber comandos
 
-        server.begin(); // inicia o server
+            server.begin(); // inicia o server
         
 
 
-        Serial.println("Fusca Ligado e Fumaçando"); //servidor iniciado
+            Serial.println("Fusca Ligado e Fumaçando"); //servidor iniciado
 
-        }
+            }
 
-        void loop(){
+            void loop(){
 
-        server.handleClient(); // processa requests vindos do python
+            server.handleClient(); // processa requests vindos do python
 
-        if(millis() - ultimoComando > timeout && !modoAutomatico){
+            if(millis() - ultimoComando > timeout && !modoAutomatico){
 
-            parar();
+                parar();
 
-        }
+            }   
 
-        if(modoAutomatico){
+            if(modoAutomatico){
 
-        distancia = medirDistancia();
+                distanciaEsq = medirDistancia(TRIG_ESQ, ECHO_ESQ);
 
-        //Serial.println(distancia);
+                delay(30);
 
-        if(distancia < distanciaMaxima && distancia != 999){
+                distanciaDir = medirDistancia(TRIG_DIR, ECHO_DIR);
 
-            parar();
-            delay(1000);
+                delay(30);
 
-            esquerda(70.0);
-            delay(600);
+                distanciaFrontal = min(distanciaEsq, distanciaDir);
 
-        }
+            //Serial.println(distancia);
 
-        else{
+                if(distanciaFrontal < distanciaMaxima && distanciaFrontal != 999){
 
-            frente(70.0);
+                    parar();
+                    delay(1000);    
 
-        }
+                    esquerda(70.0);
+                    delay(600);
+                }
 
-        delay(100);
+                else{
 
-        }
+                    frente(70.0);
+
+                }
+
+                delay(100);
+
+                }
         }
