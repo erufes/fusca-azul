@@ -14,7 +14,7 @@ last_no_hand = False
 last_connection_error = False
 
 ultimo_toggle = 0
-cooldown_toggle = 2.0 #tempo de demora da troca de modos
+cooldown_toggle = 3.0 #tempo de demora da troca de modos
 
 ESP32_IP = "192.168.0.139"  # ← IP do esp
 
