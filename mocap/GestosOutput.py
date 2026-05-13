@@ -15,7 +15,7 @@ last_connection_error = False
 
 ESP32_IP = "192.168.0.139"  # ← IP do esp
 
-# controla se esta em modo automatico ou gestos
+
 modoAutomatico = False
 
 
@@ -61,7 +61,7 @@ webcam = cv2.VideoCapture(0)
 webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-# inicia em modo gestos
+
 enviar_comando("modo_gesto")
 
 
@@ -93,7 +93,7 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
         )
 
         # modo gestos
-        if resultado.hand_landmarks and not modoAutomatico:
+        if resultado.hand_landmarks:
 
             last_no_hand = False
 
@@ -120,37 +120,52 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                     )
 
                 # detecta gesto
-                if g.frente():
+                if(modoAutomatico):
+                
+                    if g.fazOL():
 
-                    action = "frente"
-                    last_unknown = False
+                        action = "modo_gesto"
+                        last_unknown = False    
 
-                elif g.parado():
-
-                    action = "parar"
-                    last_unknown = False
-
-                elif g.re():
-
-                    action = "re"
-                    last_unknown = False
-
-                elif g.direita():
-
-                    action = "direita"
-                    last_unknown = False
-
-                elif g.esquerda():
-
-                    action = "esquerda"
-                    last_unknown = False
 
                 else:
+                    
+                    if g.fazOL():
 
-                    if not last_unknown:
+                        action = "modo_auto"
+                        last_unknown = False
 
-                        print("Gesto não reconhecido")
-                        last_unknown = True
+                    if g.frente():
+
+                        action = "frente"
+                        last_unknown = False
+
+                    elif g.parado():
+                        
+                        action = "parar"
+                        last_unknown = False
+
+                    elif g.re():
+
+                        action = "re"
+                        last_unknown = False
+
+                    elif g.direita():
+
+                        action = "direita"
+                        last_unknown = False
+                        
+                    elif g.esquerda(): 
+
+                        action = "esquerda"
+                        last_unknown = False
+
+                      else:
+
+                          if not last_unknown:
+
+                             print("Gesto não reconhecido")
+                             last_unknown = True
 
                 # printa sem repetir
                 if action != last_print_action and action is not None:
@@ -176,11 +191,12 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
         # mostra webcam
         cv2.imshow("Feed", frame)
 
+
         # captura tecla
         tecla = cv2.waitKey(1) & 0xFF
 
-        # tecla M ativa modo automatico
-        if tecla == ord('m'):
+        # ativa modo automatico atraves da tecla
+        if tecla == ord('a'):
 
             enviar_comando("modo_auto")
 
@@ -188,14 +204,14 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
 
             print("Modo automatico")
 
-        # tecla G ativa modo gestos
+        # ativa modo gestos atraves da tecla
         elif tecla == ord('g'):
 
             enviar_comando("modo_gesto")
 
             modoAutomatico = False
 
-            print("Modo gestos")
+            print("Modo gesto")
 
         # fecha janela
         if cv2.getWindowProperty(

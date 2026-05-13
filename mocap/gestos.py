@@ -19,3 +19,6 @@ class gestos:
     
     def esquerda(self):
         return not indicador_levantado(self.hand) and not medio_levantado(self.hand) and not anelar_levantado(self.hand) and not mindinho_levantado(self.hand) and polegar_levantado(self.hand, self.lado)
+
+    def fazOL(self):
+        return indicador_levantado(self.hand) and not medio_levantado(self.hand) and not anelar_levantado(self.hand) and not mindinho_levantado(self.hand) and polegar_levantado(self.hand, self.lado)
