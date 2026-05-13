@@ -1,121 +1,186 @@
 // CODIGO FEITO POR yagwDev
 
-#define TRIG 27 //sensor
-#define ECHO 26 //sensor
+#define TRIG_ESQ 27
+#define ECHO_ESQ 33
+
+#define TRIG_DIR 26
+#define ECHO_DIR 32
 
 #define ENA 17
 #define ENB 23
 
-#define esquerda1 18 //IN1 (esquerda frente)
-#define esquerda2 19 //IN2 (esquerda trás)
-#define direita1 21 //IN3 (direita frente)
-#define direita2 22 //IN4 (direita trás)
+#define esquerda1 18 // IN1
+#define esquerda2 19 // IN2
 
-#define distanciaMaxima 25 // distancia do sensor
+#define direita1 21 // IN3
+#define direita2 22 // IN4
 
-long distancia;
+float correcaoMotorDireito = 10.5;
 
-long medirDistancia(){
+#define distanciaMaxima 10
 
-  digitalWrite(TRIG, LOW); // comeca desligado
+long distanciaEsq;
+long distanciaDir;
+long distanciaFrontal;
+
+
+// =====================================
+// FUNCAO SENSOR
+// =====================================
+
+long medirDistancia(int trigPin, int echoPin){
+
+  digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
 
-  digitalWrite(TRIG, HIGH); // envia o pulso de 10 microssegundos
+  digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
 
-  digitalWrite(TRIG, LOW); // termina o pulso
+  digitalWrite(trigPin, LOW);
 
-  long duracao = pulseIn(ECHO, HIGH, 30000);
+  long duracao = pulseIn(echoPin, HIGH, 30000);
 
-  if(duracao == 0) return 999; // evita erro se nao tiver leitura
+  if(duracao == 0) return 999;
 
   return duracao * 0.034 / 2;
 }
 
+
+// =====================================
+// MOVIMENTOS
+// =====================================
+
 void frente(float velocidade){
 
-  analogWrite(ENA, velocidade);      // motor esquerdo
-  analogWrite(ENB, velocidade - 10.5); // motor direito corrigido
+    analogWrite(ENA, velocidade);
+    analogWrite(ENB, velocidade - correcaoMotorDireito);
 
-  digitalWrite(esquerda1, LOW);
-  digitalWrite(esquerda2, HIGH);
+    digitalWrite(esquerda1, LOW);
+    digitalWrite(esquerda2, HIGH);
 
-  digitalWrite(direita1, HIGH);
-  digitalWrite(direita2, LOW);
+    digitalWrite(direita1, HIGH);
+    digitalWrite(direita2, LOW);
 }
 
 void parar(){
 
-  analogWrite(ENA, 0);
-  analogWrite(ENB, 0);
+    analogWrite(ENA, 0);
+    analogWrite(ENB, 0);
 
-  digitalWrite(esquerda1, LOW);
-  digitalWrite(esquerda2, LOW);
+    digitalWrite(esquerda1, LOW);
+    digitalWrite(esquerda2, LOW);
 
-  digitalWrite(direita1, LOW);
-  digitalWrite(direita2, LOW);
+    digitalWrite(direita1, LOW);
+    digitalWrite(direita2, LOW);
 }
 
-void esquerda(int velocidade){
+void esquerda(float velocidade){
 
-  analogWrite(ENA, velocidade);
-  analogWrite(ENB, velocidade);
+    analogWrite(ENA, velocidade);
+    analogWrite(ENB, velocidade - correcaoMotorDireito);
 
-  digitalWrite(esquerda1, HIGH);
-  digitalWrite(esquerda2, LOW);
+    digitalWrite(esquerda1, HIGH);
+    digitalWrite(esquerda2, LOW);
 
-  digitalWrite(direita1, HIGH);
-  digitalWrite(direita2, LOW);
+    digitalWrite(direita1, HIGH);
+    digitalWrite(direita2, LOW);
 }
 
-void direita(int velocidade){
+void direita(float velocidade){
 
-  analogWrite(ENA, velocidade);
-  analogWrite(ENB, velocidade);
+    analogWrite(ENA, velocidade);
+    analogWrite(ENB, velocidade - correcaoMotorDireito);
 
-  digitalWrite(esquerda1, HIGH);
-  digitalWrite(esquerda2, LOW);
+    digitalWrite(esquerda1, LOW);
+    digitalWrite(esquerda2, HIGH);
 
-  digitalWrite(direita1, LOW);
-  digitalWrite(direita2, HIGH);
+    digitalWrite(direita1, LOW);
+    digitalWrite(direita2, HIGH);
 }
+
+void re(float velocidade){
+
+    analogWrite(ENA, velocidade);
+    analogWrite(ENB, velocidade - correcaoMotorDireito);
+
+    digitalWrite(esquerda1, HIGH);
+    digitalWrite(esquerda2, LOW);
+
+    digitalWrite(direita1, LOW);
+    digitalWrite(direita2, HIGH);
+}
+
+
+// =====================================
+// SETUP
+// =====================================
 
 void setup(){
 
-  pinMode(TRIG, OUTPUT);
-  pinMode(ECHO, INPUT);
+    pinMode(TRIG_ESQ, OUTPUT);
+    pinMode(ECHO_ESQ, INPUT);
 
-  pinMode(esquerda1, OUTPUT);
-  pinMode(esquerda2, OUTPUT);
+    pinMode(TRIG_DIR, OUTPUT);
+    pinMode(ECHO_DIR, INPUT);
 
-  pinMode(direita1, OUTPUT);
-  pinMode(direita2, OUTPUT);
+    pinMode(esquerda1, OUTPUT);
+    pinMode(esquerda2, OUTPUT);
 
-  pinMode(ENA, OUTPUT);
-  pinMode(ENB, OUTPUT);
+    pinMode(direita1, OUTPUT);
+    pinMode(direita2, OUTPUT);
 
-  Serial.begin(115200);
+    pinMode(ENA, OUTPUT);
+    pinMode(ENB, OUTPUT);
+
+    Serial.begin(115200);
 }
+
+
+// =====================================
+// LOOP
+// =====================================
 
 void loop(){
 
-  distancia = medirDistancia();
+    distanciaEsq = medirDistancia(TRIG_ESQ, ECHO_ESQ);
 
-  Serial.println(distancia);
+    delay(30);
 
-  if(distancia < distanciaMaxima && distancia != 999){
+    distanciaDir = medirDistancia(TRIG_DIR, ECHO_DIR);
 
-    parar();
-    delay(1000);
+    delay(30);
 
-    esquerda(70);
-    delay(500);
-  }
+    distanciaFrontal = min(distanciaEsq, distanciaDir);
 
-  else{
 
-    frente(70);
-  }
+    // DEBUG SERIAL
 
-  delay(100);
+    Serial.print("Esq: ");
+    Serial.print(distanciaEsq);
+
+    Serial.print(" | Dir: ");
+    Serial.print(distanciaDir);
+
+    Serial.print(" | Frente: ");
+    Serial.println(distanciaFrontal);
+
+
+    // LOGICA DO ROBO
+
+    if(distanciaFrontal < distanciaMaxima &&
+       distanciaFrontal != 999){
+
+        parar();
+        delay(1000);
+
+        esquerda(70.0);
+        delay(500);
+    }
+
+    else{
+
+        frente(70.0);
+    }
+
+    delay(100);
 }
