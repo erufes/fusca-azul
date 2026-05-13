@@ -13,6 +13,9 @@ last_unknown = False
 last_no_hand = False
 last_connection_error = False
 
+ultimo_toggle = 0
+cooldown_toggle = 2.0 //tempo de demora da troca de modos
+
 ESP32_IP = "192.168.0.139"  # ← IP do esp
 
 
@@ -122,19 +125,25 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                 # detecta gesto
                 if(modoAutomatico):
                 
-                    if g.fazOL():
+                    if g.fazOL() and time.time() - ultimo_toggle > cooldown_toggle:
 
                         action = "modo_gesto"
                         modoAutomatico = False
+
+                        ultimo_toggle = time.time()
+
                         last_unknown = False    
 
 
                 else:
                     
-                    if g.fazOL():
+                    if g.fazOL() and time.time() - ultimo_toggle > cooldown_toggle:
 
                         action = "modo_auto"
                         modoAutomatico = True
+
+                        ultimo_toggle = time.time()
+
                         last_unknown = False
 
                     elif g.frente():
