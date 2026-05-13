@@ -13,7 +13,7 @@ last_unknown = False
 last_no_hand = False
 last_connection_error = False
 
-ESP32_IP = "172.20.10.5"  # ← IP do esp
+ESP32_IP = "192.168.0.139"  # ← IP do esp
 
 # controla se esta em modo automatico ou gestos
 modoAutomatico = False
