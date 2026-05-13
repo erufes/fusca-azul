@@ -6,7 +6,11 @@ from mediapipe.tasks.python import vision
 import time
 from gestos import gestos
 
-# Variaveis para checar ultimo comando e tempo do ultimo comando
+
+# =========================================
+# VARIAVEIS
+# =========================================
+
 last_print_action = ""
 last_send = 0
 last_unknown = False
@@ -14,15 +18,17 @@ last_no_hand = False
 last_connection_error = False
 
 ultimo_toggle = 0
-cooldown_toggle = 3.0 #tempo de demora da troca de modos
+cooldown_toggle = 3.0
 
-ESP32_IP = "192.168.0.139"  # ← IP do esp
-
+ESP32_IP = "192.168.0.139"
 
 modoAutomatico = False
 
 
-# função para enviar comandos para o ESP32
+# =========================================
+# ENVIA COMANDO
+# =========================================
+
 def enviar_comando(comando):
 
     global last_send
@@ -30,10 +36,12 @@ def enviar_comando(comando):
 
     try:
 
-        requests.get(
+        r = requests.get(
             f"http://{ESP32_IP}/cmd?action={comando}",
-            timeout=0.1
+            timeout=1
         )
+
+        print(f"HTTP {r.status_code}")
 
         last_send = time.time()
         last_connection_error = False
@@ -45,6 +53,10 @@ def enviar_comando(comando):
             print(f"Erro ao enviar: {e}")
             last_connection_error = True
 
+
+# =========================================
+# MEDIAPIPE
+# =========================================
 
 base_options = python.BaseOptions(
     model_asset_path="utils/hand_landmarker.task"
@@ -58,15 +70,27 @@ options = vision.HandLandmarkerOptions(
     min_tracking_confidence=0.3
 )
 
-# Abre a webcam. 0 = câmera padrão do sistema
+
+# =========================================
+# WEBCAM
+# =========================================
+
 webcam = cv2.VideoCapture(0)
 
 webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 
+# =========================================
+# INICIA EM MODO GESTO
+# =========================================
+
 enviar_comando("modo_gesto")
 
+
+# =========================================
+# LOOP PRINCIPAL
+# =========================================
 
 with vision.HandLandmarker.create_from_options(options) as landmarker:
 
@@ -74,10 +98,10 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
 
         action = None
 
-        # captura frame da webcam
         ret, frame = webcam.read()
 
         if not ret:
+
             print("Captura não encontrada")
             break
 
@@ -95,7 +119,11 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
             timestamp
         )
 
-        # modo gestos
+
+        # =========================================
+        # DETECCAO DE MAO
+        # =========================================
+
         if resultado.hand_landmarks:
 
             last_no_hand = False
@@ -106,7 +134,11 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
 
                 g = gestos(hand, lado)
 
-                # desenha landmarks
+
+                # =========================================
+                # DESENHA LANDMARKS
+                # =========================================
+
                 for landmark in hand:
 
                     h, w, _ = frame.shape
@@ -122,91 +154,140 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                         -1
                     )
 
-                # detecta gesto
-                if(modoAutomatico):
-                
-                    if g.fazOL() and time.time() - ultimo_toggle > cooldown_toggle:
+
+                # =========================================
+                # MODO AUTOMATICO
+                # =========================================
+
+                if modoAutomatico:
+
+                    if (
+                        g.fazOL()
+                        and time.time() - ultimo_toggle > cooldown_toggle
+                    ):
 
                         action = "modo_gesto"
+
                         modoAutomatico = False
 
                         ultimo_toggle = time.time()
 
-                        last_unknown = False    
+                        last_unknown = False
 
+
+                # =========================================
+                # MODO GESTO
+                # =========================================
 
                 else:
-                    
-                    if g.fazOL() and time.time() - ultimo_toggle > cooldown_toggle:
+
+                    if (
+                        g.fazOL()
+                        and time.time() - ultimo_toggle > cooldown_toggle
+                    ):
 
                         action = "modo_auto"
+
                         modoAutomatico = True
 
                         ultimo_toggle = time.time()
 
                         last_unknown = False
 
+
                     elif g.frente():
 
                         action = "frente"
                         last_unknown = False
 
+
                     elif g.parado():
-                        
+
                         action = "parar"
                         last_unknown = False
+
 
                     elif g.re():
 
                         action = "re"
                         last_unknown = False
 
+
                     elif g.direita():
 
                         action = "direita"
                         last_unknown = False
-                        
-                    elif g.esquerda(): 
+
+
+                    elif g.esquerda():
 
                         action = "esquerda"
                         last_unknown = False
+
 
                     else:
 
                         if not last_unknown:
 
                             print("Gesto não reconhecido")
+
                             last_unknown = True
 
-                # printa sem repetir
-                if action != last_print_action and action is not None:
+
+                # =========================================
+                # PRINTA ACAO
+                # =========================================
+
+                if (
+                    action != last_print_action
+                    and action is not None
+                ):
 
                     last_print_action = action
+
                     print(action)
 
-                # envia comando sem sobrecarregar
+
+                # =========================================
+                # ENVIA COMANDO
+                # =========================================
+
                 if action is not None:
 
                     if time.time() - last_send > 0.1:
 
                         enviar_comando(action)
 
+
+        # =========================================
+        # SEM MAO
+        # =========================================
+
         else:
 
-            # printa sem repetir se mao nao detectada
             if not last_no_hand:
 
                 print("Mão não detectada")
+
                 last_no_hand = True
 
-        # mostra webcam
+
+        # =========================================
+        # MOSTRA CAMERA
+        # =========================================
+
         cv2.imshow("Feed", frame)
 
 
-        # captura tecla
+        # =========================================
+        # TECLAS
+        # =========================================
+
         tecla = cv2.waitKey(1) & 0xFF
 
-        # ativa modo automatico atraves da tecla
+
+        # modo automatico
+
         if tecla == ord('a'):
 
             enviar_comando("modo_auto")
@@ -215,7 +296,9 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
 
             print("Modo automatico")
 
-        # ativa modo gestos atraves da tecla
+
+        # modo gesto
+
         elif tecla == ord('g'):
 
             enviar_comando("modo_gesto")
@@ -224,16 +307,21 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
 
             print("Modo gesto")
 
-        # fecha janela
+
+        # sair
+
         if cv2.getWindowProperty(
             "Feed",
             cv2.WND_PROP_VISIBLE
         ) < 1:
 
             break
+        
 
-# libera webcam
+# =========================================
+# FINALIZA
+# =========================================
+
 webcam.release()
 
-# fecha janelas
 cv2.destroyAllWindows()
