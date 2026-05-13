@@ -125,6 +125,7 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                     if g.fazOL():
 
                         action = "modo_gesto"
+                        modoAutomatico = False
                         last_unknown = False    
 
 
@@ -133,9 +134,10 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                     if g.fazOL():
 
                         action = "modo_auto"
+                        modoAutomatico = True
                         last_unknown = False
 
-                    if g.frente():
+                    elif g.frente():
 
                         action = "frente"
                         last_unknown = False
@@ -160,12 +162,12 @@ with vision.HandLandmarker.create_from_options(options) as landmarker:
                         action = "esquerda"
                         last_unknown = False
 
-                      else:
+                    else:
 
-                          if not last_unknown:
+                        if not last_unknown:
 
-                             print("Gesto não reconhecido")
-                             last_unknown = True
+                            print("Gesto não reconhecido")
+                            last_unknown = True
 
                 # printa sem repetir
                 if action != last_print_action and action is not None:
