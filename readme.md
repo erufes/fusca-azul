@@ -76,7 +76,9 @@ git clone <url-do-repositorio>
 pip install opencv-python mediapipe
 ```
 
-##### 3. Execute o projeto
+##### 3. Abra o terminal na pasta `mocap`
+
+##### 4. Execute o projeto
 
 ```bash
 python main.py
