@@ -83,19 +83,58 @@ pip install opencv-python mediapipe
 ```bash
 python main.py
 ```
-### 🚧 Desvio de obstáculos  
+## 🚧 Desvio de obstáculos  
 
 Modo autônomo usando sensor ultrassônico para detectar e evitar colisões.  
 
 Tecnologias previstas:  
 
-- ESP-32D
-- Sensor ultrassônico (HC - SR04)
-- Ponte H
+- ESP-32D  
+- Sensor ultrassônico (HC-SR04)  
+- Ponte H  
 
-##  Status do Projeto:  
+### 🧪 Testes realizados com sensores  
 
-🚧 Em desenvolvimento (fase inicial)  
+Durante o desenvolvimento, foram realizados testes com diferentes configurações de sensores para avaliar a melhor estratégia de detecção de obstáculos:  
+
+- 🔹 **1 sensor:** funcionamento simples e direto, porém com limitação na detecção lateral, reduzindo a precisão dos desvios.  
+- 🔹 **2 sensores:** melhor equilíbrio entre custo, complexidade e eficiência, permitindo detecção mais confiável e decisões de desvio mais estáveis.  
+- 🔹 **3 sensores:** maior cobertura de detecção, porém com aumento da complexidade de leitura e necessidade de maior calibração do sistema.  
+
+### 📌 Conclusão dos testes  
+
+A configuração com **2 sensores frontais apresentou o melhor custo-benefício**, sendo a solução mais estável e eficiente para o comportamento de desvio automático do robô.  
+
+---
+
+## 🔄 Integração dos modos  
+
+O sistema foi projetado para operar com dois modos principais de forma independente:  
+
+- ✋ Controle por gestos (via webcam + Python)  
+- 🚙 Modo autônomo (desvio de obstáculos no ESP32)  
+
+A alternância entre os modos é feita de forma controlada para evitar conflitos de comandos, garantindo que apenas um modo tenha controle ativo do robô por vez.  
+
+### 🧪 Testes realizados  
+
+Durante o desenvolvimento foram realizados testes focados em:  
+
+- Estabilidade da comunicação entre Python e ESP32  
+- Resposta dos motores em comandos simultâneos  
+- Troca entre controle manual e automático  
+- Consistência dos movimentos em diferentes cenários  
+- Latência entre detecção de gesto e execução dos comandos  
+
+Também foi implementado um sistema de **anti-spam de comandos**, reduzindo envios repetidos e melhorando a estabilidade geral do controle por gestos.  
+
+---
+
+## 🚧 Status do Projeto  
+
+✔️ Protótipo funcional completo  
+
+O sistema encontra-se em estágio de **protótipo funcional**, com ambos os modos (controle por gestos e desvio automático de obstáculos) já implementados e operando corretamente. Atualmente, estão sendo realizados apenas ajustes finais de acabamento e melhorias estéticas.
 
 ## 👥 Equipe  
 
