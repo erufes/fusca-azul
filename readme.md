@@ -40,4 +40,4 @@ Yágo Amorim
 Pietro Pazini  
 Dimitry Deveza  
 Daniel Rodrigues  
-Pedro Pavesi  
+Pedro Vairo
