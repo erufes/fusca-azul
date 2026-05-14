@@ -57,11 +57,11 @@ Comunicação mais eficiente
 
 | Gesto | Ação |
 |---|---|
-| `frente()` | Movimento para frente |
-| `re()` | Movimento reverso |
-| `direita()` | Movimento para direita |
-| `esquerda()` | Movimento para esquerda |
-| `parado()` | Para o movimento |
+| `frente()` | Robô anda pra frente |
+| `re()` | Robô da Rê |
+| `direita()` | Robô vai para direita |
+| `esquerda()` | Robô vai para a esquerda |
+| `parado()` | Para o Robô |
 #### ▶️ Execução
 
 ##### 1. Clone o repositório
