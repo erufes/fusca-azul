@@ -63,14 +63,24 @@ esquerda()	Movimento para esquerda
 parado()	  Para o movimento
 
 #### ▶️ Execução
-Copie o repositório para seu computador;
 
-Instale as dependências:
+##### 1. Clone o repositório
+
+```bash
+git clone <url-do-repositorio>
+```
+
+##### 2. Instale as dependências
+
+```bash
 pip install opencv-python mediapipe
+```
 
-Execute o projeto:
+##### 3. Execute o projeto
+
+```bash
 python main.py
-
+```
 ### 🚧 Desvio de obstáculos  
 
 Modo autônomo usando sensor ultrassônico para detectar e evitar colisões.  
