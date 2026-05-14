@@ -55,13 +55,13 @@ Comunicação mais eficiente
 
 #### ✋ Gestos Implementados
 
-Gesto:	    Ação:
-frente()	  Movimento para frente
-re()	      Movimento reverso
-direita()	  Movimento para direita
-esquerda()	Movimento para esquerda
-parado()	  Para o movimento
-
+| Gesto | Ação |
+|---|---|
+| `frente()` | Movimento para frente |
+| `re()` | Movimento reverso |
+| `direita()` | Movimento para direita |
+| `esquerda()` | Movimento para esquerda |
+| `parado()` | Para o movimento |
 #### ▶️ Execução
 
 ##### 1. Clone o repositório
