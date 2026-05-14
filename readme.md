@@ -11,14 +11,65 @@ Projeto dos trainees da Equipe de Robótica da UFES (ERUS) para desenvolvimento 
 
 O robô será controlado por um ESP32 e terá dois modos:  
 
-### ✋ Controle por gestos  
+### ✋ Controle por gestos 
 
-Uso de visão computacional para capturar movimentos da mão e enviar comandos ao robô.  
+Projeto desenvolvido utilizando Python, [OpenCV](https://opencv.org) e [MediaPipe](https://mediapipe.dev) para reconhecer gestos em tempo real por uma webcam, o que transforma movimentos das mãos em comandos por via do ESP32.
 
-Tecnologias previstas:  
+#### 🚀 Otimização
 
-- OpenCV  
-- MediaPipe  
+Esta parte do projeto teve focou em otimizar a performance, estabilidade do reconhecimento e o fluxo de comandos.
+
+#### ⚡ Problemas Encontrados
+
+- A detecção de gestos estava sendo executada 21 vezes por frame, o que poderia sobrecarregar o computador.
+- O sistema enviava comandos continuamente, gerando spam.
+- O terminal recebia múltiplos prints repetidos.
+- Havia instabilidade quando nenhuma mão era detectada, podendo crashar o programa.
+
+#### ✅ Otimizações Implementadas
+
+##### Correção do processamento excessivo
+
+A lógica de reconhecimento de gestos foi removida do loop de landmarks. Porque, como o MediaPipe tem 21 landmarks por mão, o programa fazia verificação 21 vezes por frame, causando sobrecargarregando e gerando spam de comandos.
+
+Agora os landmarks são apenas para renderização visual, enquanto os gestos são detectados apenas uma vez por frame.
+
+---
+
+##### Sistema anti-spam de comandos
+
+Foi criado um sistema de cooldown utilizando timestamps para impedir o envio contínuo de comandos.
+
+```python
+if time.time() - last_send > 0.1:
+    last_send = enviar_comando(action, last_send)
+if time.time() - last_send > 0.1:
+    last_send = enviar_comando(action, last_send) 
+```
+#### 📈 Resultados Obtidos
+Redução significativa do uso de CPU
+Eliminação de spam de comandos
+Reconhecimento mais estável
+Melhor organização do fluxo do programa
+Comunicação mais eficiente
+
+#### ✋ Gestos Implementados
+
+Gesto:	    Ação:
+frente()	  Movimento para frente
+re()	      Movimento reverso
+direita()	  Movimento para direita
+esquerda()	Movimento para esquerda
+parado()	  Para o movimento
+
+#### ▶️ Execução
+Copie o repositório para seu computador;
+
+Instale as dependências:
+pip install opencv-python mediapipe
+
+Execute o projeto:
+python main.py
 
 ### 🚧 Desvio de obstáculos  
 
