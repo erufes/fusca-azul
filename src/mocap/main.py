@@ -4,14 +4,14 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import time
 from gestos import gestos
-from comunicacao import enviar_comando
+from requisicoes import enviar_comando
 
 # Variaveis para checar o estado atual do programa
 
 last_send = 0 # Úlimo envio de requisição
 ultimo_toggle = 0 # Modo atual
 cooldown_toggle = 3.0 #tempo de demora da troca de modos
-modoAutomatico = True
+modoAutomatico = False
 
 base_options = python.BaseOptions(
     model_asset_path="utils/hand_landmarker.task"
@@ -30,7 +30,7 @@ webcam = cv2.VideoCapture(0) # Abre a webcam. 0 = câmera padrão do sistema
 webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-enviar_comando("modo_gesto", last_send)
+last_send = enviar_comando("modo_gesto", last_send)
 
 # Event Loop
 with vision.HandLandmarker.create_from_options(options) as landmarker:

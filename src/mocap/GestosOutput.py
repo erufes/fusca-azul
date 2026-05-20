@@ -20,7 +20,7 @@ last_connection_error = False
 ultimo_toggle = 0
 cooldown_toggle = 3.0
 
-ESP32_IP = "192.168.0.139"
+ESP32_IP = "192.168.0.101"
 
 modoAutomatico = False
 

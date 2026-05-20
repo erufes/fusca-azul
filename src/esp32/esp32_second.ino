@@ -7,6 +7,10 @@
         const char* ssid = "ERUS 2.4GHz";
         const char* password = "ultrabots3";
 
+        IPAddress ip(192, 168, 0, 101);
+        IPAddress gateway(192, 168, 0, 1);
+        IPAddress subnet(255, 255, 255, 0);
+
         WebServer server(80);
 
         #define TRIG_ESQ 27
@@ -184,6 +188,7 @@
 
             Serial.begin(115200);
 
+            WiFi.config(ip, gateway, subnet);
             WiFi.begin(ssid, password);
 
             Serial.print("Ligando o Rádio"); // conectando no wifi
