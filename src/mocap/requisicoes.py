@@ -1,7 +1,7 @@
 import requests
 import time
 
-ESP32_IP = "192.168.0.101"  # ← IP do esp
+ESP32_IP = "192.168.0.50"  # ← IP do esp
 
 def enviar_comando(comando, last_send):
     try:
