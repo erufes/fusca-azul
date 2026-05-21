@@ -17,6 +17,7 @@ Projeto dos trainees da Equipe de Robótica da UFES (ERUS) para desenvolvimento 
 
 A documentação detalhada do projeto está organizada na pasta [`docs/`](./docs):
 
+- 🏗️ [**Estrutura do Robô**](./docs/estrutura.md) — modelagem 3D, impressão e montagem do chassi.
 - ✋ [**Controle por Gestos**](./docs/mocap.md) — reconhecimento de gestos via webcam com Python, OpenCV e MediaPipe.
 - 🚧 [**Desvio de Obstáculos**](./docs/desvio_de_obstaculos.md) — modo autônomo no ESP32 com sensores ultrassônicos.
 - 🔄 [**Integração dos Modos**](./docs/integracao.md) — comunicação Python ↔ ESP32, protocolo HTTP e alternância de modos.
