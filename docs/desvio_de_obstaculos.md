@@ -52,3 +52,25 @@ A calibração é empírica: ajusta-se `distanciaMaxima` conforme a velocidade d
 - **Sem rampa de aceleração:** os motores partem direto na velocidade alvo, o que pode causar trancos em pisos com baixa aderência.
 - **Sensibilidade à tensão da bateria:** como a velocidade é definida por PWM fixo, a velocidade real do robô cai conforme a bateria descarrega, alterando o espaço de frenagem efetivo sem que `distanciaMaxima` acompanhe.
 
+## Responsável pelo desenvolvimento
+
+O desenvolvimento do sistema de desvio de obstáculos foi realizado por **Yágo Amorim**, responsável por:
+
+- Testes e integração dos motores DC;
+- Testes práticos com sensores ultrassônicos HC-SR04;
+- Calibração de velocidade, distância e correção de trajetória;
+- Ajustes na lógica de desvio automático;
+- Soldagem da fiação dos motores;
+- Validação prática do comportamento autônomo do robô.
+
+## Lições aprendidas
+
+Durante o desenvolvimento do modo autônomo, foi possível aprender e praticar diversos conceitos de robótica embarcada, como:
+
+- Integração entre sensores ultrassônicos e ESP32;
+- Controle de motores utilizando ponte H e PWM;
+- Importância da calibração em sistemas físicos;
+- Tratamento de leituras inválidas e ruídos dos sensores;
+- Impacto de delays bloqueantes no funcionamento do sistema;
+- Diferença entre comportamento teórico e comportamento real do robô em ambiente físico;
+- Influência da tensão da bateria no desempenho dos motores;
