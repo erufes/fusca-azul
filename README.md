@@ -21,6 +21,7 @@ A documentação detalhada do projeto está organizada na pasta [`docs/`](./docs
 - ✋ [**Controle por Gestos**](./docs/mocap.md) — reconhecimento de gestos via webcam com Python, OpenCV e MediaPipe.
 - 🚧 [**Desvio de Obstáculos**](./docs/desvio_de_obstaculos.md) — modo autônomo no ESP32 com sensores ultrassônicos.
 - 🔄 [**Integração dos Modos**](./docs/integracao.md) — comunicação Python ↔ ESP32, protocolo HTTP e alternância de modos.
+- ⚙️ [**Decisões de Hardware**](./docs/hardware.md) - decisões de hardware, componentes utilizados, conexões.
 
 ## 🚧 Status do Projeto  
 
