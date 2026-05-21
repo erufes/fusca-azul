@@ -149,7 +149,7 @@ mocap/
 # Com o programa rodando e a câmera ativa:
 
 # 1. Levante todos os dedos → carrinho vai para frente
-# 2. Feche o punho       → carrinho para
+# 2. Feche o punho → carrinho para
 # 3. Levante indicador e médio (V) → carrinho recua
 # 4. Levante apenas o mindinho → vira à direita
 # 5. Levante apenas o polegar  → vira à esquerda
@@ -175,5 +175,5 @@ Feito com ☕ por
 
 **Daniel Rodrigues e Pedro Vairo**
 
-[![GitHub](https://img.shields.io/badge/GitHub-Daniel Rodrigues-181717?style=flat-square&logo=github)](https://github.com/dhex9)
-[![GitHub](https://img.shields.io/badge/GitHub-Pedro Vairo-181717?style=flat-square&logo=github)](https://github.com/Kahooty388)
+[![GitHub](https://img.shields.io/badge/GitHub-Daniel_Rodrigues-181717?style=flat-square&logo=github)](https://github.com/dhex9)
+[![GitHub](https://img.shields.io/badge/GitHub-Pedro_Vairo-181717?style=flat-square&logo=github)](https://github.com/Kahooty388)
