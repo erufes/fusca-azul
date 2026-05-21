@@ -1,5 +1,7 @@
 # 🚙 FUSCA AZUL  
 
+![imagem do robo](./docs/imgs/Fusca_azul_viewe (2).jpg)
+
 ## Robô com Controle por Gestos e Desvio Automático de Obstáculos  
 
 Projeto dos trainees da Equipe de Robótica da UFES (ERUS) para desenvolvimento de um veículo com dois modos de operação:  
@@ -17,11 +19,11 @@ Projeto dos trainees da Equipe de Robótica da UFES (ERUS) para desenvolvimento 
 
 A documentação detalhada do projeto está organizada na pasta [`docs/`](./docs):
 
+    - ⚙️ [**Decisões de Hardware**](./docs/hardware.md) - decisões de hardware, componentes utilizados, conexões.
 - 🏗️ [**Estrutura do Robô**](./docs/estrutura.md) — modelagem 3D, impressão e montagem do chassi.
 - ✋ [**Controle por Gestos**](./docs/mocap.md) — reconhecimento de gestos via webcam com Python, OpenCV e MediaPipe.
 - 🚧 [**Desvio de Obstáculos**](./docs/desvio_de_obstaculos.md) — modo autônomo no ESP32 com sensores ultrassônicos.
 - 🔄 [**Integração dos Modos**](./docs/integracao.md) — comunicação Python ↔ ESP32, protocolo HTTP e alternância de modos.
-- ⚙️ [**Decisões de Hardware**](./docs/hardware.md) - decisões de hardware, componentes utilizados, conexões.
 
 ## 🚧 Status do Projeto  
 
@@ -31,8 +33,8 @@ O sistema encontra-se em estágio de **protótipo funcional**, com ambos os modo
 
 ## 👥 Equipe  
 
-- Yágo Amorim  
-- Pietro Pazini  
-- Dimitry Deveza  
-- Daniel Rodrigues  
-- Pedro Vairo
+- Yágo Amorim (Firmware do Robô) 
+- Pietro Pazini (Modelagem 3D e estrutura)
+- Dimitry Deveza (Hardware e PCB)
+- Daniel Rodrigues (Captura de Movimentos/Visão Computacional)
+- Pedro Vairo (Captura de Movimentos/Visão Computacional)
