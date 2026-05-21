@@ -87,3 +87,29 @@ Durante o desenvolvimento foram realizados testes focados em:
 - Consistência dos movimentos em diferentes cenários
 - Latência entre detecção de gesto e execução dos comandos
 
+## Responsável pelo desenvolvimento
+
+A integração entre o modo de controle por gestos e o modo autônomo foi desenvolvida por **Yágo Amorim**, envolvendo:
+
+- Implementação da comunicação entre Python e ESP32 via HTTP;
+- Desenvolvimento da lógica de alternância entre os modos;
+- Integração entre reconhecimento de gestos e controle físico do robô;
+- Testes de estabilidade da comunicação Wi-Fi;
+- Ajustes de cooldown e prevenção de spam de comandos;
+- Implementação do sistema de failsafe por timeout;
+- Testes práticos de resposta dos motores e sincronização dos modos.
+
+## Lições aprendidas
+
+Durante o desenvolvimento da integração dos modos, foi possível ganhar experiência prática principalmente em:
+
+- Comunicação entre Python e ESP32 via Wi-Fi;
+- Organização da lógica entre modo manual e automático;
+- Testes e depuração de problemas de comunicação;
+- Ajustes de tempo e cooldown para evitar comandos duplicados;
+- Implementação de mecanismos simples de segurança, como timeout para parar o robô;
+- Integração entre software e hardware em um sistema físico real.
+
+O desenvolvimento também ajudou a entender melhor as dificuldades práticas de integrar diferentes partes de um projeto embarcado, especialmente em relação à estabilidade da comunicação e comportamento do robô em tempo real.
+
+Além da implementação técnica, o desenvolvimento contou com forte apoio de Inteli   gência Artificial durante etapas de estruturação da integração entre os sistemas.
