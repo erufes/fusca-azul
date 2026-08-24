@@ -1,6 +1,6 @@
 # 🚙 FUSCA AZUL  
 
-![imagem do robo](./docs/imgs/Fusca_azul_viewe (2).jpg)
+![imagem do robo](./docs/imgs/fusca_azul.jpg)
 
 ## Robô com Controle por Gestos e Desvio Automático de Obstáculos  
 
