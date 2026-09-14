@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fusca Azul - Olhos do Robô</title>
+	<style>
+		body {
+			text-align: center;
+			font-family: Arial, sans-serif;
+			background-color: #222;
+			color: white;
+		}
+
+		video {
+			border: 5px solid #00aaff;
+			border-radius: 10px;
+			max-width: 100%;
+			transform: scaleX(-1);
+		}
+
+		/* Esconde o canvas que vamos usar para capturar as fotos */
+		canvas {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Visão do Piloto</h1>
+	<video id="webcam" autoplay playsinline width="640" height="480"></video>
+	<canvas id="canvas"></canvas>
+
+	<script>
+		const video = document.getElementById('webcam');
+		const canvas = document.getElementById('canvas');
+		const context = canvas.getContext('2d', { willReadFrequently: true });
+
+		// Conecta no servidor Python via WebSocket
+		const ws = new WebSocket(`ws://${location.host}/ws/video`);
+
+		// Liga a câmera
+		navigator.mediaDevices.getUserMedia({ video: true })
+			.then((stream) => { video.srcObject = stream; })
+			.catch((err) => { alert("Erro na câmera: " + err); });
+
+		// Quando a conexão com o Python for estabelecida...
+		ws.onopen = () => {
+			console.log("Conectado ao cérebro (Python)!");
+
+			// Cria um loop que envia 10 frames por segundo (100ms)
+			setInterval(() => {
+				if (video.readyState === video.HAVE_ENOUGH_DATA) {
+					canvas.width = video.videoWidth;
+					canvas.height = video.videoHeight;
+
+					// Desenha o frame atual do vídeo no canvas
+					context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+					// Converte para JPEG e envia via WebSocket
+					canvas.toBlob((blob) => {
+						ws.send(blob);
+					}, 'image/jpeg', 0.5); // 0.5 é a qualidade da imagem (compressão)
+				}
+			}, 100);
+		};
+
+		// Opcional: Escuta a resposta do Python
+		ws.onmessage = (event) => {
+			console.log("Python disse:", event.data);
+		};
+	</script>
+</body>
+
+</html>
