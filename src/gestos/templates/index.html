@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Fusca Azul - Olhos do Robô</title>
+	<title>Fusca Azul - Controle</title>
 	<style>
 		body {
 			text-align: center;
@@ -20,9 +20,13 @@
 			transform: scaleX(-1);
 		}
 
-		/* Esconde o canvas que vamos usar para capturar as fotos */
 		canvas {
 			display: none;
+		}
+
+		#comando_texto {
+			font-size: 2em;
+			color: #00ff00;
 		}
 	</style>
 </head>
@@ -30,45 +34,45 @@
 <body>
 	<h1>Visão do Piloto</h1>
 	<video id="webcam" autoplay playsinline width="640" height="480"></video>
+
+	<!-- Mostra o que o servidor decidiu -->
+	<h2 id="comando_texto">AGUARDANDO...</h2>
+
 	<canvas id="canvas"></canvas>
 
 	<script>
 		const video = document.getElementById('webcam');
 		const canvas = document.getElementById('canvas');
 		const context = canvas.getContext('2d', { willReadFrequently: true });
+		const textoComando = document.getElementById('comando_texto');
 
-		// Conecta no servidor Python via WebSocket
 		const ws = new WebSocket(`ws://${location.host}/ws/video`);
 
-		// Liga a câmera
 		navigator.mediaDevices.getUserMedia({ video: true })
 			.then((stream) => { video.srcObject = stream; })
 			.catch((err) => { alert("Erro na câmera: " + err); });
 
-		// Quando a conexão com o Python for estabelecida...
 		ws.onopen = () => {
-			console.log("Conectado ao cérebro (Python)!");
-
-			// Cria um loop que envia 10 frames por segundo (100ms)
 			setInterval(() => {
 				if (video.readyState === video.HAVE_ENOUGH_DATA) {
 					canvas.width = video.videoWidth;
 					canvas.height = video.videoHeight;
-
-					// Desenha o frame atual do vídeo no canvas
 					context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-					// Converte para JPEG e envia via WebSocket
 					canvas.toBlob((blob) => {
 						ws.send(blob);
-					}, 'image/jpeg', 0.5); // 0.5 é a qualidade da imagem (compressão)
+					}, 'image/jpeg', 0.5);
 				}
-			}, 100);
+			}, 100); // 10 fotos por segundo
 		};
 
-		// Opcional: Escuta a resposta do Python
+		// Quando o Python responder com o comando, atualiza o texto na tela
 		ws.onmessage = (event) => {
-			console.log("Python disse:", event.data);
+			textoComando.innerText = event.data;
+
+			// Muda a cor pra ficar mais intuitivo
+			if (event.data === "FRENTE") textoComando.style.color = "#00ff00"; // Verde
+			else if (event.data === "PARAR") textoComando.style.color = "#ff0000"; // Vermelho
+			else textoComando.style.color = "#ffff00"; // Amarelo
 		};
 	</script>
 </body>
