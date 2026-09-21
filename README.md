@@ -1,40 +1,71 @@
-# 🚙 FUSCA AZUL  
+# Fusca Azul
 
-![imagem do robo](./docs/imgs/fusca_azul.jpg)
+Esta é a nova versão do robô Fusca Azul, da ERUS/UFES. O software está sendo
+reescrito e o hardware está em atualização. A documentação acompanha as
+funcionalidades conforme são implementadas.
 
-## Robô com Controle por Gestos e Desvio Automático de Obstáculos  
+## Adições desta versão
 
-Projeto dos trainees da Equipe de Robótica da UFES (ERUS) para desenvolvimento de um veículo com dois modos de operação:  
+- Servidor de reconhecimento de gestos com FastAPI e MediaPipe.
+- Câmera pelo navegador, com página em modo escuro e controle para ativar ou pausar a captura.
+- Desenho opcional dos 21 pontos da mão e suas conexões.
+- Exibição dos gestos: em frente, parar e aguardando.
+- QR code no terminal para abrir a página pela rede.
+- Logs sem mensagens por imagem, com depuração de mudanças de gesto opcional.
+- Firmware com PlatformIO para NodeMCU/ESP8266 e leitura de distância pelo VL53L0X, exibida no monitor serial.
 
--  Controle por gestos (via webcam)  
--  Desvio automático de obstáculos  
+O reconhecimento ainda não envia comandos ao robô. O controle dos motores e
+a navegação autônoma da versão antiga ainda não foram integrados à nova versão.
 
-## 🧩 Componentes Utilizados
+## Organização
 
-- ESP32 - HW-394
-- Sensor ultrassônico - HC-SR04
-- Ponte H - L298N
+- [src/gestos/](src/gestos/): servidor e página web.
+- [src/firmware/](src/firmware/): firmware atual.
+- [docs/gestos.md](docs/gestos.md): uso do servidor, câmera e logs.
+- [tests/](tests/): testes do servidor.
 
-## 📚 Documentação
+## Servidor de gestos
 
-A documentação detalhada do projeto está organizada na pasta [`docs/`](./docs):
+Requer Python 3.14 ou superior e uv. Na raiz do projeto:
 
-    - ⚙️ [**Decisões de Hardware**](./docs/hardware.md) - decisões de hardware, componentes utilizados, conexões.
-- 🏗️ [**Estrutura do Robô**](./docs/estrutura.md) — modelagem 3D, impressão e montagem do chassi.
-- ✋ [**Controle por Gestos**](./docs/mocap.md) — reconhecimento de gestos via webcam com Python, OpenCV e MediaPipe.
-- 🚧 [**Desvio de Obstáculos**](./docs/desvio_de_obstaculos.md) — modo autônomo no ESP32 com sensores ultrassônicos.
-- 🔄 [**Integração dos Modos**](./docs/integracao.md) — comunicação Python ↔ ESP32, protocolo HTTP e alternância de modos.
+```bash
+uv sync
+mkdir -p src/gestos/model
+```
 
-## 🚧 Status do Projeto  
+Se ainda não tiver o modelo, baixe-o uma vez:
 
-✔️ Protótipo funcional completo  
+```bash
+curl --fail --location \
+  https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task \
+  --output src/gestos/model/hand_landmarker.task
+```
 
-O sistema encontra-se em estágio de **protótipo funcional**, com ambos os modos (controle por gestos e desvio automático de obstáculos) já implementados e operando corretamente. Atualmente, estão sendo realizados apenas ajustes finais de acabamento e melhorias estéticas.
+Depois, inicie o servidor:
 
-## 👥 Equipe  
+```bash
+uv run gestos
+```
 
-- Yágo Amorim (Firmware do Robô) 
-- Pietro Pazini (Modelagem 3D e estrutura)
-- Dimitry Deveza (Hardware e PCB)
-- Daniel Rodrigues (Captura de Movimentos/Visão Computacional)
-- Pedro Vairo (Captura de Movimentos/Visão Computacional)
+Abra http://localhost:8080/ e ative a câmera. O terminal também mostra um QR code
+com o endereço de acesso pela rede. Ao acessar pelo IP da rede, o navegador exige HTTPS para
+liberar a câmera. A página avisa ao tentar ativá-la por uma conexão insegura.
+
+## Versão anterior
+
+O código, a documentação, a placa e os modelos 3D antigos estão preservados no
+histórico do Git, na tag anotada **v1.0.0**. Ela aponta para o
+commit `7e1b7a9f1c05d8ae50a9d219d5c3933cf5e62812` da branch main, anterior à reescrita.
+Não há uma cópia do legado na estrutura atual.
+
+Para consultar um arquivo antigo sem alterar seu trabalho:
+
+```bash
+git show v1.0.0:README.md
+```
+
+Para abrir a versão antiga em uma pasta separada:
+
+```bash
+git worktree add --detach ../fusca-azul-legado v1.0.0
+```
