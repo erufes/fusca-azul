@@ -1,8 +1,8 @@
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   font-family: system-ui, sans-serif;
-  color: #292927;
-  background: #f5f4f0;
+  color: #e3e3de;
+  background: #181918;
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
@@ -25,7 +25,7 @@ h1 {
 }
 #connection {
   font-size: 12px;
-  color: #6c6c65;
+  color: #ababa3;
 }
 #connection::before {
   content: "";
@@ -36,8 +36,8 @@ h1 {
   border-radius: 50%;
   background: #909089;
 }
-#connection[data-state=online]::before { background: #628368; }
-#connection[data-state=offline]::before { background: #b58148; }
+#connection[data-state=online]::before { background: #91b298; }
+#connection[data-state=offline]::before { background: #c59c6d; }
 .viewport {
   position: relative;
   aspect-ratio: 4 / 3;
@@ -83,15 +83,15 @@ canvas { pointer-events: none; }
 }
 button {
   padding: 10px 16px;
-  border: 1px solid #292927;
+  border: 1px solid #d8d8d0;
   border-radius: 5px;
-  background: #292927;
-  color: #fff;
+  background: #d8d8d0;
+  color: #20221f;
   font: inherit;
   font-size: 13px;
   cursor: pointer;
 }
-button:hover { background: #444440; }
+button:hover { background: #eeeee8; }
 button:disabled { opacity: .55; cursor: wait; }
 .toggle {
   display: flex;
@@ -111,7 +111,7 @@ button:disabled { opacity: .55; cursor: wait; }
   width: 30px;
   height: 18px;
   border-radius: 10px;
-  background: #c5c5be;
+  background: #50534d;
 }
 .switch::after {
   content: "";
@@ -123,10 +123,10 @@ button:disabled { opacity: .55; cursor: wait; }
   border-radius: 50%;
   background: #fff;
 }
-input:checked + .switch { background: #545f51; }
+input:checked + .switch { background: #71836a; }
 input:checked + .switch::after { transform: translateX(12px); }
 input:focus-visible + .switch, button:focus-visible {
-  outline: 2px solid #555;
+  outline: 2px solid #c5cbbf;
   outline-offset: 4px;
 }
 #command-card {
@@ -135,13 +135,13 @@ input:focus-visible + .switch, button:focus-visible {
   justify-content: space-between;
   gap: 16px;
   padding: 17px 0;
-  border-top: 1px solid #ddddd5;
+  border-top: 1px solid #363833;
   font-size: 14px;
 }
-#command-card > span { color: #71716a; }
+#command-card > span { color: #ababa3; }
 #command-text { font-weight: 500; }
-#command-card[data-state=forward] strong { color: #3c6847; }
-#command-card[data-state=stop] strong { color: #a04333; }
+#command-card[data-state=forward] strong { color: #9cc5a3; }
+#command-card[data-state=stop] strong { color: #e69c8e; }
 @media (max-width: 480px) {
   main { width: calc(100% - 28px); margin: 22px auto; }
   h1 { font-size: 18px; }

@@ -40,4 +40,7 @@ def print_page_qr(url):
 def main():
     print("Iniciando o servidor de gestos para o Fusca Azul...")
     print_page_qr(page_url())
-    uvicorn.run("gestos.server:app", host="0.0.0.0", port=PORT, reload=True)
+    uvicorn.run(
+        "gestos.server:app", host="0.0.0.0", port=PORT, reload=True,
+        access_log=False, log_level=os.environ.get("FUSCA_LOG_LEVEL", "info").lower(),
+    )

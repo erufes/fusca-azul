@@ -1,3 +1,5 @@
+import logging
+
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -9,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
 app = FastAPI()
+logger = logging.getLogger("uvicorn.error.gestos")
 
 BASE_DIR = Path(__file__).resolve().parent
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
@@ -55,7 +58,9 @@ async def index(request: Request):
 async def websocket_video(websocket: WebSocket):
     await websocket.accept()
     include_landmarks = websocket.query_params.get("landmarks") == "1"
-    print("Conexão estabelecida! Cérebro ativado (Nova API).")
+    logger.info("Cliente conectado à captura de gestos.")
+    ultimo_comando = None
+    imagem_invalida = False
     
     try:
         while True:
@@ -63,11 +68,15 @@ async def websocket_video(websocket: WebSocket):
             nparr = np.frombuffer(bytes_img, np.uint8)
             frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR) if nparr.size else None
             if frame is None:
+                if not imagem_invalida:
+                    logger.warning("Imagem inválida recebida; aguardando uma imagem válida.")
+                imagem_invalida = True
                 if include_landmarks:
                     await websocket.send_json({"error": "Imagem inválida", "command": "NENHUMA_MAO", "landmarks": []})
                 else:
                     await websocket.send_text("NENHUMA_MAO")
                 continue
+            imagem_invalida = False
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             
             # A nova API exige que a imagem seja convertida para o formato mp.Image
@@ -82,7 +91,9 @@ async def websocket_video(websocket: WebSocket):
             if resultados.hand_landmarks:
                 for hand_landmarks in resultados.hand_landmarks:
                     comando = identificar_comando(hand_landmarks)
-                    print(f"Comando detectado: {comando}")
+            if comando != ultimo_comando:
+                logger.debug("Gesto: %s", comando)
+                ultimo_comando = comando
             
             if include_landmarks:
                 landmarks = resultados.hand_landmarks[0] if resultados.hand_landmarks else []
@@ -95,4 +106,4 @@ async def websocket_video(websocket: WebSocket):
                 await websocket.send_text(comando)
             
     except WebSocketDisconnect:
-        print("Navegador desconectado.")
+        logger.info("Cliente desconectado da captura de gestos.")
