@@ -93,7 +93,8 @@ button.addEventListener('click', async () => {
   if (stream) { stopCamera(); return; }
   button.disabled = true;
   try {
-    if (!navigator.mediaDevices?.getUserMedia) throw new Error('INSECURE_CONTEXT');
+    if (location.protocol !== 'https:' && !window.isSecureContext) throw new Error('INSECURE_CONTEXT');
+    if (!navigator.mediaDevices?.getUserMedia) throw new Error('CAMERA_UNSUPPORTED');
     stream = await navigator.mediaDevices.getUserMedia({video: {width: {ideal: 640}, height: {ideal: 480}, facingMode: 'user'}, audio: false});
     video.srcObject = stream;
     await video.play();
@@ -106,7 +107,7 @@ button.addEventListener('click', async () => {
   } catch (error) {
     stopCamera();
     byId('placeholder-title').textContent = 'Não foi possível abrir a câmera';
-    const messages = {NotAllowedError: 'Permita o acesso à câmera no navegador e tente novamente.', NotFoundError: 'Nenhuma câmera encontrada. Conecte uma câmera para continuar.', NotReadableError: 'A câmera pode estar em uso por outro aplicativo. Feche-o e tente novamente.', INSECURE_CONTEXT: 'Para usar a câmera, abra a página por HTTPS ou por localhost no computador do servidor.'};
+    const messages = {NotAllowedError: 'Permita o acesso à câmera no navegador e tente novamente.', NotFoundError: 'Nenhuma câmera encontrada. Conecte uma câmera para continuar.', NotReadableError: 'A câmera pode estar em uso por outro aplicativo. Feche-o e tente novamente.', INSECURE_CONTEXT: 'O navegador bloqueia a câmera em HTTP pela rede, no celular ou no computador. Use HTTPS ou abra localhost no computador do servidor.', CAMERA_UNSUPPORTED: 'Este navegador não oferece acesso à câmera. Tente outro navegador.'};
     const message = messages[error.name] || messages[error.message] || 'Verifique a câmera e tente novamente.';
     byId('placeholder-text').textContent = message;
   } finally { button.disabled = false; }
