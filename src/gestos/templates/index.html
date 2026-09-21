@@ -1,80 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Fusca Azul - Controle</title>
-	<style>
-		body {
-			text-align: center;
-			font-family: Arial, sans-serif;
-			background-color: #222;
-			color: white;
-		}
-
-		video {
-			border: 5px solid #00aaff;
-			border-radius: 10px;
-			max-width: 100%;
-			transform: scaleX(-1);
-		}
-
-		canvas {
-			display: none;
-		}
-
-		#comando_texto {
-			font-size: 2em;
-			color: #00ff00;
-		}
-	</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f4f0">
+  <title>Fusca Azul</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/controle.css') }}">
+  <script src="{{ url_for('static', path='/controle.js') }}" defer></script>
 </head>
-
 <body>
-	<h1>Visão do Piloto</h1>
-	<video id="webcam" autoplay playsinline width="640" height="480"></video>
+  <main>
+    <header>
+      <h1>Fusca Azul</h1>
+      <span id="connection" role="status">Conectando…</span>
+    </header>
 
-	<!-- Mostra o que o servidor decidiu -->
-	<h2 id="comando_texto">AGUARDANDO...</h2>
+    <div class="viewport">
+      <video id="webcam" autoplay playsinline muted aria-label="Câmera"></video>
+      <canvas id="overlay" aria-hidden="true"></canvas>
+      <div id="placeholder">
+        <p id="placeholder-title">Câmera desligada</p>
+        <p id="placeholder-text"></p>
+      </div>
+    </div>
 
-	<canvas id="canvas"></canvas>
+    <div class="controls">
+      <button id="camera-button" type="button">Ativar câmera</button>
+      <label class="toggle">
+        <input id="show-landmarks" type="checkbox" role="switch">
+        <span class="switch" aria-hidden="true"></span>
+        Pontos da mão
+      </label>
+    </div>
 
-	<script>
-		const video = document.getElementById('webcam');
-		const canvas = document.getElementById('canvas');
-		const context = canvas.getContext('2d', { willReadFrequently: true });
-		const textoComando = document.getElementById('comando_texto');
-
-		const ws = new WebSocket(`ws://${location.host}/ws/video`);
-
-		navigator.mediaDevices.getUserMedia({ video: true })
-			.then((stream) => { video.srcObject = stream; })
-			.catch((err) => { alert("Erro na câmera: " + err); });
-
-		ws.onopen = () => {
-			setInterval(() => {
-				if (video.readyState === video.HAVE_ENOUGH_DATA) {
-					canvas.width = video.videoWidth;
-					canvas.height = video.videoHeight;
-					context.drawImage(video, 0, 0, canvas.width, canvas.height);
-					canvas.toBlob((blob) => {
-						ws.send(blob);
-					}, 'image/jpeg', 0.5);
-				}
-			}, 100); // 10 fotos por segundo
-		};
-
-		// Quando o Python responder com o comando, atualiza o texto na tela
-		ws.onmessage = (event) => {
-			textoComando.innerText = event.data;
-
-			// Muda a cor pra ficar mais intuitivo
-			if (event.data === "FRENTE") textoComando.style.color = "#00ff00"; // Verde
-			else if (event.data === "PARAR") textoComando.style.color = "#ff0000"; // Vermelho
-			else textoComando.style.color = "#ffff00"; // Amarelo
-		};
-	</script>
+    <div id="command-card" data-state="idle" role="status">
+      <span>Gesto</span>
+      <strong id="command-text">—</strong>
+    </div>
+  </main>
 </body>
-
 </html>

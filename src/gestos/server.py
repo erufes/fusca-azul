@@ -5,11 +5,13 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
 app = FastAPI()
 
 BASE_DIR = Path(__file__).resolve().parent
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 # --- CONFIGURAÇÃO DA NOVA API DO MEDIAPIPE ---
@@ -52,13 +54,20 @@ async def index(request: Request):
 @app.websocket("/ws/video")
 async def websocket_video(websocket: WebSocket):
     await websocket.accept()
+    include_landmarks = websocket.query_params.get("landmarks") == "1"
     print("Conexão estabelecida! Cérebro ativado (Nova API).")
     
     try:
         while True:
             bytes_img = await websocket.receive_bytes()
             nparr = np.frombuffer(bytes_img, np.uint8)
-            frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR) if nparr.size else None
+            if frame is None:
+                if include_landmarks:
+                    await websocket.send_json({"error": "Imagem inválida", "command": "NENHUMA_MAO", "landmarks": []})
+                else:
+                    await websocket.send_text("NENHUMA_MAO")
+                continue
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             
             # A nova API exige que a imagem seja convertida para o formato mp.Image
@@ -75,7 +84,15 @@ async def websocket_video(websocket: WebSocket):
                     comando = identificar_comando(hand_landmarks)
                     print(f"Comando detectado: {comando}")
             
-            await websocket.send_text(comando)
+            if include_landmarks:
+                landmarks = resultados.hand_landmarks[0] if resultados.hand_landmarks else []
+                await websocket.send_json({
+                    "command": comando,
+                    "landmarks": [{"x": point.x, "y": point.y} for point in landmarks],
+                })
+            else:
+                # Preserve the text protocol for existing clients.
+                await websocket.send_text(comando)
             
     except WebSocketDisconnect:
         print("Navegador desconectado.")
