@@ -1,4 +1,4 @@
-'use strict';
+import { commands } from './gestures.js';
 const byId = id => document.getElementById(id);
 const video = byId('webcam');
 const overlay = byId('overlay');
@@ -8,12 +8,6 @@ const captureContext = capture.getContext('2d');
 const toggle = byId('show-landmarks');
 const button = byId('camera-button');
 const edges = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[0,17],[17,18],[18,19],[19,20]];
-const commands = {
-  FRENTE: ['forward', 'Em frente'],
-  PARAR: ['stop', 'Parar'],
-  AGUARDANDO: ['waiting', 'Aguardando'],
-  NENHUMA_MAO: ['idle', 'Nenhuma mão detectada'],
-};
 let ws, stream, pending = false, sentAt = 0, lastPoints = [], session = 0, frameSession = 0, reconnectTimer, closing = false;
 function setCommand(state, title) {
   byId('command-card').dataset.state = state;
@@ -52,15 +46,20 @@ function connect() {
   socket.onopen = () => {
     byId('connection').dataset.state = 'online';
     byId('connection').textContent = 'Conectado';
+    byId('mode-text').textContent = 'Gestos';
   };
   socket.onmessage = event => {
     pending = false;
-    if (!stream || frameSession !== session) return;
     try {
       const result = JSON.parse(event.data);
+      if (result.mode === 'AUTO' || result.mode === 'GESTOS') {
+        byId('mode-text').textContent = result.mode === 'AUTO' ? 'Automático' : 'Gestos';
+      }
+      if (!stream || frameSession !== session) return;
       if (result.error || !commands[result.command]) throw new Error('Resposta inválida');
       lastPoints = result.landmarks || [];
       setCommand(...commands[result.command]);
+      if (result.mode_changed) setCommand('waiting', 'Modo alterado');
       drawPoints();
     } catch {
       clearDetection();
@@ -71,6 +70,7 @@ function connect() {
     pending = false;
     byId('connection').dataset.state = 'offline';
     byId('connection').textContent = 'Reconectando…';
+    byId('mode-text').textContent = '—';
     clearDetection();
     if (stream) setCommand('waiting', 'Sem conexão');
     if (!closing) reconnectTimer = setTimeout(connect, 2000);

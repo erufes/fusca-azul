@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#181918">
   <title>Fusca Azul</title>
   <link rel="stylesheet" href="{{ url_for('static', path='/controle.css') }}">
-  <script src="{{ url_for('static', path='/controle.js') }}" defer></script>
+  <script type="module" src="{{ url_for('static', path='/controle.js') }}" defer></script>
 </head>
 <body>
   <main>
@@ -32,6 +32,8 @@
         Pontos da mão
       </label>
     </div>
+
+    <div class="mode-row" role="status"><span>Modo</span><strong id="mode-text">—</strong></div>
 
     <div id="command-card" data-state="idle" role="status">
       <span>Gesto</span>

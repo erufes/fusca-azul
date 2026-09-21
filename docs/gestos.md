@@ -8,17 +8,29 @@ A página usa a câmera do navegador e envia imagens ao servidor. O botão
 **Pausar câmera** interrompe a captura; o toggle **Pontos da mão** mostra ou
 oculta os 21 pontos e suas conexões. A visualização é espelhada.
 
-O reconhecimento atual considera uma mão e conta os dedos levantados, sem o
-polegar:
+O reconhecimento considera uma mão, com a palma voltada para a câmera:
 
-| Dedos levantados | Resultado |
+| Gesto | Resultado |
 | --- | --- |
-| Três ou quatro | Em frente |
-| Nenhum | Parar |
-| Um ou dois | Aguardando |
+| Mão aberta (cinco dedos) | Em frente |
+| Apenas mindinho levantado | Direita |
+| Apenas polegar levantado | Esquerda |
+| Indicador e médio levantados (V), demais fechados | Para trás |
+| Punho fechado | Parado |
+| Indicador e mindinho levantados (rock), demais fechados | Troca de modo |
+| Outra combinação | Aguardando |
 | Sem mão na imagem | Nenhuma mão detectada |
 
-Esses resultados são exibidos na página; ainda não acionam os motores.
+Para trocar entre **Gestos** e **Automático**, mantenha o rock por 1 segundo.
+Ele alterna uma vez; desfaça o gesto por pelo menos meio segundo antes de
+repetir. Uma pausa na captura interrompe a contagem. O modo pertence à conexão
+do navegador e volta a Gestos ao reconectar. A página mostra o modo selecionado.
+
+Os gestos e a seleção de modo ainda não acionam motores nem executam navegação
+autônoma: a integração com o firmware está pendente.
+
+O reconhecimento fica em `src/gestos/recognition.py`, o controle de modo em
+`src/gestos/modes.py` e os textos dos gestos em `src/gestos/static/gestures.js`.
 
 ## Acesso pela rede
 

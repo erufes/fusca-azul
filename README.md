@@ -9,7 +9,8 @@ funcionalidades conforme são implementadas.
 - Servidor de reconhecimento de gestos com FastAPI e MediaPipe.
 - Câmera pelo navegador, com página em modo escuro e controle para ativar ou pausar a captura.
 - Desenho opcional dos 21 pontos da mão e suas conexões.
-- Exibição dos gestos: em frente, parar e aguardando.
+- Reconhecimento de frente, direita, esquerda, ré e parado.
+- Seleção entre modo Gestos e Automático com o símbolo do rock, sem repetir a troca enquanto o gesto é mantido.
 - QR code no terminal para abrir a página pela rede.
 - Logs sem mensagens por imagem, com depuração de mudanças de gesto opcional.
 - Firmware com PlatformIO para NodeMCU/ESP8266 e leitura de distância pelo VL53L0X, exibida no monitor serial.

@@ -129,7 +129,7 @@ input:focus-visible + .switch, button:focus-visible {
   outline: 2px solid #c5cbbf;
   outline-offset: 4px;
 }
-#command-card {
+#command-card, .mode-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -138,8 +138,8 @@ input:focus-visible + .switch, button:focus-visible {
   border-top: 1px solid #363833;
   font-size: 14px;
 }
-#command-card > span { color: #ababa3; }
-#command-text { font-weight: 500; }
+#command-card > span, .mode-row > span { color: #ababa3; }
+#command-text, #mode-text { font-weight: 500; }
 #command-card[data-state=forward] strong { color: #9cc5a3; }
 #command-card[data-state=stop] strong { color: #e69c8e; }
 @media (max-width: 480px) {

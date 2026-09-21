@@ -10,6 +10,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
+from .recognition import identificar_comando
+from .modes import ModeControl
+
 app = FastAPI()
 logger = logging.getLogger("uvicorn.error.gestos")
 
@@ -17,8 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
-# --- CONFIGURAÇÃO DA NOVA API DO MEDIAPIPE ---
-# Aponta para o arquivo .task que você acabou de baixar
 model_path = str(BASE_DIR / "model/hand_landmarker.task")
 
 base_options = python.BaseOptions(model_asset_path=model_path)
@@ -29,26 +30,6 @@ options = vision.HandLandmarkerOptions(
 )
 # Inicializa o detector
 detector = vision.HandLandmarker.create_from_options(options)
-
-def identificar_comando(hand_landmarks):
-    """
-    Compara a posição Y das pontas com as bases.
-    Na nova API, hand_landmarks já é uma lista direta de pontos.
-    """
-    pontas = [8, 12, 16, 20]
-    bases = [6, 10, 14, 18]
-    dedos_levantados = 0
-    
-    for ponta, base in zip(pontas, bases):
-        if hand_landmarks[ponta].y < hand_landmarks[base].y:
-            dedos_levantados += 1
-            
-    if dedos_levantados >= 3:
-        return "FRENTE" 
-    elif dedos_levantados == 0:
-        return "PARAR"  
-    else:
-        return "AGUARDANDO" 
 
 @app.get("/")
 async def index(request: Request):
@@ -61,6 +42,7 @@ async def websocket_video(websocket: WebSocket):
     logger.info("Cliente conectado à captura de gestos.")
     ultimo_comando = None
     imagem_invalida = False
+    mode_control = ModeControl()
     
     try:
         while True:
@@ -68,18 +50,18 @@ async def websocket_video(websocket: WebSocket):
             nparr = np.frombuffer(bytes_img, np.uint8)
             frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR) if nparr.size else None
             if frame is None:
+                mode_control.update("NENHUMA_MAO")
                 if not imagem_invalida:
                     logger.warning("Imagem inválida recebida; aguardando uma imagem válida.")
                 imagem_invalida = True
                 if include_landmarks:
-                    await websocket.send_json({"error": "Imagem inválida", "command": "NENHUMA_MAO", "landmarks": []})
+                    await websocket.send_json({"error": "Imagem inválida", "command": "NENHUMA_MAO", "landmarks": [], "mode": mode_control.mode, "mode_changed": False})
                 else:
                     await websocket.send_text("NENHUMA_MAO")
                 continue
             imagem_invalida = False
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             
-            # A nova API exige que a imagem seja convertida para o formato mp.Image
             mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame_rgb)
             
             # Detecta as mãos
@@ -87,10 +69,11 @@ async def websocket_video(websocket: WebSocket):
             
             comando = "NENHUMA_MAO"
             
-            # O formato de resposta mudou para resultados.hand_landmarks
             if resultados.hand_landmarks:
-                for hand_landmarks in resultados.hand_landmarks:
-                    comando = identificar_comando(hand_landmarks)
+                comando = identificar_comando(resultados.hand_landmarks[0])
+            mode_changed = mode_control.update(comando)
+            if mode_changed:
+                logger.info("Modo selecionado: %s", mode_control.mode)
             if comando != ultimo_comando:
                 logger.debug("Gesto: %s", comando)
                 ultimo_comando = comando
@@ -99,11 +82,16 @@ async def websocket_video(websocket: WebSocket):
                 landmarks = resultados.hand_landmarks[0] if resultados.hand_landmarks else []
                 await websocket.send_json({
                     "command": comando,
+                    "mode": mode_control.mode,
+                    "mode_changed": mode_changed,
                     "landmarks": [{"x": point.x, "y": point.y} for point in landmarks],
                 })
             else:
                 # Preserve the text protocol for existing clients.
-                await websocket.send_text(comando)
+                if mode_changed:
+                    await websocket.send_text("MODO_" + mode_control.mode)
+                else:
+                    await websocket.send_text("AGUARDANDO" if comando == "TROCAR_MODO" else comando)
             
     except WebSocketDisconnect:
         logger.info("Cliente desconectado da captura de gestos.")
