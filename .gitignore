@@ -16,6 +16,7 @@ env/
 htmlcov/
 
 # Build / packaging
+.pio/
 build/
 dist/
 *.egg-info/
