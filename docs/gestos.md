@@ -7,8 +7,12 @@ padrão automaticamente. A captura, a preparação do modelo e o reconhecimento
 rodam fora da thread da interface para manter a janela responsiva.
 
 O vídeo é espelhado. O botão **Pausar câmera** libera a webcam; **Ativar câmera**
-inicia uma nova sessão em modo Gestos. Para escolher outra câmera, pause,
-altere o número e ative novamente. O controle **Pontos da mão** mostra ou oculta
+inicia uma nova sessão em modo Gestos. Para escolher outra câmera, abra **Configurações** pela engrenagem no canto
+superior direito. Selecione o nome da webcam e clique em **Aplicar**; a captura
+ativa é reiniciada com a nova câmera e o modo volta para Gestos. Se a captura
+estiver pausada, a seleção será usada ao ativá-la. **Cancelar** mantém a câmera
+anterior. Use **Atualizar lista** após conectar uma webcam. A busca ocorre em
+segundo plano, sem travar a janela. Sem câmeras, a ativação fica desabilitada. O controle **Pontos da mão** mostra ou oculta
 a sobreposição dos 21 pontos, sem interromper o reconhecimento.
 
 Falhas de permissão, abertura ou desconexão aparecem na janela. Corrija a causa
@@ -18,6 +22,14 @@ pode ser necessário aguardar a operação de rede terminar ou atingir seu timeo
 
 O aplicativo não abre portas de rede nem transmite imagens. A única conexão
 externa feita pelo aplicativo é o download inicial do modelo, quando necessário.
+
+## Tutorial no aplicativo
+
+Clique no **?** ao lado da engrenagem ou pressione **F1**. O tutorial traz
+ilustrações dos gestos, instruções de uso, troca de modo e uma explicação do
+funcionamento do robô e das integrações ainda pendentes. As abas **Gestos e
+controles** e **Como funciona o robô** têm rolagem. O tutorial pode ficar aberto
+enquanto você pratica; abrir ou fechar o guia não interrompe a captura.
 
 ## Gestos e modos
 

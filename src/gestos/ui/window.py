@@ -2,29 +2,30 @@
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import (
 	QCheckBox, QFrame, QHBoxLayout, QLabel, QMainWindow, QPushButton,
-	QSpinBox, QVBoxLayout, QWidget,
+	QVBoxLayout, QWidget,
 )
 
 from ..camera import CameraWorker
 from .video import VideoView
+from .settings import SettingsDialog
+from ..devices import list_cameras
 
-COMMANDS = {
-	"FRENTE": ("↑", "Em frente"),
-	"RE": ("↓", "Para trás"),
-	"DIREITA": ("→", "Direita"),
-	"ESQUERDA": ("←", "Esquerda"),
-	"PARAR": ("■", "Parado"),
-	"TROCAR_MODO": ("↔", "Troca de modo"),
-	"AGUARDANDO": ("…", "Aguardando"),
-	"NENHUMA_MAO": ("—", "Nenhuma mão"),
-}
+from .gestures import COMMANDS
+from .tutorial import TutorialDialog
 
 
 class MainWindow(QMainWindow):
-	def __init__(self, *, worker_factory=CameraWorker, auto_start=True):
+	def __init__(self, *, worker_factory=CameraWorker, auto_start=True, camera_provider=list_cameras):
 		super().__init__()
 		self.worker_factory = worker_factory
 		self.worker = None
+		self.current_device = None
+		self.restart_camera = False
+		self.auto_start = auto_start
+		self.tutorial = TutorialDialog(self)
+		self.settings = SettingsDialog(self, camera_provider)
+		self.settings.devices_ready.connect(self.devices_ready)
+		self.settings.accepted.connect(self.apply_camera)
 		self.closing = False
 		self.stopping = False
 		self.error = None
@@ -38,7 +39,25 @@ class MainWindow(QMainWindow):
 		layout.setSpacing(18)
 		title = QLabel("Fusca Azul")
 		title.setObjectName("title")
-		layout.addWidget(title)
+		header = QHBoxLayout()
+		header.addWidget(title)
+		header.addStretch()
+		self.help_button = QPushButton("?")
+		self.help_button.setObjectName("helpButton")
+		self.help_button.setFixedSize(44, 44)
+		self.help_button.setAccessibleName("Tutorial")
+		self.help_button.setToolTip("Tutorial de gestos e do robô (F1)")
+		self.help_button.setShortcut("F1")
+		self.help_button.clicked.connect(self.show_tutorial)
+		header.addWidget(self.help_button)
+		self.settings_button = QPushButton("⚙")
+		self.settings_button.setObjectName("settingsButton")
+		self.settings_button.setFixedSize(44, 44)
+		self.settings_button.setAccessibleName("Configurações")
+		self.settings_button.setToolTip("Configurações da câmera")
+		self.settings_button.clicked.connect(self.settings.open)
+		header.addWidget(self.settings_button)
+		layout.addLayout(header)
 		self.status = QLabel("Pronto para iniciar")
 		self.status.setObjectName("muted")
 		self.status.setWordWrap(True)
@@ -73,14 +92,6 @@ class MainWindow(QMainWindow):
 		self.button = QPushButton("Ativar câmera")
 		self.button.clicked.connect(self.toggle_camera)
 		controls.addWidget(self.button)
-		camera_label = QLabel("Câmera:")
-		controls.addWidget(camera_label)
-		self.camera = QSpinBox()
-		self.camera.setRange(0, 20)
-		self.camera.setAccessibleName("Número da câmera")
-		self.camera.setToolTip("0 é a câmera padrão. Pause e experimente 1 ou 2 para outra webcam.")
-		camera_label.setBuddy(self.camera)
-		controls.addWidget(self.camera)
 		controls.addStretch()
 		self.landmarks = QCheckBox("Pontos da mão")
 		self.landmarks.setChecked(True)
@@ -98,8 +109,41 @@ class MainWindow(QMainWindow):
 		self.timer = QTimer(self)
 		self.timer.setInterval(33)
 		self.timer.timeout.connect(self.refresh_frame)
-		if auto_start:
-			QTimer.singleShot(0, self.start_camera)
+		self.button.setEnabled(False)
+		self.status.setText("Buscando câmeras…")
+		self.settings.scan()
+
+	def show_tutorial(self):
+		self.tutorial.show()
+		self.tutorial.raise_()
+		self.tutorial.activateWindow()
+
+	def devices_ready(self):
+		if self.closing:
+			self.close()
+			return
+		device = self.settings.applied_device
+		if device is None:
+			device = self.settings.camera.currentData()
+			self.settings.applied_device = device
+		if self.worker is None:
+			self.button.setEnabled(device is not None)
+			self.status.setText("Pronto para iniciar" if device else self.settings.message.text())
+			if device is None:
+				self.video.clear("Nenhuma câmera encontrada. Abra as configurações para atualizar a lista.")
+		if self.auto_start:
+			self.auto_start = False
+			if device is not None:
+				self.start_camera()
+
+	def apply_camera(self):
+		device = self.settings.applied_device
+		if self.worker is None:
+			self.button.setEnabled(device is not None)
+			self.status.setText(f"Câmera selecionada: {device.name}")
+		elif device != self.current_device:
+			self.restart_camera = True
+			self.stop_camera()
 
 	def toggle_camera(self):
 		if self.worker is None:
@@ -108,7 +152,7 @@ class MainWindow(QMainWindow):
 			self.stop_camera()
 
 	def start_camera(self):
-		if self.worker is not None or self.closing:
+		if self.worker is not None or self.closing or self.settings.applied_device is None:
 			return
 		self.error = None
 		self.stopping = False
@@ -116,9 +160,9 @@ class MainWindow(QMainWindow):
 		self.gesture.setText("Aguardando")
 		self.symbol.setText("—")
 		self.mode.setText("Modo: Gestos")
-		self.camera.setEnabled(False)
 		self.button.setText("Pausar câmera")
-		self.worker = self.worker_factory(self.camera.value(), self)
+		self.current_device = self.settings.applied_device
+		self.worker = self.worker_factory(self.current_device, self)
 		self.worker.status.connect(self.show_status)
 		self.worker.failed.connect(self.show_error)
 		self.worker.finished.connect(self.capture_finished)
@@ -164,9 +208,8 @@ class MainWindow(QMainWindow):
 		self.worker.deleteLater()
 		self.worker = None
 		self.stopping = False
-		self.button.setEnabled(True)
+		self.button.setEnabled(self.settings.applied_device is not None)
 		self.button.setText("Tentar novamente" if self.error else "Ativar câmera")
-		self.camera.setEnabled(True)
 		self.status.setText(self.error or "Câmera pausada")
 		self.video.clear("Não foi possível usar a câmera" if self.error else "Câmera pausada")
 		self.gesture.setText("Aguardando")
@@ -174,10 +217,14 @@ class MainWindow(QMainWindow):
 		self.mode.setText("Modo: Gestos")
 		if self.closing:
 			self.close()
+		elif self.restart_camera:
+			self.restart_camera = False
+			self.start_camera()
 
 	def closeEvent(self, event):
-		if self.worker is not None:
-			self.closing = True
+		self.closing = True
+		self.restart_camera = False
+		if self.worker is not None or self.settings.scanner is not None:
 			self.stop_camera()
 			event.ignore()
 		else:

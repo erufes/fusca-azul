@@ -19,8 +19,10 @@ execuções podem funcionar sem internet, com as dependências e o modelo instal
 Permita o acesso à câmera nas configurações de privacidade do sistema, se necessário.
 
 A interface mostra a câmera espelhada, os pontos da mão, o gesto reconhecido e o
-modo selecionado. Para usar outra webcam, pause a captura, altere o número da
-câmera (0 é a padrão; tente 1 ou 2 para outras) e ative novamente.
+modo selecionado. Para usar outra webcam, abra a engrenagem no canto superior direito,
+selecione a câmera pelo nome e clique em **Aplicar**. Se a captura estiver ativa,
+o aplicativo troca a câmera automaticamente. Use **Atualizar lista** depois
+de conectar ou desconectar uma webcam.
 
 Python, Qt e MediaPipe têm versões para Linux, Windows e macOS, mas a combinação
 de versões e arquitetura precisa ser compatível. No Linux, o Qt pode exigir
@@ -33,6 +35,7 @@ a navegação autônoma da versão anterior não foram integrados.
 
 - `src/gestos/application.py`: inicialização do aplicativo e logs.
 - `src/gestos/ui/`: janela, visualização do vídeo e tema.
+- `src/gestos/devices.py`: descoberta das câmeras pelo nome.
 - `src/gestos/camera.py`: captura e processamento em uma thread separada.
 - `src/gestos/detection.py`: integração com MediaPipe e sessão de reconhecimento.
 - `src/gestos/recognition.py`: geometria e classificação dos gestos.

@@ -7,6 +7,7 @@ from PySide6.QtCore import QThread, Signal
 from PySide6.QtGui import QImage
 
 from .detection import GestureDetector
+from .devices import CameraDevice
 from .model import ensure_model, model_path
 
 logger = logging.getLogger("gestos")
@@ -38,11 +39,14 @@ class CameraWorker(QThread):
 			if self.isInterruptionRequested():
 				return
 			self.status.emit("Abrindo câmera…")
-			capture = cv2.VideoCapture(self.camera_index)
+			if isinstance(self.camera_index, CameraDevice):
+				capture = cv2.VideoCapture(self.camera_index.index, self.camera_index.backend)
+			else:
+				capture = cv2.VideoCapture(self.camera_index)
 			if not capture.isOpened():
 				raise RuntimeError(
 					"Não foi possível abrir a câmera. Confira a permissão do sistema, "
-					"feche outros aplicativos ou escolha outro número de câmera."
+					"feche outros aplicativos ou escolha outra câmera nas configurações."
 				)
 			capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 			capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)

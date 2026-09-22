@@ -14,7 +14,19 @@ from PySide6.QtWidgets import QApplication
 
 from gestos.camera import CameraWorker
 from gestos.detection import Detection
+from gestos.devices import CameraDevice
 from gestos.ui.window import MainWindow
+
+
+CAMERAS = [CameraDevice(0, 200, "Integrada", "/dev/video0"), CameraDevice(2, 200, "USB", "/dev/video2")]
+
+
+def wait_for_devices(window):
+	for _ in range(100):
+		QTest.qWait(10)
+		if window.settings.scanner is None:
+			return
+	raise AssertionError("Camera discovery did not finish")
 
 
 class FakeWorker(QObject):
@@ -48,7 +60,8 @@ class WindowTests(unittest.TestCase):
 		cls.app = QApplication.instance() or QApplication([])
 
 	def setUp(self):
-		self.window = MainWindow(worker_factory=FakeWorker, auto_start=False)
+		self.window = MainWindow(worker_factory=FakeWorker, auto_start=False, camera_provider=lambda: CAMERAS)
+		wait_for_devices(self.window)
 
 	def tearDown(self):
 		if self.window.worker is not None:
@@ -56,19 +69,85 @@ class WindowTests(unittest.TestCase):
 		self.window.close()
 
 	def test_pause_retry_and_camera_selection(self):
-		self.window.camera.setValue(2)
+		self.window.settings.camera.setCurrentIndex(1)
+		self.window.settings.accept()
 		self.window.start_camera()
 		worker = self.window.worker
-		self.assertEqual(worker.index, 2)
-		self.assertFalse(self.window.camera.isEnabled())
+		self.assertEqual(worker.index, CAMERAS[1])
 		self.window.stop_camera()
 		self.assertTrue(worker.interrupted)
 		self.assertFalse(self.window.button.isEnabled())
 		worker.finished.emit()
 		self.assertIsNone(self.window.worker)
-		self.assertTrue(self.window.camera.isEnabled())
 		self.window.start_camera()
 		self.assertIsNot(self.window.worker, worker)
+
+	def test_apply_switches_only_after_old_camera_stops(self):
+		self.window.start_camera()
+		old = self.window.worker
+		self.window.settings.camera.setCurrentIndex(1)
+		self.window.settings.accept()
+		self.assertTrue(old.interrupted)
+		self.assertIs(self.window.worker, old)
+		old.finished.emit()
+		self.assertIsNot(self.window.worker, old)
+		self.assertEqual(self.window.worker.index, CAMERAS[1])
+
+	def test_cancel_does_not_change_camera(self):
+		self.window.start_camera()
+		old = self.window.worker
+		self.window.settings.open()
+		self.window.settings.camera.setCurrentIndex(1)
+		self.window.settings.reject()
+		self.assertIs(self.window.worker, old)
+		self.assertFalse(old.interrupted)
+		self.window.settings.open()
+		self.assertEqual(self.window.settings.camera.currentData(), CAMERAS[0])
+		self.window.settings.reject()
+
+	def test_refresh_preserves_identity_with_new_index(self):
+		self.window.settings.camera.setCurrentIndex(1)
+		self.window.settings.accept()
+		updated = CameraDevice(5, 200, "USB", "/dev/video2")
+		self.window.settings.provider = lambda: [updated, CAMERAS[0]]
+		self.window.settings.scan()
+		wait_for_devices(self.window)
+		self.assertEqual(self.window.settings.camera.currentData(), updated)
+		self.window.start_camera()
+		self.assertEqual(self.window.worker.index, updated)
+
+	def test_no_camera_and_refresh_after_connection(self):
+		self.window.settings.provider = lambda: []
+		self.window.settings.scan()
+		wait_for_devices(self.window)
+		self.assertFalse(self.window.button.isEnabled())
+		self.assertFalse(self.window.settings.apply.isEnabled())
+		self.window.start_camera()
+		self.assertIsNone(self.window.worker)
+		self.window.settings.provider = lambda: CAMERAS
+		self.window.settings.scan()
+		wait_for_devices(self.window)
+		self.assertTrue(self.window.button.isEnabled())
+
+	def test_discovery_error_recovers_without_crashing(self):
+		self.window.settings.provider = Mock(side_effect=OSError("Permission denied"))
+		self.window.settings.scan()
+		wait_for_devices(self.window)
+		self.assertIn("permissões", self.window.settings.message.text())
+		self.assertTrue(self.window.settings.refresh.isEnabled())
+		self.assertFalse(self.window.settings.apply.isEnabled())
+
+	def test_close_during_discovery_waits_safely(self):
+		from threading import Event
+		release = Event()
+		self.window.settings.provider = lambda: (release.wait(2) and CAMERAS) or []
+		self.window.show()
+		self.window.settings.scan()
+		self.window.close()
+		self.assertTrue(self.window.isVisible())
+		release.set()
+		wait_for_devices(self.window)
+		self.assertFalse(self.window.isVisible())
 
 	def test_frame_updates_and_overlay_can_be_disabled(self):
 		self.window.start_camera()
@@ -107,7 +186,8 @@ class WindowTests(unittest.TestCase):
 		capture.read.return_value = (True, np.zeros((32, 32, 3), dtype=np.uint8))
 		detector = Mock()
 		detector.process.return_value = Detection("PARAR", "GESTOS", ())
-		window = MainWindow(auto_start=False)
+		window = MainWindow(auto_start=False, camera_provider=lambda: CAMERAS)
+		wait_for_devices(window)
 		with (
 			patch("gestos.camera.ensure_model", return_value=Path("model.task")),
 			patch("gestos.camera.GestureDetector", return_value=detector),
