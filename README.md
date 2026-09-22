@@ -1,56 +1,66 @@
 # Fusca Azul
 
-Esta é a nova versão do robô Fusca Azul, da ERUS/UFES. O software está sendo
-reescrito e o hardware está em atualização. A documentação acompanha as
-funcionalidades conforme são implementadas.
+Nova versão do robô Fusca Azul, da ERUS/UFES. O software e o hardware estão
+em atualização. O reconhecimento de gestos agora usa um aplicativo desktop
+em Qt: não há servidor web, navegador ou configuração de HTTPS.
 
-## Adições desta versão
+## Executar
 
-- Servidor de reconhecimento de gestos com FastAPI e MediaPipe.
-- Câmera pelo navegador, com página em modo escuro e controle para ativar ou pausar a captura.
-- Desenho opcional dos 21 pontos da mão e suas conexões.
-- Reconhecimento de frente, direita, esquerda, ré e parado.
-- Seleção entre modo Gestos e Automático com o símbolo do rock, sem repetir a troca enquanto o gesto é mantido.
-- QR code no terminal para abrir a página pela rede.
-- Logs sem mensagens por imagem, com depuração de mudanças de gesto opcional.
-- Firmware com PlatformIO para NodeMCU/ESP8266 e leitura de distância pelo VL53L0X, exibida no monitor serial.
-
-O reconhecimento ainda não envia comandos ao robô. O controle dos motores e
-a navegação autônoma da versão antiga ainda não foram integrados à nova versão.
-
-## Organização
-
-- [src/gestos/](src/gestos/): servidor e página web.
-- [src/firmware/](src/firmware/): firmware atual.
-- [docs/gestos.md](docs/gestos.md): uso do servidor, câmera e logs.
-- [tests/](tests/): testes do servidor.
-
-## Servidor de gestos
-
-Requer Python 3.14 ou superior e uv. Na raiz do projeto:
-
-```bash
-uv sync
-mkdir -p src/gestos/model
-```
-
-Se ainda não tiver o modelo, baixe-o uma vez:
-
-```bash
-curl --fail --location \
-  https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task \
-  --output src/gestos/model/hand_landmarker.task
-```
-
-Depois, inicie o servidor:
+Requer Python 3.14 ou superior, [uv](https://docs.astral.sh/uv/) e uma webcam.
+Na raiz do projeto:
 
 ```bash
 uv run gestos
 ```
 
-Abra http://localhost:8080/ e ative a câmera. O terminal também mostra um QR code
-com o endereço de acesso pela rede. Ao acessar pelo IP da rede, o navegador exige HTTPS para
-liberar a câmera. A página avisa ao tentar ativá-la por uma conexão insegura.
+O uv instala as dependências e abre a janela. Na primeira execução, o aplicativo
+baixa o modelo do MediaPipe, caso ele ainda não esteja disponível. As próximas
+execuções podem funcionar sem internet, com as dependências e o modelo instalados.
+Permita o acesso à câmera nas configurações de privacidade do sistema, se necessário.
+
+A interface mostra a câmera espelhada, os pontos da mão, o gesto reconhecido e o
+modo selecionado. Para usar outra webcam, pause a captura, altere o número da
+câmera (0 é a padrão; tente 1 ou 2 para outras) e ative novamente.
+
+Python, Qt e MediaPipe têm versões para Linux, Windows e macOS, mas a combinação
+de versões e arquitetura precisa ser compatível. No Linux, o Qt pode exigir
+bibliotecas gráficas do sistema. Não há empacotamento nem Docker.
+
+**O reconhecimento ainda não envia comandos ao robô.** O controle dos motores e
+a navegação autônoma da versão anterior não foram integrados.
+
+## Organização
+
+- `src/gestos/application.py`: inicialização do aplicativo e logs.
+- `src/gestos/ui/`: janela, visualização do vídeo e tema.
+- `src/gestos/camera.py`: captura e processamento em uma thread separada.
+- `src/gestos/detection.py`: integração com MediaPipe e sessão de reconhecimento.
+- `src/gestos/recognition.py`: geometria e classificação dos gestos.
+- `src/gestos/modes.py`: regras de troca de modo.
+- `src/gestos/model.py`: localização e download do modelo.
+- `src/firmware/`: firmware PlatformIO para NodeMCU/ESP8266 e sensor VL53L0X.
+- [docs/gestos.md](docs/gestos.md): uso, gestos, modelo e logs.
+- `tests/`: testes de reconhecimento, captura e interface.
+
+A indentação usa tabs, conforme o `.editorconfig`.
+
+Ao atualizar um ambiente da versão web, se o OpenCV apresentar erro ao abrir a
+câmera, reinstale a única variante mantida pelo aplicativo. A versão anterior
+instalava duas variantes que compartilhavam arquivos:
+
+```bash
+uv sync --reinstall-package opencv-python-headless
+```
+
+## Testes
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
+
+Os testes da janela usam a plataforma Qt `offscreen` e câmeras simuladas;
+não precisam de webcam nem do download do modelo. O uso real da câmera deve
+ser verificado no computador que executa o aplicativo.
 
 ## Versão anterior
 

@@ -1,14 +1,27 @@
-# Servidor de gestos
+# Aplicativo de gestos
 
-Para instalar e iniciar, siga o [README](../README.md#servidor-de-gestos).
+## Inicialização
 
-## Página e reconhecimento
+Execute `uv run gestos` na raiz do projeto. A janela abre e inicia a câmera
+padrão automaticamente. A captura, a preparação do modelo e o reconhecimento
+rodam fora da thread da interface para manter a janela responsiva.
 
-A página usa a câmera do navegador e envia imagens ao servidor. O botão
-**Pausar câmera** interrompe a captura; o toggle **Pontos da mão** mostra ou
-oculta os 21 pontos e suas conexões. A visualização é espelhada.
+O vídeo é espelhado. O botão **Pausar câmera** libera a webcam; **Ativar câmera**
+inicia uma nova sessão em modo Gestos. Para escolher outra câmera, pause,
+altere o número e ative novamente. O controle **Pontos da mão** mostra ou oculta
+a sobreposição dos 21 pontos, sem interromper o reconhecimento.
 
-O reconhecimento considera uma mão, com a palma voltada para a câmera:
+Falhas de permissão, abertura ou desconexão aparecem na janela. Corrija a causa
+e use **Tentar novamente**. Ao fechar, o aplicativo solicita o encerramento e
+aguarda a liberação da câmera e do detector. Se houver um download em andamento,
+pode ser necessário aguardar a operação de rede terminar ou atingir seu timeout.
+
+O aplicativo não abre portas de rede nem transmite imagens. A única conexão
+externa feita pelo aplicativo é o download inicial do modelo, quando necessário.
+
+## Gestos e modos
+
+Use uma mão com a palma voltada para a câmera:
 
 | Gesto | Resultado |
 | --- | --- |
@@ -19,46 +32,53 @@ O reconhecimento considera uma mão, com a palma voltada para a câmera:
 | Punho fechado | Parado |
 | Indicador e mindinho levantados (rock), demais fechados | Troca de modo |
 | Outra combinação | Aguardando |
-| Sem mão na imagem | Nenhuma mão detectada |
+| Sem mão na imagem | Nenhuma mão |
 
-Para trocar entre **Gestos** e **Automático**, mantenha o rock por 1 segundo.
-Ele alterna uma vez; desfaça o gesto por pelo menos meio segundo antes de
-repetir. Uma pausa na captura interrompe a contagem. O modo pertence à conexão
-do navegador e volta a Gestos ao reconectar. A página mostra o modo selecionado.
+Mantenha o rock por 1 segundo para alternar entre **Gestos** e **Automático**.
+Desfaça o gesto por pelo menos meio segundo antes de trocar novamente. Manter
+o rock não provoca trocas repetidas. Uma interrupção na captura reinicia a
+contagem do gesto; pausar e reabrir a câmera começa uma sessão em modo Gestos.
 
 Os gestos e a seleção de modo ainda não acionam motores nem executam navegação
 autônoma: a integração com o firmware está pendente.
 
-O reconhecimento fica em `src/gestos/recognition.py`, o controle de modo em
-`src/gestos/modes.py` e os textos dos gestos em `src/gestos/static/gestures.js`.
+## Modelo
 
-## Acesso pela rede
+O aplicativo usa, nesta ordem:
 
-Ao executar `uv run gestos`, o terminal mostra a URL e um QR code para um
-celular na mesma rede, usando a porta 8080. Sem endereço de rede disponível,
-o link é local.
+1. O arquivo indicado pela variável de ambiente `FUSCA_MODEL`, se definida.
+2. `src/gestos/model/hand_landmarker.task`, caso exista.
+3. Um arquivo no cache do usuário, baixado automaticamente na primeira execução.
 
-Para escolher outro endereço, por exemplo ao usar VPN ou HTTPS:
+O cache fica em `fusca-azul/hand_landmarker.task` dentro de:
 
-```bash
-FUSCA_URL=https://seu-endereco/ uv run gestos
-```
+- Linux: `$XDG_CACHE_HOME` ou `~/.cache`.
+- Windows: `%LOCALAPPDATA%`.
+- macOS: `~/Library/Caches`.
 
-Essa opção muda apenas a URL anunciada e o QR code; não configura HTTPS.
-O navegador exige HTTPS para liberar a câmera ao acessar pelo IP da rede,
-tanto no celular quanto no computador. `http://localhost:8080/` é uma exceção
-no próprio computador do servidor. A página mostra o aviso apenas ao clicar em
-**Ativar câmera** por uma conexão insegura.
+Para preparar uma máquina sem internet, copie o
+[modelo oficial](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task)
+para o caminho local acima ou configure `FUSCA_MODEL`. As dependências Python
+também precisam estar instaladas previamente. Um download interrompido não é
+salvo como modelo completo. Se o modelo local estiver corrompido, remova esse
+arquivo para permitir novo download ou substitua-o por uma cópia válida.
 
 ## Logs
 
-Por padrão, são registrados conexões, desconexões e avisos, sem imprimir cada
-imagem ou acesso à página. Erros continuam visíveis. Para acompanhar mudanças
-de gesto:
+Por padrão, os logs mostram início e encerramento da captura, trocas de modo
+e erros. Para registrar apenas as mudanças de gesto, além dessas mensagens,
+configure `FUSCA_LOG_LEVEL=debug` no ambiente antes de executar o aplicativo.
+Por exemplo, no Linux/macOS:
 
 ```bash
 FUSCA_LOG_LEVEL=debug uv run gestos
 ```
 
-Mesmo nesse modo, gestos idênticos consecutivos não geram novas mensagens.
-Avisos internos do MediaPipe podem aparecer na inicialização.
+No PowerShell:
+
+```powershell
+$env:FUSCA_LOG_LEVEL = "debug"
+uv run gestos
+```
+
+Não há logs por imagem. Avisos internos do MediaPipe podem aparecer no terminal.
