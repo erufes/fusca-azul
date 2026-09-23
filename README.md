@@ -28,8 +28,44 @@ Python, Qt e MediaPipe têm versões para Linux, Windows e macOS, mas a combina�
 de versões e arquitetura precisa ser compatível. No Linux, o Qt pode exigir
 bibliotecas gráficas do sistema. Não há empacotamento nem Docker.
 
-**O reconhecimento ainda não envia comandos ao robô.** O controle dos motores e
-a navegação autônoma da versão anterior não foram integrados.
+**O reconhecimento ainda não envia comandos ao robô.** O firmware executa um
+ciclo de movimento independente; a navegação autônoma ainda não foi integrada.
+
+## Firmware do robô
+
+O NodeMCU/ESP8266 controla dois motores pela ponte H L298N, sem sensor.
+O ciclo repete indefinidamente: **frente por 2 s → parar por 1 s → ré por 2 s
+→ parar por 1 s**. Os motores operam em velocidade total; a parada desabilita
+os canais e deixa os motores desacelerarem livremente.
+
+| L298N | NodeMCU |
+| --- | --- |
+| ENA | D5 |
+| IN1 | D4 |
+| IN2 | D3 |
+| IN3 | D2 |
+| IN4 | D1 |
+| ENB | D0 |
+
+Remova os jumpers de ENA e ENB para conectar os sinais do NodeMCU. Ligue o
+motor esquerdo em OUT1/OUT2 e o direito em OUT3/OUT4. Use alimentação adequada
+para os motores na ponte e conecte o GND da ponte ao GND do NodeMCU.
+Desconecte o sensor por enquanto: D1 e D2 agora controlam a ponte.
+D3 e D4 precisam permanecer em nível alto durante o boot do ESP8266;
+a ligação externa não deve forçá-los a nível baixo durante a inicialização.
+
+Se uma roda girar no sentido contrário ao esperado, troque os dois fios desse
+motor nas saídas da ponte, com a alimentação desligada.
+
+A classe `Motor` abstrai cada canal da L298N, e a classe `Robot` coordena os dois
+motores. Os tempos e pinos ficam em `src/firmware/main.cpp`.
+
+Para compilar e gravar com PlatformIO:
+
+```bash
+pio run
+pio run --target upload
+```
 
 ## Organização
 
@@ -41,7 +77,7 @@ a navegação autônoma da versão anterior não foram integrados.
 - `src/gestos/recognition.py`: geometria e classificação dos gestos.
 - `src/gestos/modes.py`: regras de troca de modo.
 - `src/gestos/model.py`: localização e download do modelo.
-- `src/firmware/`: firmware PlatformIO para NodeMCU/ESP8266 e sensor VL53L0X.
+- `src/firmware/`: firmware PlatformIO para NodeMCU/ESP8266 e ponte H L298N.
 - [docs/gestos.md](docs/gestos.md): uso, gestos, modelo e logs.
 - `tests/`: testes de reconhecimento, captura e interface.
 

@@ -1,43 +1,36 @@
 #include <Arduino.h>
-#include <Wire.h>
-#include <VL53L0X.h>
 
-// CJVL53L0XV2: VIN em 3V3, GND em GND, SDA em D2 e SCL em D1.
-constexpr uint8_t SDA_PIN = D2; // GPIO4
-constexpr uint8_t SCL_PIN = D1; // GPIO5
-constexpr uint16_t SENSOR_TIMEOUT_MS = 500;
-constexpr unsigned long MEASUREMENT_INTERVAL_MS = 500;
+#include "Robot.h"
 
-VL53L0X sensor;
+namespace {
+constexpr unsigned long MOVE_DURATION_MS = 2000;
+constexpr unsigned long STOP_DURATION_MS = 1000;
+
+Motor leftMotor(D5, D4, D3); // ENA, IN1, IN2
+Motor rightMotor(D0, D2, D1); // ENB, IN3, IN4
+Robot robot(leftMotor, rightMotor);
+}
 
 void setup() {
-    Serial.begin(115200);
-    Wire.begin(SDA_PIN, SCL_PIN);
-    sensor.setTimeout(SENSOR_TIMEOUT_MS);
-    Serial.println("Fusca Azul - leitura do VL53L0X");
-
-    if (!sensor.init()) {
-        while (true) {
-            Serial.println("Falha ao iniciar VL53L0X. Verifique a ligacao e reinicie.");
-            delay(1000);
-        }
-    }
+	robot.begin();
+	Serial.begin(115200);
+	Serial.println();
+	Serial.println("[BOOT] Fusca Azul iniciado. Motores parados.");
+	Serial.print("[BOOT] Motivo do reset: ");
+	Serial.println(ESP.getResetReason());
 }
 
 void loop() {
-    const uint16_t distanceMm = sensor.readRangeSingleMillimeters();
-
-    if (sensor.timeoutOccurred()) {
-        Serial.println("Timeout na leitura do VL53L0X");
-    } else if (distanceMm >= 8190) {
-        Serial.println("Leitura invalida ou fora de alcance");
-    } else {
-        Serial.print("Distancia: ");
-        Serial.print(distanceMm);
-        Serial.print(" mm (");
-        Serial.print(distanceMm / 10.0f, 1);
-        Serial.println(" cm)");
-    }
-
-    delay(MEASUREMENT_INTERVAL_MS);
+	robot.forward();
+	Serial.println("[MOTOR] Frente por 2 s");
+	delay(MOVE_DURATION_MS);
+	robot.stop();
+	Serial.println("[MOTOR] Parado por 1 s");
+	delay(STOP_DURATION_MS);
+	robot.backward();
+	Serial.println("[MOTOR] Re por 2 s");
+	delay(MOVE_DURATION_MS);
+	robot.stop();
+	Serial.println("[MOTOR] Parado por 1 s");
+	delay(STOP_DURATION_MS);
 }
