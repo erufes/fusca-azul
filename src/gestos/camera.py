@@ -50,6 +50,7 @@ class CameraWorker(QThread):
 				)
 			capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 			capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+			capture.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
 			logger.info("Câmera iniciada.")
 			self.status.emit("Câmera conectada • reconhecimento local")
 			while not self.isInterruptionRequested():
