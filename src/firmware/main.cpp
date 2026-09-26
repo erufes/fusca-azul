@@ -11,8 +11,8 @@ namespace {
 constexpr uint32_t WIFI_TIMEOUT = 20000;
 constexpr uint32_t REPLY_TIMEOUT = 400;
 constexpr char CONFIG_PATH[] = "/wifi.bin";
-Motor leftMotor(D5, D4, D3);
-Motor rightMotor(D0, D2, D1);
+Motor leftMotor(D0, D2, D1);  // ENA, IN1, IN2
+Motor rightMotor(D5, D3, D4); // ENB, IN3, IN4
 Robot robot(leftMotor, rightMotor);
 ESP8266WebServer portal(80);
 DNSServer dns;
