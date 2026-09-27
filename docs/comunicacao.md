@@ -69,8 +69,9 @@ Sem resposta em 400 ms, o firmware para e volta à descoberta. Entre respostas,
 o próximo pedido ocorre no intervalo de 100 ms. Escritas TCP têm timeout de 100 ms.
 
 O servidor converte reconhecimento sem atualização por mais de 400 ms em
-`PARAR`. Sem mão, gesto desconhecido, rock ou modo Automático também produzem
-`PARAR`. Pausar, trocar câmera, erro de captura e fechamento invalidam o comando.
+`PARAR`. No controle manual, sem mão, gesto desconhecido ou rock também
+produzem `PARAR`. No modo Automático, a fonte de comandos é a análise recente
+da ESP32-CAM; veja [navegação visual](espcam.md). Pausar, trocar câmera, erro de captura e fechamento invalidam o comando.
 A parada não é frenagem ativa: a ponte é desabilitada e as rodas desaceleram.
 
 ## Diagnóstico e validação

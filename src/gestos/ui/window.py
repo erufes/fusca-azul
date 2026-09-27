@@ -2,11 +2,12 @@
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import (
 	QCheckBox, QFrame, QHBoxLayout, QLabel, QMainWindow, QPushButton,
-	QVBoxLayout, QWidget,
+	QScrollArea, QTabWidget, QVBoxLayout, QWidget,
 )
 
 from ..camera import CameraWorker
 from .video import VideoView
+from .autonomous import AutonomousPanel
 from .settings import SettingsDialog
 from ..devices import list_cameras
 
@@ -17,6 +18,7 @@ from .tutorial import TutorialDialog
 class MainWindow(QMainWindow):
 	def __init__(self, *, worker_factory=CameraWorker, auto_start=True, camera_provider=list_cameras, command_state=None, network_error=None):
 		super().__init__()
+		self.last_detector_mode = "GESTOS"
 		self.command_state = command_state
 		self.worker_factory = worker_factory
 		self.worker = None
@@ -43,6 +45,10 @@ class MainWindow(QMainWindow):
 		header = QHBoxLayout()
 		header.addWidget(title)
 		header.addStretch()
+		self.stop_robot_button = QPushButton("Parar robô (Esc)")
+		self.stop_robot_button.setShortcut("Esc")
+		self.stop_robot_button.clicked.connect(lambda: self.autonomous.emergency_stop())
+		header.addWidget(self.stop_robot_button)
 		self.help_button = QPushButton("?")
 		self.help_button.setObjectName("helpButton")
 		self.help_button.setFixedSize(44, 44)
@@ -66,7 +72,17 @@ class MainWindow(QMainWindow):
 		content = QHBoxLayout()
 		content.setSpacing(20)
 		self.video = VideoView()
-		content.addWidget(self.video, 3)
+		self.video_tabs = QTabWidget()
+		self.video_tabs.addTab(self.video, "Gestos · webcam")
+		self.autonomous = AutonomousPanel(command_state, self)
+		self.autonomous_scroll = QScrollArea()
+		self.autonomous_scroll.setWidgetResizable(True)
+		self.autonomous_scroll.setFrameShape(QFrame.Shape.NoFrame)
+		self.autonomous_scroll.setWidget(self.autonomous)
+		self.video_tabs.addTab(self.autonomous_scroll, "Robô · ESP32-CAM")
+		self.autonomous.mode_changed.connect(self.autonomous_mode_changed)
+		self.autonomous.shutdown_finished.connect(self.close)
+		content.addWidget(self.video_tabs, 3)
 		card = QFrame()
 		card.setObjectName("card")
 		card.setMinimumWidth(240)
@@ -88,6 +104,7 @@ class MainWindow(QMainWindow):
 		help_text.setObjectName("muted")
 		panel.addWidget(help_text)
 		content.addWidget(card, 1)
+		self.video_tabs.currentChanged.connect(lambda index: card.setVisible(index == 0))
 		layout.addLayout(content, 1)
 		controls = QHBoxLayout()
 		self.button = QPushButton("Ativar câmera")
@@ -103,10 +120,14 @@ class MainWindow(QMainWindow):
 		guide.setWordWrap(True)
 		guide.setObjectName("muted")
 		layout.addWidget(guide)
-		footer = QLabel("Reconhecimento local • Comandos por Wi-Fi • Automático mantém o robô parado.")
+		footer = QLabel("Reconhecimento local • Comandos por Wi-Fi • Automático com ESP32-CAM opcional.")
 		footer.setObjectName("muted")
 		footer.setWordWrap(True)
 		layout.addWidget(footer)
+		def show_view_controls(index):
+			for widget in (self.status, self.button, self.landmarks, guide, footer):
+				widget.setVisible(index == 0)
+		self.video_tabs.currentChanged.connect(show_view_controls)
 		self.robot_status = QLabel()
 		self.robot_status.setObjectName("muted")
 		self.robot_status.setWordWrap(True)
@@ -129,6 +150,13 @@ class MainWindow(QMainWindow):
 		self.button.setEnabled(False)
 		self.status.setText("Buscando câmeras…")
 		self.settings.scan()
+
+	def autonomous_mode_changed(self, active):
+		self.mode.setText("Modo: Automático" if active else "Modo: Gestos")
+		if active:
+			self.video_tabs.setCurrentWidget(self.autonomous_scroll)
+		else:
+			self.stop_camera()
 
 	def show_tutorial(self):
 		self.tutorial.show()
@@ -171,6 +199,8 @@ class MainWindow(QMainWindow):
 	def start_camera(self):
 		if self.worker is not None or self.closing or self.settings.applied_device is None:
 			return
+		self.autonomous.set_active(False)
+		self.last_detector_mode = "GESTOS"
 		self.error = None
 		self.stopping = False
 		self.video.clear("Preparando câmera…")
@@ -191,6 +221,7 @@ class MainWindow(QMainWindow):
 			self.status.setText(message)
 
 	def show_error(self, message):
+		self.autonomous.set_active(False)
 		if self.command_state is not None:
 			self.command_state.update("PARAR")
 		self.error = message
@@ -203,15 +234,19 @@ class MainWindow(QMainWindow):
 		if frame is None:
 			return
 		image, result = frame
-		if self.command_state is not None:
+		if result.mode != self.last_detector_mode:
+			self.last_detector_mode = result.mode
+			self.autonomous.set_active(result.mode == "AUTO")
+		if self.command_state is not None and not self.autonomous.active:
 			self.command_state.update(result.command, result.mode)
 		self.video.set_frame(image, result.landmarks)
 		symbol, label = COMMANDS.get(result.command, COMMANDS["AGUARDANDO"])
 		self.symbol.setText(symbol)
 		self.gesture.setText(label)
-		self.mode.setText("Modo: Automático" if result.mode == "AUTO" else "Modo: Gestos")
+		self.mode.setText("Modo: Automático" if self.autonomous.active else "Modo: Gestos")
 
 	def stop_camera(self):
+		self.autonomous.set_active(False)
 		if self.command_state is not None:
 			self.command_state.update("PARAR")
 		if self.worker is None:
@@ -226,6 +261,7 @@ class MainWindow(QMainWindow):
 		self.worker.requestInterruption()
 
 	def capture_finished(self):
+		self.autonomous.set_active(False)
 		if self.command_state is not None:
 			self.command_state.update("PARAR")
 		self.timer.stop()
@@ -251,7 +287,8 @@ class MainWindow(QMainWindow):
 			self.command_state.update("PARAR")
 		self.closing = True
 		self.restart_camera = False
-		if self.worker is not None or self.settings.scanner is not None:
+		espcam_stopped = self.autonomous.shutdown()
+		if self.worker is not None or self.settings.scanner is not None or not espcam_stopped:
 			self.stop_camera()
 			event.ignore()
 		else:

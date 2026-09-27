@@ -156,7 +156,8 @@ class WindowTests(unittest.TestCase):
 		self.window.worker.frame = (image, Detection("FRENTE", "AUTO", ((.5, .5),) * 21))
 		self.window.refresh_frame()
 		self.assertEqual(self.window.gesture.text(), "Em frente")
-		self.assertEqual(self.window.mode.text(), "Modo: Automático")
+		self.assertEqual(self.window.mode.text(), "Modo: Gestos")
+		self.assertFalse(self.window.autonomous.active)
 		self.window.landmarks.setChecked(False)
 		self.assertFalse(self.window.video.show_landmarks)
 		self.window.show()
@@ -185,6 +186,45 @@ class WindowTests(unittest.TestCase):
 		self.window.show_error("Câmera desconectada")
 		self.window.refresh_frame()
 		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
+
+	def test_autonomous_mode_owns_commands_and_stop_blocks_next_gesture(self):
+		from time import monotonic
+		from gestos.autonomy import Navigation
+		from gestos.network import CommandState
+		state = CommandState()
+		self.window.command_state = self.window.autonomous.state = state
+		panel = self.window.autonomous
+		panel.worker_factory = FakeWorker
+		with patch("gestos.ui.autonomous.QSettings"):
+			panel.toggle_connection()
+		self.window.start_camera()
+		image = QImage(320, 240, QImage.Format.Format_RGB888)
+		state.response()
+		panel.worker.frame = (image, image, Navigation("ESQUERDA", "Desvio", True), monotonic())
+		panel.refresh()
+		self.assertTrue(panel.set_active(True))
+		panel.worker.frame = (image, image, Navigation("ESQUERDA", "Desvio", True), monotonic())
+		panel.refresh()
+		self.window.worker.frame = (image, Detection("FRENTE", "GESTOS", ()))
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 ESQUERDA\n")
+		panel.emergency_stop()
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
+		self.assertTrue(self.window.worker.interrupted)
+		panel.worker.finished.emit()
+
+	def test_close_waits_for_espcam_without_webcam(self):
+		panel = self.window.autonomous
+		panel.worker_factory = FakeWorker
+		with patch("gestos.ui.autonomous.QSettings"):
+			panel.toggle_connection()
+		self.window.show()
+		self.window.close()
+		self.assertTrue(self.window.isVisible())
+		self.assertTrue(panel.worker.interrupted)
+		panel.worker.finished.emit()
+		self.assertFalse(self.window.isVisible())
 
 	def test_error_is_visible_and_can_be_retried(self):
 		self.window.start_camera()

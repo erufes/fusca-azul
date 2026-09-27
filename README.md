@@ -29,8 +29,10 @@ de versões e arquitetura precisa ser compatível. No Linux, o Qt pode exigir
 bibliotecas gráficas do sistema. Não há empacotamento nem Docker.
 
 **Os gestos controlam o robô por Wi-Fi.** O aplicativo anuncia o servidor por
-mDNS, e o robô o encontra automaticamente. O modo Automático mantém os motores
-parados; a navegação autônoma ainda não foi implementada.
+mDNS, e o robô o encontra automaticamente. Com a ESP32-CAM opcional, o modo Automático analisa profundidade no computador
+para avançar, desviar ou parar. O vídeo e o mapa de profundidade aparecem no
+aplicativo. Veja [ESP32-CAM e navegação visual](docs/espcam.md) para instalação,
+uso e limites desta implementação experimental.
 
 Veja [configuração de Wi-Fi e protocolo](docs/comunicacao.md) para conectar o robô.
 
@@ -83,6 +85,9 @@ pio run --target upload
 - `src/gestos/modes.py`: regras de troca de modo.
 - `src/gestos/model.py`: localização e download do modelo.
 - `src/firmware/`: firmware PlatformIO para NodeMCU/ESP8266 e ponte H L298N.
+- `src/espcam/`: firmware da ESP32-CAM AI Thinker, Wi-Fi e imagens JPEG.
+- `src/gestos/espcam.py`: descoberta e recepção das imagens.
+- `src/gestos/depth.py` e `src/gestos/autonomy.py`: profundidade MiDaS e decisões de navegação.
 - [docs/gestos.md](docs/gestos.md): uso, gestos, modelo e logs.
 - `tests/`: testes de reconhecimento, captura e interface.
 

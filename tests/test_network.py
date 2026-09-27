@@ -29,6 +29,21 @@ class CommandTests(unittest.TestCase):
 			self.state.update(command, mode)
 			self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
 
+	def test_autonomous_commands_require_selected_mode_and_fresh_capture(self):
+		self.state.update_autonomous("FRENTE", self.now)
+		self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
+		self.state.select_mode("AUTO")
+		self.state.update_autonomous("ESQUERDA", self.now - .2)
+		self.assertEqual(self.state.response(), b"FUSCA/1 ESQUERDA\n")
+		self.now += .21
+		self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
+		for stamp in (self.now - 1, self.now + 1):
+			self.state.update_autonomous("FRENTE", stamp)
+			self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
+		self.state.update_autonomous("FRENTE", self.now)
+		self.state.select_mode("GESTOS")
+		self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
+
 	def test_connection_status_expires(self):
 		self.assertFalse(self.state.connected())
 		self.state.response()

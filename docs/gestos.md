@@ -54,9 +54,10 @@ o rock não provoca trocas repetidas. Uma interrupção na captura reinicia a
 contagem do gesto; pausar e reabrir a câmera começa uma sessão em modo Gestos.
 
 Em modo Gestos, os comandos acionam os motores do robô conectado. Sem mão,
-com gesto desconhecido, durante o rock ou no modo Automático, o comando é parar.
+com gesto desconhecido ou durante o rock no controle manual, o comando é parar.
 Pausar, trocar a câmera, fechar o aplicativo ou perder a comunicação também
-interrompe o movimento. A navegação autônoma ainda não está implementada.
+interrompe o movimento. O modo Automático usa a ESP32-CAM opcional e só é
+habilitado com robô conectado e análise recente. Veja [ESP32-CAM](espcam.md).
 
 ## Modelo
 

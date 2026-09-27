@@ -17,14 +17,30 @@ class CommandState:
 	def __init__(self, clock=monotonic):
 		self.clock = clock
 		self.lock = threading.Lock()
+		self.mode = "GESTOS"
 		self.command = "PARAR"
 		self.updated = float("-inf")
 		self.last_robot = float("-inf")
 
 	def update(self, command, mode="GESTOS"):
 		with self.lock:
-			self.command = command if mode == "GESTOS" and command in COMMANDS else "PARAR"
+			self.command = command if self.mode == "GESTOS" and mode == "GESTOS" and command in COMMANDS else "PARAR"
 			self.updated = self.clock()
+
+	def select_mode(self, mode):
+		with self.lock:
+			self.mode = "AUTO" if mode == "AUTO" else "GESTOS"
+			self.command = "PARAR"
+			self.updated = float("-inf")
+
+	def update_autonomous(self, command, captured_at):
+		with self.lock:
+			if self.mode != "AUTO":
+				return
+			now = self.clock()
+			self.command = command if command in COMMANDS and 0 <= now - captured_at <= .4 else "PARAR"
+			# Never renew an old camera frame's lifetime at publication time.
+			self.updated = min(captured_at, now)
 
 	def response(self):
 		with self.lock:
