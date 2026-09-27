@@ -20,8 +20,10 @@ e use **Tentar novamente**. Ao fechar, o aplicativo solicita o encerramento e
 aguarda a liberação da câmera e do detector. Se houver um download em andamento,
 pode ser necessário aguardar a operação de rede terminar ou atingir seu timeout.
 
-O aplicativo não abre portas de rede nem transmite imagens. A única conexão
-externa feita pelo aplicativo é o download inicial do modelo, quando necessário.
+O aplicativo não transmite imagens. Ele abre um servidor TCP na porta 8765
+e anuncia o serviço por mDNS para transmitir os comandos ao robô na rede local.
+O download inicial do modelo precisa de internet, quando necessário.
+Consulte [a configuração da comunicação](comunicacao.md).
 
 ## Tutorial no aplicativo
 
@@ -51,8 +53,10 @@ Desfaça o gesto por pelo menos meio segundo antes de trocar novamente. Manter
 o rock não provoca trocas repetidas. Uma interrupção na captura reinicia a
 contagem do gesto; pausar e reabrir a câmera começa uma sessão em modo Gestos.
 
-Os gestos e a seleção de modo ainda não acionam motores nem executam navegação
-autônoma: a integração com o firmware está pendente.
+Em modo Gestos, os comandos acionam os motores do robô conectado. Sem mão,
+com gesto desconhecido, durante o rock ou no modo Automático, o comando é parar.
+Pausar, trocar a câmera, fechar o aplicativo ou perder a comunicação também
+interrompe o movimento. A navegação autônoma ainda não está implementada.
 
 ## Modelo
 

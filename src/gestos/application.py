@@ -5,6 +5,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
+from .network import RobotServer
 from .ui.theme import STYLE
 from .ui.window import MainWindow
 
@@ -17,6 +18,16 @@ def run():
 	app.setOrganizationName("ERUS")
 	app.setStyle("Fusion")
 	app.setStyleSheet(STYLE)
-	window = MainWindow()
+	server = RobotServer()
+	network_error = None
+	try:
+		server.start()
+	except Exception as exc:
+		logging.getLogger(__name__).exception("Não foi possível iniciar o servidor do robô")
+		network_error = str(exc)
+	window = MainWindow(command_state=server.state, network_error=network_error)
 	window.show()
-	return app.exec()
+	try:
+		return app.exec()
+	finally:
+		server.close()

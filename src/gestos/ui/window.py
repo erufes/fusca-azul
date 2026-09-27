@@ -15,8 +15,9 @@ from .tutorial import TutorialDialog
 
 
 class MainWindow(QMainWindow):
-	def __init__(self, *, worker_factory=CameraWorker, auto_start=True, camera_provider=list_cameras):
+	def __init__(self, *, worker_factory=CameraWorker, auto_start=True, camera_provider=list_cameras, command_state=None, network_error=None):
 		super().__init__()
+		self.command_state = command_state
 		self.worker_factory = worker_factory
 		self.worker = None
 		self.current_device = None
@@ -102,10 +103,26 @@ class MainWindow(QMainWindow):
 		guide.setWordWrap(True)
 		guide.setObjectName("muted")
 		layout.addWidget(guide)
-		footer = QLabel("Reconhecimento local • O controle dos motores ainda não está integrado.")
+		footer = QLabel("Reconhecimento local • Comandos por Wi-Fi • Automático mantém o robô parado.")
 		footer.setObjectName("muted")
 		footer.setWordWrap(True)
 		layout.addWidget(footer)
+		self.robot_status = QLabel()
+		self.robot_status.setObjectName("muted")
+		self.robot_status.setWordWrap(True)
+		layout.addWidget(self.robot_status)
+		self.network_timer = QTimer(self)
+		def refresh_network():
+			if network_error:
+				text = "Servidor do robô indisponível: " + network_error
+			elif self.command_state is None:
+				text = "Comunicação com o robô desativada"
+			else:
+				text = "Robô conectado" if self.command_state.connected() else "Aguardando robô na rede Wi-Fi…"
+			self.robot_status.setText(text)
+		self.network_timer.timeout.connect(refresh_network)
+		self.network_timer.start(500)
+		refresh_network()
 		self.timer = QTimer(self)
 		self.timer.setInterval(33)
 		self.timer.timeout.connect(self.refresh_frame)
@@ -174,16 +191,20 @@ class MainWindow(QMainWindow):
 			self.status.setText(message)
 
 	def show_error(self, message):
+		if self.command_state is not None:
+			self.command_state.update("PARAR")
 		self.error = message
 		self.status.setText(message)
 
 	def refresh_frame(self):
-		if self.worker is None or self.stopping:
+		if self.worker is None or self.stopping or self.closing or self.error:
 			return
 		frame = self.worker.take_frame()
 		if frame is None:
 			return
 		image, result = frame
+		if self.command_state is not None:
+			self.command_state.update(result.command, result.mode)
 		self.video.set_frame(image, result.landmarks)
 		symbol, label = COMMANDS.get(result.command, COMMANDS["AGUARDANDO"])
 		self.symbol.setText(symbol)
@@ -191,6 +212,8 @@ class MainWindow(QMainWindow):
 		self.mode.setText("Modo: Automático" if result.mode == "AUTO" else "Modo: Gestos")
 
 	def stop_camera(self):
+		if self.command_state is not None:
+			self.command_state.update("PARAR")
 		if self.worker is None:
 			return
 		self.stopping = True
@@ -203,6 +226,8 @@ class MainWindow(QMainWindow):
 		self.worker.requestInterruption()
 
 	def capture_finished(self):
+		if self.command_state is not None:
+			self.command_state.update("PARAR")
 		self.timer.stop()
 		self.worker.wait()
 		self.worker.deleteLater()
@@ -222,6 +247,8 @@ class MainWindow(QMainWindow):
 			self.start_camera()
 
 	def closeEvent(self, event):
+		if self.command_state is not None:
+			self.command_state.update("PARAR")
 		self.closing = True
 		self.restart_camera = False
 		if self.worker is not None or self.settings.scanner is not None:

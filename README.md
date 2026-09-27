@@ -2,7 +2,7 @@
 
 Nova versão do robô Fusca Azul, da ERUS/UFES. O software e o hardware estão
 em atualização. O reconhecimento de gestos agora usa um aplicativo desktop
-em Qt: não há servidor web, navegador ou configuração de HTTPS.
+em Qt, com servidor local de comandos e configuração do Wi-Fi do robô pelo navegador.
 
 ## Executar
 
@@ -28,14 +28,18 @@ Python, Qt e MediaPipe têm versões para Linux, Windows e macOS, mas a combina�
 de versões e arquitetura precisa ser compatível. No Linux, o Qt pode exigir
 bibliotecas gráficas do sistema. Não há empacotamento nem Docker.
 
-**O reconhecimento ainda não envia comandos ao robô.** O firmware executa um
-ciclo de movimento independente; a navegação autônoma ainda não foi integrada.
+**Os gestos controlam o robô por Wi-Fi.** O aplicativo anuncia o servidor por
+mDNS, e o robô o encontra automaticamente. O modo Automático mantém os motores
+parados; a navegação autônoma ainda não foi implementada.
+
+Veja [configuração de Wi-Fi e protocolo](docs/comunicacao.md) para conectar o robô.
 
 ## Firmware do robô
 
 O NodeMCU/ESP8266 controla dois motores pela ponte H L298N, sem sensor.
-O ciclo repete indefinidamente: **frente por 2 s → parar por 1 s → ré por 2 s
-→ parar por 1 s**. Os motores operam em velocidade total; a parada desabilita
+O robô inicia parado e recebe frente, ré, esquerda, direita e parar da aplicação.
+Sem comandos recentes ou conexão, volta a parar. As curvas giram as rodas em
+sentidos opostos. Os motores operam em velocidade total; a parada desabilita
 os canais e deixa os motores desacelerarem livremente.
 
 | L298N | NodeMCU |
@@ -58,7 +62,7 @@ Se uma roda girar no sentido contrário ao esperado, troque os dois fios desse
 motor nas saídas da ponte, com a alimentação desligada.
 
 A classe `Motor` abstrai cada canal da L298N, e a classe `Robot` coordena os dois
-motores. Os tempos e pinos ficam em `src/firmware/main.cpp`.
+motores. A configuração de rede, os tempos e pinos ficam em `src/firmware/main.cpp`.
 
 Para compilar e gravar com PlatformIO:
 
@@ -71,6 +75,7 @@ pio run --target upload
 
 - `src/gestos/application.py`: inicialização do aplicativo e logs.
 - `src/gestos/ui/`: janela, visualização do vídeo e tema.
+- `src/gestos/network.py`: servidor TCP, validade dos comandos e anúncio mDNS.
 - `src/gestos/devices.py`: descoberta das câmeras pelo nome.
 - `src/gestos/camera.py`: captura e processamento em uma thread separada.
 - `src/gestos/detection.py`: integração com MediaPipe e sessão de reconhecimento.

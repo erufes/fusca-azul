@@ -9,6 +9,8 @@ public:
 	void forward();
 	void backward();
 	void stop();
+	void left();
+	void right();
 
 private:
 	Motor& leftMotor_;

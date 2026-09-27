@@ -163,6 +163,29 @@ class WindowTests(unittest.TestCase):
 		self.app.processEvents()
 		self.assertFalse(self.window.grab().isNull())
 
+	def test_commands_stop_on_pause_and_ignore_pending_frames(self):
+		from gestos.network import CommandState
+		self.window.command_state = state = CommandState()
+		self.window.start_camera()
+		image = QImage(64, 48, QImage.Format.Format_RGB888)
+		self.window.worker.frame = (image, Detection("FRENTE", "GESTOS", ()))
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 FRENTE\n")
+		self.window.worker.frame = (image, Detection("RE", "GESTOS", ()))
+		self.window.stop_camera()
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
+
+	def test_capture_error_cannot_reactivate_motors_from_pending_frame(self):
+		from gestos.network import CommandState
+		self.window.command_state = state = CommandState()
+		self.window.start_camera()
+		state.update("FRENTE")
+		self.window.worker.frame = (QImage(64, 48, QImage.Format.Format_RGB888), Detection("FRENTE", "GESTOS", ()))
+		self.window.show_error("Câmera desconectada")
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
+
 	def test_error_is_visible_and_can_be_retried(self):
 		self.window.start_camera()
 		self.window.worker.failed.emit("Câmera indisponível")

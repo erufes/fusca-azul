@@ -22,3 +22,13 @@ void Robot::stop() {
 	leftMotor_.stop();
 	rightMotor_.stop();
 }
+
+void Robot::left() {
+	leftMotor_.backward();
+	rightMotor_.forward();
+}
+
+void Robot::right() {
+	leftMotor_.forward();
+	rightMotor_.backward();
+}
