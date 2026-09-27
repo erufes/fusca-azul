@@ -37,9 +37,9 @@ class VideoView(QWidget):
 	def paintEvent(self, event):
 		painter = QPainter(self)
 		painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-		painter.fillRect(self.rect(), QColor("#111917"))
+		painter.fillRect(self.rect(), QColor("#111927"))
 		if self.image is None:
-			painter.setPen(QColor("#a9bab3"))
+			painter.setPen(QColor("#a9b9d0"))
 			painter.drawText(self.rect().adjusted(24, 24, -24, -24), Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap, self.message)
 			return
 		size = self.image.size().scaled(self.size(), Qt.AspectRatioMode.KeepAspectRatio)
@@ -47,9 +47,9 @@ class VideoView(QWidget):
 		painter.drawImage(rect, self.image)
 		if self.show_landmarks and len(self.landmarks) == 21:
 			points = [QPointF(rect.x() + x * rect.width(), rect.y() + y * rect.height()) for x, y in self.landmarks]
-			painter.setPen(QPen(QColor("#d6e6bc"), 2))
+			painter.setPen(QPen(QColor("#bcd6f6"), 2))
 			for start, end in EDGES:
 				painter.drawLine(points[start], points[end])
-			painter.setBrush(QColor("#b5e0c7"))
+			painter.setBrush(QColor("#91c4f2"))
 			for point in points:
 				painter.drawEllipse(point, 4, 4)

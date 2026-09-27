@@ -22,19 +22,19 @@ class HandDiagram(QWidget):
 	def paintEvent(self, event):
 		painter = QPainter(self)
 		painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-		painter.setPen(QPen(QColor("#a9bab3"), 1.5))
-		painter.setBrush(QColor("#34443c"))
+		painter.setPen(QPen(QColor("#a9b9d0"), 1.5))
+		painter.setBrush(QColor("#34445f"))
 		painter.drawRoundedRect(QRectF(27, 52, 48, 44), 12, 12)
 		painter.drawRoundedRect(QRectF(35, 85, 32, 22), 5, 5)
 		for index, extended in enumerate(self.fingers[1:]):
 			x = 28 + index * 12
 			top = (18, 8, 15, 29)[index] if extended else 52
-			painter.setBrush(QColor("#d6e6bc" if extended else "#526258"))
+			painter.setBrush(QColor("#bcd6f6" if extended else "#526888"))
 			painter.drawRoundedRect(QRectF(x, top, 10, 66 - top), 5, 5)
 		painter.save()
 		painter.translate(30, 75)
 		painter.rotate(-48 if self.fingers[0] else 40)
-		painter.setBrush(QColor("#d6e6bc" if self.fingers[0] else "#526258"))
+		painter.setBrush(QColor("#bcd6f6" if self.fingers[0] else "#526888"))
 		painter.drawRoundedRect(QRectF(-5, -34 if self.fingers[0] else -17, 12, 38 if self.fingers[0] else 22), 6, 6)
 		painter.restore()
 
