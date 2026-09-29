@@ -13,6 +13,13 @@ Na raiz do projeto:
 uv run gestos
 ```
 
+No Ubuntu, Debian ou Linux Mint, instale também a biblioteca de cursor usada
+pelo Qt no X11:
+
+```bash
+sudo apt-get install libxcb-cursor0
+```
+
 O uv instala as dependências e abre a janela. Na primeira execução, o aplicativo
 baixa o modelo do MediaPipe, caso ele ainda não esteja disponível. As próximas
 execuções podem funcionar sem internet, com as dependências e o modelo instalados.
@@ -62,7 +69,10 @@ Se uma roda girar no sentido contrário ao esperado, troque os dois fios desse
 motor nas saídas da ponte, com a alimentação desligada.
 
 A classe `Motor` abstrai cada canal da L298N, e a classe `Robot` coordena os dois
-motores. A configuração de rede, os tempos e pinos ficam em `src/firmware/main.cpp`.
+motores. Os pinos e a composição dos módulos ficam em `src/firmware/main.cpp`.
+`WifiConnection` cuida do Wi-Fi e do portal, `WifiCredentials` da persistência
+e `GestosConnection` da descoberta mDNS e do protocolo de comandos.
+`Robot` registra as mudanças de movimento no monitor serial (115200 baud).
 
 Para compilar e gravar com PlatformIO:
 
@@ -93,8 +103,12 @@ câmera, reinstale a única variante mantida pelo aplicativo. A versão anterior
 instalava duas variantes que compartilhavam arquivos:
 
 ```bash
-uv sync --reinstall-package opencv-python-headless
+uv sync --reinstall-package opencv-contrib-python-headless
 ```
+
+O projeto usa somente `opencv-contrib-python-headless`. A configuração do uv
+exclui as variantes gráficas, inclusive a dependência transitiva do MediaPipe,
+para evitar arquivos `cv2` sobrepostos e conflitos com os plugins do PySide6.
 
 ## Testes
 

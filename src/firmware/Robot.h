@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Motor.h"
+#include "StateLog.h"
 
 class Robot {
 public:
@@ -13,6 +14,7 @@ public:
 	void right();
 
 private:
+	StateLog state_{"ROBO"};
 	Motor& leftMotor_;
 	Motor& rightMotor_;
 };
