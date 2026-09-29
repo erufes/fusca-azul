@@ -44,7 +44,7 @@ Use uma mão com a palma voltada para a câmera:
 | Apenas polegar levantado | Esquerda |
 | Indicador e médio levantados (V), demais fechados | Para trás |
 | Punho fechado | Parado |
-| Indicador e mindinho levantados (rock), demais fechados | Troca de modo |
+| Indicador e mindinho levantados (rock), médio e anelar fechados; polegar livre | Troca de modo |
 | Outra combinação | Aguardando |
 | Sem mão na imagem | Nenhuma mão |
 

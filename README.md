@@ -43,25 +43,27 @@ Veja [configuração de Wi-Fi e protocolo](docs/comunicacao.md) para conectar o 
 
 ## Firmware do robô
 
-O NodeMCU/ESP8266 controla dois motores pela ponte H L298N, sem sensor.
+O NodeMCU/ESP8266 controla dois motores pela ponte H L298N, com correção de rumo pelo GY-80.
 O robô inicia parado e recebe frente, ré, esquerda, direita e parar da aplicação.
 Sem comandos recentes ou conexão, volta a parar. As curvas giram as rodas em
-sentidos opostos. Os motores operam em velocidade total; a parada desabilita
+sentidos opostos. Os motores operam com PWM de até 50% nos pinos ENA/ENB; a parada desabilita
 os canais e deixa os motores desacelerarem livremente.
 
 | L298N | NodeMCU |
 | --- | --- |
-| ENA | D5 |
-| IN1 | D4 |
-| IN2 | D3 |
-| IN3 | D2 |
-| IN4 | D1 |
-| ENB | D0 |
+| ENA | D0 |
+| IN1 | D2 |
+| IN2 | D1 |
+| IN3 | D3 |
+| IN4 | D4 |
+| ENB | D5 |
 
 Remova os jumpers de ENA e ENB para conectar os sinais do NodeMCU. Ligue o
 motor esquerdo em OUT1/OUT2 e o direito em OUT3/OUT4. Use alimentação adequada
 para os motores na ponte e conecte o GND da ponte ao GND do NodeMCU.
 Desconecte o sensor por enquanto: D1 e D2 agora controlam a ponte.
+O GY-80 usa SDA em **D7 (GPIO13)** e SCL em **D8 (GPIO15)**, com GND comum
+e níveis de sinal de 3,3 V. Veja [montagem, calibração e ajuste de rumo](docs/estabilidade.md).
 D3 e D4 precisam permanecer em nível alto durante o boot do ESP8266;
 a ligação externa não deve forçá-los a nível baixo durante a inicialização.
 
