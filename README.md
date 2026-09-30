@@ -13,6 +13,13 @@ Na raiz do projeto:
 uv run gestos
 ```
 
+No Ubuntu, Debian ou Linux Mint, instale também a biblioteca de cursor usada
+pelo Qt no X11:
+
+```bash
+sudo apt-get install libxcb-cursor0
+```
+
 O uv instala as dependências e abre a janela. Na primeira execução, o aplicativo
 baixa o modelo do MediaPipe, caso ele ainda não esteja disponível. As próximas
 execuções podem funcionar sem internet, com as dependências e o modelo instalados.
@@ -38,25 +45,27 @@ Veja [configuração de Wi-Fi e protocolo](docs/comunicacao.md) para conectar o 
 
 ## Firmware do robô
 
-O NodeMCU/ESP8266 controla dois motores pela ponte H L298N, sem sensor.
+O NodeMCU/ESP8266 controla dois motores pela ponte H L298N, com correção de rumo pelo GY-80.
 O robô inicia parado e recebe frente, ré, esquerda, direita e parar da aplicação.
 Sem comandos recentes ou conexão, volta a parar. As curvas giram as rodas em
-sentidos opostos. Os motores operam em velocidade total; a parada desabilita
+sentidos opostos. Os motores operam com PWM de até 50% nos pinos ENA/ENB; a parada desabilita
 os canais e deixa os motores desacelerarem livremente.
 
 | L298N | NodeMCU |
 | --- | --- |
-| ENA | D5 |
-| IN1 | D4 |
-| IN2 | D3 |
-| IN3 | D2 |
-| IN4 | D1 |
-| ENB | D0 |
+| ENA | D0 |
+| IN1 | D2 |
+| IN2 | D1 |
+| IN3 | D3 |
+| IN4 | D4 |
+| ENB | D5 |
 
 Remova os jumpers de ENA e ENB para conectar os sinais do NodeMCU. Ligue o
 motor esquerdo em OUT1/OUT2 e o direito em OUT3/OUT4. Use alimentação adequada
 para os motores na ponte e conecte o GND da ponte ao GND do NodeMCU.
-Desconecte o sensor por enquanto: D1 e D2 agora controlam a ponte.
+Remova qualquer ligação antiga de sensor em D1 e D2: esses pinos controlam a ponte.
+O GY-80 usa SDA em **D7 (GPIO13)** e SCL em **D8 (GPIO15)**, com GND comum
+e níveis de sinal de 3,3 V. Veja [montagem, calibração e ajuste de rumo](docs/estabilidade.md).
 D3 e D4 precisam permanecer em nível alto durante o boot do ESP8266;
 a ligação externa não deve forçá-los a nível baixo durante a inicialização.
 
@@ -64,7 +73,10 @@ Se uma roda girar no sentido contrário ao esperado, troque os dois fios desse
 motor nas saídas da ponte, com a alimentação desligada.
 
 A classe `Motor` abstrai cada canal da L298N, e a classe `Robot` coordena os dois
-motores. A configuração de rede, os tempos e pinos ficam em `src/firmware/main.cpp`.
+motores. Os pinos e a composição dos módulos ficam em `src/firmware/main.cpp`.
+`WifiConnection` cuida do Wi-Fi e do portal, `WifiCredentials` da persistência
+e `GestosConnection` da descoberta mDNS e do protocolo de comandos.
+`Robot` registra as mudanças de movimento no monitor serial (115200 baud).
 
 Para compilar e gravar com PlatformIO:
 
@@ -98,8 +110,12 @@ câmera, reinstale a única variante mantida pelo aplicativo. A versão anterior
 instalava duas variantes que compartilhavam arquivos:
 
 ```bash
-uv sync --reinstall-package opencv-python-headless
+uv sync --reinstall-package opencv-contrib-python-headless
 ```
+
+O projeto usa somente `opencv-contrib-python-headless`. A configuração do uv
+exclui as variantes gráficas, inclusive a dependência transitiva do MediaPipe,
+para evitar arquivos `cv2` sobrepostos e conflitos com os plugins do PySide6.
 
 ## Testes
 

@@ -12,6 +12,18 @@ COMMANDS = frozenset({"FRENTE", "RE", "ESQUERDA", "DIREITA", "PARAR"})
 logger = logging.getLogger(__name__)
 
 
+def discovery_address():
+	"""Advertise only the address routed to the local multicast network."""
+	# UDP connect selects a route without sending a packet. Advertising every
+	# adapter also exposes Docker/VPN addresses that the ESP cannot reach.
+	with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
+		probe.connect(("224.0.0.251", 5353))
+		address = probe.getsockname()[0]
+	if address == "0.0.0.0" or address.startswith("127."):
+		raise OSError("Nenhuma interface IPv4 disponível. Conecte o computador à rede e reabra o aplicativo.")
+	return address
+
+
 class CommandState:
 	"""Only recent recognition results can authorize movement."""
 	def __init__(self, clock=monotonic):
@@ -56,6 +68,7 @@ class CommandState:
 
 class CommandHandler(socketserver.StreamRequestHandler):
 	def handle(self):
+		logger.info("Conexão recebida de %s", self.client_address[0])
 		self.connection.settimeout(2)
 		try:
 			while self.rfile.readline(65) == b"FUSCA/1 GET\n":
@@ -80,24 +93,20 @@ class RobotServer:
 
 	def start(self):
 		try:
-			import ifaddr
 			from zeroconf import IPVersion, ServiceInfo, Zeroconf
 
-			addresses = sorted({ip.ip for adapter in ifaddr.get_adapters() for ip in adapter.ips
-				if isinstance(ip.ip, str) and not ip.ip.startswith("127.") and ip.ip != "0.0.0.0"})
-			if not addresses:
-				raise OSError("Nenhuma interface IPv4 disponível. Conecte o computador à rede e reabra o aplicativo.")
+			address = discovery_address()
 			self.server = TCPServer(("0.0.0.0", self.port), CommandHandler)
 			self.server.state = self.state
 			identity = "fusca-servidor-" + uuid4().hex[:8]
 			self.info = ServiceInfo(SERVICE_TYPE, f"{identity}.{SERVICE_TYPE}",
-				addresses=[socket.inet_aton(ip) for ip in addresses],
+				addresses=[socket.inet_aton(address)],
 				port=self.server.server_address[1], properties={"version": "1"}, server=f"{identity}.local.")
-			self.zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
+			self.zeroconf = Zeroconf(interfaces=[address], ip_version=IPVersion.V4Only)
 			self.zeroconf.register_service(self.info)
 			self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.1}, daemon=True)
 			self.thread.start()
-			logger.info("Servidor do robô disponível na porta %s", self.server.server_address[1])
+			logger.info("Servidor do robô anunciado em %s:%s por mDNS", address, self.server.server_address[1])
 		except Exception:
 			self.close()
 			raise

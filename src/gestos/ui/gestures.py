@@ -17,7 +17,7 @@ GESTURES = (
 	GestureGuide("DIREITA", "→", "Direita", "Apenas o mindinho levantado; os demais dedos recolhidos.", (False, False, False, False, True)),
 	GestureGuide("ESQUERDA", "←", "Esquerda", "Apenas o polegar estendido; os demais dedos recolhidos.", (True, False, False, False, False)),
 	GestureGuide("RE", "↓", "Para trás", "Indicador e médio em V; os demais dedos recolhidos.", (False, True, True, False, False)),
-	GestureGuide("TROCAR_MODO", "↔", "Troca de modo", "Gesto de rock: indicador e mindinho levantados, polegar recolhido.", (False, True, False, False, True)),
+	GestureGuide("TROCAR_MODO", "↔", "Troca de modo", "Gesto de rock: indicador e mindinho levantados, médio e anelar recolhidos. O polegar pode ficar aberto ou fechado.", (False, True, False, False, True)),
 )
 
 COMMANDS = {gesture.command: (gesture.symbol, gesture.label) for gesture in GESTURES}

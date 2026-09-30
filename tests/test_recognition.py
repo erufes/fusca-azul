@@ -21,6 +21,7 @@ class RecognitionTests(unittest.TestCase):
 		examples = [((1,1,1,1,1), 'FRENTE'), ((0,0,0,0,1), 'DIREITA'),
 					((1,0,0,0,0), 'ESQUERDA'), ((0,1,1,0,0), 'RE'),
 					((0,0,0,0,0), 'PARAR'), ((0,1,0,0,1), 'TROCAR_MODO'),
+					((1,1,0,0,1), 'TROCAR_MODO'),
 					((1,1,0,0,0), 'AGUARDANDO'), ((0,1,0,0,0), 'AGUARDANDO')]
 		for fingers, expected in examples:
 			for mirror in [-1, 1]:
@@ -36,6 +37,23 @@ class RecognitionTests(unittest.TestCase):
 	def test_missing_or_degenerate_hand(self):
 		self.assertEqual(identificar_comando([]), 'NENHUMA_MAO')
 		self.assertEqual(identificar_comando([SimpleNamespace(x=0,y=0)] * 21), 'AGUARDANDO')
+
+	def test_rock_hold_survives_thumb_movement(self):
+		control = ModeControl()
+		changes = []
+		for frame in range(21):
+			points = hand(thumb=bool(frame % 2), index=True, pinky=True)
+			command = identificar_comando(points)
+			self.assertEqual(command, 'TROCAR_MODO')
+			changes.append(control.update(command, frame / 10))
+		self.assertEqual(sum(changes), 1)
+		self.assertEqual(control.mode, 'AUTO')
+
+	def test_rock_requires_middle_and_ring_folded(self):
+		for thumb in (False, True):
+			for middle, ring in ((True, False), (False, True), (True, True)):
+				with self.subTest(thumb=thumb, middle=middle, ring=ring):
+					self.assertNotEqual(identificar_comando(hand(thumb, True, middle, ring, True)), 'TROCAR_MODO')
 
 
 class ModeTests(unittest.TestCase):

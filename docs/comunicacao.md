@@ -7,8 +7,11 @@
 3. Sem configuração salva, o robô cria a rede aberta `Fusca-Azul-<identificador>`.
    Conecte um celular ou computador a essa rede. Se o portal não abrir
    automaticamente, acesse **http://192.168.4.1** (HTTP, sem HTTPS).
-4. Informe o nome exato e a senha da rede **2,4 GHz**. Redes abertas aceitam
-   senha vazia. Redes empresariais com usuário/certificado não são suportadas.
+4. Aguarde a busca e selecione uma das redes **2,4 GHz** encontradas pelo robô.
+   Digite apenas a senha; use **Buscar redes novamente** para atualizar a lista.
+   Redes com o mesmo nome aparecem uma vez. Redes ocultas não aparecem.
+   Redes abertas aceitam senha vazia. Redes empresariais com usuário/certificado
+   não são suportadas.
 5. O robô tenta conectar por até 20 segundos. Só depois de conectar e obter IP
    ele grava a configuração e reinicia. Se falhar, o portal continua disponível
    e a rede anterior permanece salva. Atualize a página para ver o resultado.
@@ -41,7 +44,8 @@ rede local confiável. A aplicação não envia vídeo para o robô.
 ## Descoberta e protocolo v1
 
 A aplicação anuncia `_fusca-azul._tcp.local.` por mDNS/DNS-SD, com TXT `version=1`,
-porta TCP **8765** e os endereços IPv4 locais disponíveis no momento da abertura.
+porta TCP **8765** e o endereço IPv4 da interface usada pela rota multicast
+no momento da abertura, evitando anunciar também endereços de Docker ou VPN.
 O robô consulta esse serviço, obtém IP/porta e inicia a conexão TCP.
 Não depende de internet, IP fixo ou um servidor DNS externo.
 
@@ -79,7 +83,23 @@ A parada não é frenagem ativa: a ponte é desabilitada e as rodas desaceleram.
 - Permita TCP 8765 e mDNS UDP 5353 no firewall do computador.
 - Desative isolamento entre clientes no ponto de acesso. Redes de convidados
   podem impedir comunicação local ou multicast mesmo com Wi-Fi conectado.
-- Veja as mensagens `[WIFI]` e `[SERVIDOR]` em `pio device monitor` a 115200 baud.
+- Veja as mensagens em `pio device monitor` a 115200 baud. As transições incluem
+  tempo desde o boot, componente, estado anterior e novo estado.
+- `[ROBO]` registra `FRENTE`, `RE`, `ESQUERDA`, `DIREITA` e `PARADO` somente
+  quando mudam, sem repetir o mesmo movimento a cada comando recebido.
+- `[WIFI]`, `[PORTAL]` e `[BUSCA_WIFI]` mostram conexão, configuração e busca.
+- `[GESTOS]` distingue espera por Wi-Fi, servidor ausente, múltiplos servidores,
+  falha mDNS/TCP, conexão estabelecida, timeout e erro de protocolo. Cada
+  tentativa TCP informa o IP e a porta realmente retornados pelo mDNS.
+  A perda de conexão ou resposta inválida para os motores.
+
+Exemplo de transições (tempos ilustrativos):
+
+```text
+[1500 ms][ROBO] PARADO -> FRENTE
+[2400 ms][ROBO] FRENTE -> ESQUERDA
+[3200 ms][ROBO] ESQUERDA -> PARADO
+```
 - Erros de inicialização do servidor aparecem na interface; corrija e reabra.
 - Testes da aplicação: `uv run python -m unittest discover -s tests -v`.
 - Compilação do firmware: `pio run`.

@@ -10,7 +10,7 @@ requires-python = ">=3.14"
 dependencies = [
     "cv2-enumerate-cameras>=1.3.2",
     "mediapipe>=1.0.1",
-    "opencv-python-headless>=5.0.0.93",
+    "opencv-contrib-python-headless>=5.0.0.93",
     "pyside6>=6.10",
     "zeroconf>=0.151.0,<1",
     "ifaddr>=0.2.0,<1",
@@ -18,6 +18,10 @@ dependencies = [
 
 [project.scripts]
 gestos = "gestos:main"
+
+[tool.uv]
+# MediaPipe requests the GUI build; use its headless equivalent with PySide6.
+exclude-dependencies = ["opencv-contrib-python", "opencv-python"]
 
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]

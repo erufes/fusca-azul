@@ -3,6 +3,11 @@
 A ESP32-CAM **AI Thinker com OV2640 e PSRAM** é opcional e coexiste com o
 NodeMCU/ESP8266. Sem ela, o controle por gestos continua funcionando.
 
+O GY-80 precisa estar conectado e calibrado para liberar os motores em ambos
+os modos. Mantenha o robô imóvel durante a calibração ao ligar; veja
+[montagem e estabilização de rumo](estabilidade.md). O indicador **Robô conectado**
+confirma a comunicação TCP, mas não informa se o giroscópio está pronto.
+
 ```text
 ESP32-CAM → JPEG por Wi-Fi → computador → comandos TCP → ESP8266 → L298N
                                  ↓
@@ -188,7 +193,8 @@ objetos fora do campo de visão, escadas, superfícies sem textura e piso muito
 inclinado podem gerar falhas. A largura das faixas não foi calibrada para a
 largura física do robô nem para sua distância de frenagem.
 
-O ESP8266 mantém os motores em velocidade total quando recebe movimento.
+O ESP8266 limita o PWM dos motores a 50% e usa o GY-80 para corrigir o rumo
+nos trechos retos. Falhas do giroscópio bloqueiam o movimento também no automático.
 A parada desabilita a ponte, sem frenagem ativa. Para uso além dos testes
 supervisionados, acrescente sensores de distância e parada física e calibre
 velocidade, montagem, campo de visão e limiares em `src/gestos/autonomy.py`.

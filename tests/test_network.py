@@ -3,7 +3,7 @@ import io
 import unittest
 from unittest.mock import Mock, patch
 
-from gestos.network import CommandHandler, CommandState, RobotServer, SERVICE_TYPE
+from gestos.network import CommandHandler, CommandState, RobotServer, SERVICE_TYPE, discovery_address
 
 
 class CommandTests(unittest.TestCase):
@@ -55,6 +55,7 @@ class CommandTests(unittest.TestCase):
 		for data, replies in ((b"FUSCA/1 GET\n" * 2, 2), (b"GET\n", 0), (b"x" * 100, 0)):
 			handler = object.__new__(CommandHandler)
 			handler.connection = Mock()
+			handler.client_address = ("192.168.1.50", 12345)
 			handler.server = Mock(state=self.state)
 			handler.rfile = io.BytesIO(data)
 			handler.wfile = io.BytesIO()
@@ -63,11 +64,26 @@ class CommandTests(unittest.TestCase):
 
 
 class ServerTests(unittest.TestCase):
+	@patch("gestos.network.socket.socket")
+	def test_discovery_uses_multicast_route_without_sending_data(self, socket_factory):
+		probe = socket_factory.return_value.__enter__.return_value
+		probe.getsockname.return_value = ("192.168.1.22", 54321)
+		self.assertEqual(discovery_address(), "192.168.1.22")
+		probe.connect.assert_called_once_with(("224.0.0.251", 5353))
+		probe.send.assert_not_called()
+		probe.sendto.assert_not_called()
+
+	@patch("gestos.network.socket.socket")
+	def test_discovery_rejects_loopback(self, socket_factory):
+		probe = socket_factory.return_value.__enter__.return_value
+		probe.getsockname.return_value = ("127.0.0.1", 54321)
+		with self.assertRaises(OSError):
+			discovery_address()
+
 	@patch("gestos.network.TCPServer")
 	@patch("zeroconf.Zeroconf")
-	@patch("ifaddr.get_adapters")
-	def test_service_advertises_lan_address_and_bound_port(self, adapters, zeroconf, tcp):
-		adapters.return_value = [Mock(ips=[Mock(ip="127.0.0.1"), Mock(ip="192.168.1.22"), Mock(ip=("::1", 0, 0))])]
+	@patch("gestos.network.discovery_address", return_value="192.168.1.22")
+	def test_service_advertises_lan_address_and_bound_port(self, address, zeroconf, tcp):
 		tcp.return_value.server_address = ("0.0.0.0", 8765)
 		server = RobotServer()
 		server.start()
@@ -75,6 +91,7 @@ class ServerTests(unittest.TestCase):
 		self.assertEqual(info.type, SERVICE_TYPE)
 		self.assertEqual(info.parsed_addresses(), ["192.168.1.22"])
 		self.assertEqual(info.port, 8765)
+		self.assertEqual(zeroconf.call_args.kwargs["interfaces"], ["192.168.1.22"])
 		server.state.update("FRENTE")
 		server.close()
 		server.close()
@@ -84,9 +101,8 @@ class ServerTests(unittest.TestCase):
 
 	@patch("gestos.network.TCPServer")
 	@patch("zeroconf.Zeroconf")
-	@patch("ifaddr.get_adapters")
-	def test_registration_failure_releases_socket(self, adapters, zeroconf, tcp):
-		adapters.return_value = [Mock(ips=[Mock(ip="192.168.1.22")])]
+	@patch("gestos.network.discovery_address", return_value="192.168.1.22")
+	def test_registration_failure_releases_socket(self, address, zeroconf, tcp):
 		tcp.return_value.server_address = ("0.0.0.0", 8765)
 		zeroconf.return_value.register_service.side_effect = OSError("mDNS unavailable")
 		with self.assertRaises(OSError):
