@@ -1,5 +1,6 @@
 """ESP32-CAM discovery and bounded JPEG polling without a buffered video queue."""
 import http.client
+import logging
 from threading import Lock
 from time import monotonic
 from urllib.parse import urlsplit
@@ -15,6 +16,7 @@ from .depth import DepthEstimator, depth_model_path, ensure_depth_model
 CAMERA_SERVICE = "_fusca-cam._tcp.local."
 MAX_JPEG = 160_000
 MAX_FRAME_AGE = .4
+logger = logging.getLogger(__name__)
 
 
 def discover_camera(cancelled):
@@ -69,8 +71,20 @@ class CameraHTTP:
 		started = monotonic()
 		self.connection.request("GET", self.path, headers={"Cache-Control": "no-cache"})
 		response = self.connection.getresponse()
-		if response.status != 200 or response.getheader("Content-Type", "").split(";")[0] != "image/jpeg":
-			raise RuntimeError("A ESP32-CAM não retornou uma imagem JPEG.")
+		content_type = response.getheader("Content-Type", "").split(";")[0].strip().lower()
+		if response.status != 200 or content_type != "image/jpeg":
+			detail = ""
+			if content_type == "text/plain":
+				try:
+					detail = " ".join(response.read(512).decode("utf-8", errors="replace").split())
+				except (OSError, http.client.HTTPException):
+					pass
+			message = f"ESP32-CAM: HTTP {response.status} em {self.path} ({content_type or 'sem tipo de conteúdo'})."
+			if detail:
+				message += f" {detail}"
+			elif content_type == "text/html":
+				message += " Recebida uma página HTML; confira o endereço /capture e a configuração Wi-Fi da câmera."
+			raise RuntimeError(message)
 		length = int(response.getheader("Content-Length", "0"))
 		frame_id = int(response.getheader("X-Fusca-Frame", "-1"))
 		age_ms = int(response.getheader("X-Fusca-Age-Ms", "-1"))
@@ -115,18 +129,28 @@ class ESPCameraWorker(QThread):
 		try:
 			self.status.emit("Procurando ESP32-CAM…" if not self.url else "Conectando à ESP32-CAM…")
 			url = self.url or discover_camera(self.isInterruptionRequested)
+			logger.info("ESP32-CAM localizada em %s", url)
 			if self.isInterruptionRequested():
 				return
 			path = ensure_depth_model(depth_model_path(), self.status.emit, self.isInterruptionRequested)
 			self.status.emit("Preparando análise de profundidade…")
 			estimator = DepthEstimator(path)
 			camera = CameraHTTP(url)
+			was_slow = False
 			while not self.isInterruptionRequested():
+				started = monotonic()
 				frame, captured = camera.read()
-				if monotonic() - captured > MAX_FRAME_AGE:
-					raise TimeoutError("Vídeo atrasado. Aproxime o robô do roteador e reconecte.")
+				received = monotonic()
 				depth = estimator.predict(frame)
 				image, heat, navigation = navigator.analyze(frame, depth, monotonic())
+				analyzed = monotonic()
+				slow = analyzed - captured > MAX_FRAME_AGE
+				if slow and not was_slow:
+					logger.warning("Prévia atrasada: captura/transferência %.0f ms; análise %.0f ms; idade total %.0f ms. Movimento bloqueado até uma análise recente.",
+						(received - started) * 1000, (analyzed - received) * 1000, (analyzed - captured) * 1000)
+				was_slow = slow
+				# Keep preview available; the UI and command server reject stale motion.
+				# Preserve the original timestamp even when a slow frame is displayed.
 				rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 				qimage = QImage(rgb.data, 320, 240, rgb.strides[0], QImage.Format.Format_RGB888).copy()
 				heat_rgb = cv2.cvtColor(heat, cv2.COLOR_BGR2RGB)
@@ -138,6 +162,7 @@ class ESPCameraWorker(QThread):
 			pass
 		except Exception as error:
 			if not self.isInterruptionRequested():
+				logger.warning("Falha na ESP32-CAM: %s", error)
 				self.failed.emit(str(error))
 		finally:
 			if camera is not None:

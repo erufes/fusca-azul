@@ -140,7 +140,7 @@ class AutonomousPanel(QWidget):
 			image, heat, navigation, captured = frame
 			self.last_frame, self.navigation = captured, navigation
 			age_ms = max(0, int((self.clock() - captured) * 1000))
-			self.status.setText(f"ESP32-CAM • idade da análise: {age_ms} ms" + (" • análise lenta; automático indisponível" if age_ms > 400 else ""))
+			self.status.setText(f"ESP32-CAM • idade da análise: {age_ms} ms" + (" • prévia atrasada; automático indisponível" if age_ms > MAX_FRAME_AGE * 1000 else ""))
 			self.video.set_frame(image, ())
 			self.depth_video.set_frame(heat, ())
 			self.decision.setText(("Automático: " if self.active else "Prévia: ") + navigation.reason)
@@ -150,10 +150,13 @@ class AutonomousPanel(QWidget):
 		robot_connected = self.state is not None and self.state.connected()
 		ready = fresh and robot_connected and self.navigation is not None and self.navigation.confident
 		self.start_button.setEnabled(bool(ready and not self.active and not self.stopping and not self.closing))
-		if self.active and (not fresh or not robot_connected):
+		if self.active and not robot_connected:
 			self.set_active(False)
-			self.status.setText("Automático interrompido: vídeo atrasado ou robô desconectado. Confira e inicie novamente.")
-			self.video.clear("Vídeo sem atualização recente")
+			self.status.setText("Automático interrompido: robô desconectado. Confira e inicie novamente.")
+		elif self.active and not fresh:
+			self.state.update_autonomous("PARAR", self.last_frame)
+			self.status.setText("Vídeo atrasado: robô parado. O movimento retoma quando chegar uma análise recente e válida.")
+			self.decision.setText("Automático: aguardando imagem recente")
 
 	def shutdown(self):
 		self.closing = True

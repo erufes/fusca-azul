@@ -1,7 +1,11 @@
 # ESP32-CAM e navegação visual
 
-A ESP32-CAM **AI Thinker com OV2640 e PSRAM** é opcional e coexiste com o
-NodeMCU/ESP8266. Sem ela, o controle por gestos continua funcionando.
+A ESP32-CAM **AI Thinker com OV2640**, preferencialmente com PSRAM, é opcional
+e coexiste com o NodeMCU/ESP8266. Sem ela, o controle por gestos continua funcionando.
+Se a PSRAM não for detectada, o firmware tenta capturar JPEG 320 × 240 com
+um único buffer na RAM interna e informa isso no monitor serial. Esse modo
+depende de memória disponível e precisa ser validado na placa; os limites
+de idade das imagens e de atraso para autonomia continuam iguais.
 
 O GY-80 precisa estar conectado e calibrado para liberar os motores em ambos
 os modos. Mantenha o robô imóvel durante a calibração ao ligar; veja
@@ -45,7 +49,11 @@ que o piso apareça na metade inferior. Não há ligação de dados entre as pla
 Configure cada placa na mesma rede Wi-Fi de 2,4 GHz do computador.
 A ESP32-CAM tenta a última rede salva por 20 segundos. Sem conexão, abre
 `fusca-cam-<identificador>`; conecte-se ao hotspot e abra **http://192.168.4.1**.
-Informe nome e senha. Só após obter conexão/IP as credenciais substituem a
+O portal busca as redes próximas e apresenta uma lista, como no ESP8266.
+Selecione a rede e informe a senha. Durante a busca, a página atualiza
+automaticamente; use **Buscar redes novamente** para atualizar a lista.
+Aparecem apenas redes de 2,4 GHz com nome visível.
+Só após obter conexão/IP as credenciais substituem a
 configuração anterior em NVS; então a câmera reinicia. Senha errada mantém
 a configuração anterior. Ao perder a rede, tenta reconectar e volta ao portal.
 
@@ -75,7 +83,9 @@ O gesto de rock também pode entrar no modo automático, desde que a transmissã
 esteja conectada e pronta. Sem câmera pronta, o modo automático não é ativado.
 Ao sair, a webcam é pausada; use **Ativar câmera** para retomar controle manual.
 Pausar/trocar a webcam durante o modo automático também interrompe o movimento.
-Após desconexão ou atraso, o modo não se reativa sozinho.
+Durante atraso nas imagens, o modo automático permanece ativado e manda parar;
+o movimento retoma quando chega uma análise recente e válida. Parada manual
+ou desconexão que encerre o modo exigem nova ativação pelo usuário.
 
 ## Baixar o modelo de profundidade
 
@@ -179,7 +189,8 @@ O aplicativo mantém somente o resultado mais recente, sem fila de vídeo.
 Captura, transferência e inferência precisam caber em **400 ms** para habilitar
 autonomia. O relógio do comando preserva o instante anterior à transferência;
 um quadro atrasado não ganha validade nova ao chegar à interface. Falta de
-atualização, desconexão do robô ou fechamento interrompem o automático.
+atualização manda parar sem sair do automático; uma análise recente e válida
+permite retomar. Desconexão do robô ou fechamento interrompem o automático.
 O watchdog de comunicação do ESP8266 continua funcionando independentemente.
 
 ## Limites e validação na montagem real
@@ -209,9 +220,20 @@ nem a segurança de movimento em um ambiente real.
 
 ## Diagnóstico
 
+- `PSRAM ID read error` indica que a memória externa não respondeu. A
+  configuração `esp32cam` já habilita PSRAM. Confira alimentação e modelo da
+  placa; teste sem ligações ao ESP8266. O firmware tenta RAM interna e deve
+  imprimir `[CAMERA] Pronta: JPEG 320x240` se conseguir inicializar. Se falhar,
+  consulte o código em `[CAMERA] Falha de inicialização`.
 - Permita HTTP TCP 80 da câmera, TCP 8765 do servidor e mDNS UDP 5353.
 - Se a análise ultrapassar 400 ms, o vídeo pode aparecer como prévia, mas o
-  automático fica indisponível. Aproxime o roteador e use um computador mais rápido.
+  robô para. Um quadro lento não encerra a prévia nem um modo automático já
+  ativado; o movimento retoma com uma análise recente e válida. Para iniciar
+  o modo pela primeira vez, ainda é necessário aguardar uma análise recente.
+  O terminal informa os tempos de captura/transferência e análise ao detectar
+  atraso. Aproxime o roteador se a transferência estiver lenta; se o maior
+  tempo for de análise, confira a carga do computador. Erros de comunicação
+  e o timeout de transferência continuam encerrando a conexão.
 - Se houver erro ao carregar o ONNX, confira o arquivo e a versão do OpenCV;
   nenhuma regra de navegação por cor é usada como substituição silenciosa.
 - Se houver `No module named intelhex` ao compilar, use a instalação completa

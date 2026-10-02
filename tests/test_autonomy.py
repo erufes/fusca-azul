@@ -99,6 +99,34 @@ class CameraProtocolTests(unittest.TestCase):
 			with self.assertRaises(ValueError):
 				CameraHTTP(url)
 
+	@patch("gestos.espcam.http.client.HTTPConnection")
+	def test_camera_error_preserves_http_status_and_firmware_reason(self, connection):
+		response = Mock(status=503)
+		response.getheader.return_value = "text/plain; charset=utf-8"
+		response.read.return_value = b"Camera indisponivel"
+		connection.return_value.getresponse.return_value = response
+		with self.assertRaisesRegex(RuntimeError, "HTTP 503.*Camera indisponivel"):
+			CameraHTTP("http://camera/capture").read()
+		response.read.assert_called_once_with(512)
+
+	@patch("gestos.espcam.http.client.HTTPConnection")
+	def test_html_response_explains_wrong_endpoint_without_reading_page(self, connection):
+		response = Mock(status=200)
+		response.getheader.return_value = "text/html"
+		connection.return_value.getresponse.return_value = response
+		with self.assertRaisesRegex(RuntimeError, "página HTML.* /capture"):
+			CameraHTTP("http://camera/capture").read()
+		response.read.assert_not_called()
+
+	@patch("gestos.espcam.http.client.HTTPConnection")
+	def test_error_body_timeout_preserves_http_error(self, connection):
+		response = Mock(status=503)
+		response.getheader.return_value = "text/plain"
+		response.read.side_effect = TimeoutError()
+		connection.return_value.getresponse.return_value = response
+		with self.assertRaisesRegex(RuntimeError, "HTTP 503"):
+			CameraHTTP("http://camera/capture").read()
+
 	@patch("gestos.depth.cv2.dnn.readNetFromONNX")
 	def test_model_input_matches_official_onnx_preprocessing(self, read_net):
 		read_net.return_value.forward.return_value = np.ones((1, 256, 256), np.float32)
@@ -110,6 +138,28 @@ class CameraProtocolTests(unittest.TestCase):
 		self.assertEqual(blob.shape, (1, 3, 256, 256))
 		self.assertAlmostEqual(float(blob[0, 0].mean()), 1)
 		self.assertEqual(float(blob[0, 2].mean()), 0)
+
+
+class CameraWorkerTests(unittest.TestCase):
+	def test_slow_frame_keeps_preview_and_original_timestamp_then_recovers(self):
+		frame = np.full((240, 320, 3), 100, np.uint8)
+		worker = ESPCameraWorker("http://camera/capture")
+		failures, frames = [], []
+		worker.failed.connect(failures.append)
+		with patch("gestos.espcam.ensure_depth_model"), \
+			patch("gestos.espcam.DepthEstimator"), \
+			patch("gestos.espcam.DepthNavigator") as navigator, \
+			patch("gestos.espcam.CameraHTTP") as camera, \
+			patch("gestos.espcam.monotonic", return_value=10.), \
+			patch.object(worker, "isInterruptionRequested", side_effect=[False, False, False, True]), \
+			patch.object(worker, "msleep", side_effect=lambda _: frames.append(worker.take_frame())):
+			camera.return_value.read.side_effect = [(frame, 9.), (frame, 10.)]
+			navigator.return_value.analyze.return_value = (frame, frame, Navigation("FRENTE", "Livre", True))
+			worker.run()
+			camera.return_value.close.assert_called_once()
+		self.assertEqual(failures, [])
+		self.assertEqual([result[3] for result in frames], [9., 10.])
+		self.assertFalse(frames[0][0].isNull())
 
 
 class FakeCamera(QObject):
@@ -170,17 +220,19 @@ class PanelTests(unittest.TestCase):
 		self.feed("DIREITA")
 		self.assertEqual(self.state.response(), b"FUSCA/1 DIREITA\n")
 
-	def test_stale_video_disarms_and_does_not_rearm_on_return(self):
+	def test_stale_video_stops_and_resumes_on_fresh_result(self):
 		self.state.response()
 		self.feed()
 		self.panel.set_active(True)
 		self.feed()
 		self.now += .5
 		self.panel.refresh()
-		self.assertFalse(self.panel.active)
-		self.feed()
-		self.assertFalse(self.panel.active)
+		self.assertTrue(self.panel.active)
 		self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
+		self.assertEqual(self.state.mode, "AUTO")
+		self.feed("DIREITA")
+		self.assertTrue(self.panel.active)
+		self.assertEqual(self.state.response(), b"FUSCA/1 DIREITA\n")
 
 	def test_stop_disconnect_and_shutdown_invalidate_pending_frame(self):
 		self.state.response()
@@ -199,3 +251,54 @@ class PanelTests(unittest.TestCase):
 		self.state.response()
 		self.feed(captured=self.now - 1)
 		self.assertFalse(self.panel.set_active(True))
+
+	def test_delayed_frame_waits_with_preview_connected(self):
+		self.state.response()
+		self.feed()
+		self.panel.set_active(True)
+		worker = self.panel.worker
+		with patch.object(self.panel.video, "set_frame") as show, patch.object(self.panel.video, "clear") as clear:
+			self.feed(captured=self.now - .5)
+			show.assert_called_once()
+			clear.assert_not_called()
+		self.assertIs(self.panel.worker, worker)
+		self.assertFalse(worker.interrupted)
+		self.assertTrue(self.panel.active)
+		self.assertFalse(self.panel.start_button.isEnabled())
+		self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
+		self.feed()
+		self.assertTrue(self.panel.active)
+		self.assertEqual(self.state.response(), b"FUSCA/1 FRENTE\n")
+
+	def test_manual_stop_while_waiting_prevents_automatic_resume(self):
+		self.state.response()
+		self.feed()
+		self.panel.set_active(True)
+		self.now += .5
+		self.panel.refresh()
+		self.panel.emergency_stop()
+		self.feed()
+		self.assertFalse(self.panel.active)
+		self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
+
+	def test_invalid_analysis_does_not_resume_waiting_robot(self):
+		self.state.response()
+		self.feed()
+		self.panel.set_active(True)
+		self.feed(captured=self.now - .5)
+		self.panel.worker.frame = (self.image, self.image, Navigation("FRENTE", "Piso incerto", False), self.now)
+		self.panel.refresh()
+		self.assertTrue(self.panel.active)
+		self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
+
+	def test_robot_disconnect_still_requires_manual_restart(self):
+		self.state.response()
+		self.feed()
+		self.panel.set_active(True)
+		self.now += 2
+		self.panel.refresh()
+		self.assertFalse(self.panel.active)
+		self.state.response()
+		self.feed()
+		self.assertFalse(self.panel.active)
+		self.assertEqual(self.state.response(), b"FUSCA/1 PARAR\n")
