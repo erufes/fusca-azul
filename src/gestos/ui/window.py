@@ -43,6 +43,10 @@ class MainWindow(QMainWindow):
 		header = QHBoxLayout()
 		header.addWidget(title)
 		header.addStretch()
+		self.stop_robot_button = QPushButton("Parar robô (Esc)")
+		self.stop_robot_button.setShortcut("Esc")
+		self.stop_robot_button.clicked.connect(self.emergency_stop)
+		header.addWidget(self.stop_robot_button)
 		self.help_button = QPushButton("?")
 		self.help_button.setObjectName("helpButton")
 		self.help_button.setFixedSize(44, 44)
@@ -210,6 +214,11 @@ class MainWindow(QMainWindow):
 		self.symbol.setText(symbol)
 		self.gesture.setText(label)
 		self.mode.setText("Modo: Automático" if result.mode == "AUTO" else "Modo: Gestos")
+
+	def emergency_stop(self):
+		self.auto_start = False
+		self.restart_camera = False
+		self.stop_camera()
 
 	def stop_camera(self):
 		if self.command_state is not None:

@@ -176,6 +176,23 @@ class WindowTests(unittest.TestCase):
 		self.window.refresh_frame()
 		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
 
+	def test_emergency_stop_cancels_camera_restart_and_pending_motion(self):
+		from gestos.network import CommandState
+		self.window.command_state = state = CommandState()
+		self.window.start_camera()
+		state.update("FRENTE")
+		worker = self.window.worker
+		worker.frame = (QImage(64, 48, QImage.Format.Format_RGB888), Detection("FRENTE", "GESTOS", ()))
+		self.window.restart_camera = True
+		self.window.stop_robot_button.click()
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
+		self.assertTrue(worker.interrupted)
+		worker.finished.emit()
+		self.assertIsNone(self.window.worker)
+		self.assertFalse(self.window.restart_camera)
+		self.assertFalse(self.window.auto_start)
+
 	def test_capture_error_cannot_reactivate_motors_from_pending_frame(self):
 		from gestos.network import CommandState
 		self.window.command_state = state = CommandState()

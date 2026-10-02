@@ -1,15 +1,10 @@
 #include "Motor.h"
 
-namespace {
-constexpr uint32_t PWM_RANGE = 1024;
-constexpr int MOTOR_PWM = PWM_RANGE / 2;
-}
-
 Motor::Motor(uint8_t enablePin, uint8_t input1Pin, uint8_t input2Pin)
 	: enablePin_(enablePin), input1Pin_(input1Pin), input2Pin_(input2Pin) {}
 
 void Motor::begin() {
-	analogWriteRange(PWM_RANGE);
+	analogWriteRange(MAX_PWM);
 	digitalWrite(enablePin_, LOW);
 	pinMode(enablePin_, OUTPUT);
 	digitalWrite(input1Pin_, LOW);
@@ -36,7 +31,7 @@ void Motor::stop() {
 }
 
 void Motor::drive(uint8_t input1State, uint8_t input2State, int pwm) {
-	pwm = constrain(pwm, 0, MOTOR_PWM);
+	pwm = constrain(pwm, 0, MAX_PWM);
 	if (pwm == lastPwm_ && input1State == lastInput1_ && input2State == lastInput2_) return;
 	if (input1State != lastInput1_ || input2State != lastInput2_) analogWrite(enablePin_, 0);
 	digitalWrite(input1Pin_, input1State);

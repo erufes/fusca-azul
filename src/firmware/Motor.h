@@ -2,13 +2,14 @@
 
 #include <Arduino.h>
 
-// Um canal da ponte H L298N, com PWM limitado a 50% no enable.
+// Um canal da ponte H L298N, com PWM de até 100% no enable.
 class Motor {
 public:
+	static constexpr int MAX_PWM = 1024;
 	Motor(uint8_t enablePin, uint8_t input1Pin, uint8_t input2Pin);
 	void begin();
-	void forward(int pwm = 512);
-	void backward(int pwm = 512);
+	void forward(int pwm = MAX_PWM);
+	void backward(int pwm = MAX_PWM);
 	void stop();
 
 private:

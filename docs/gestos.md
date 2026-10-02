@@ -98,3 +98,6 @@ uv run gestos
 ```
 
 Não há logs por imagem. Avisos internos do MediaPipe podem aparecer no terminal.
+
+Use **Parar robô (Esc)** para enviar a parada e pausar a captura. Para voltar
+a controlar por gestos, clique em **Ativar câmera**.
