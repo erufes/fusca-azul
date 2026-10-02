@@ -1,0 +1,103 @@
+# Aplicativo de gestos
+
+## Inicialização
+
+Execute `uv run gestos` na raiz do projeto. A janela abre e inicia a câmera
+padrão automaticamente. A captura, a preparação do modelo e o reconhecimento
+rodam fora da thread da interface para manter a janela responsiva.
+
+O vídeo é espelhado. O botão **Pausar câmera** libera a webcam; **Ativar câmera**
+inicia uma nova sessão em modo Gestos. Para escolher outra câmera, abra **Configurações** pela engrenagem no canto
+superior direito. Selecione o nome da webcam e clique em **Aplicar**; a captura
+ativa é reiniciada com a nova câmera e o modo volta para Gestos. Se a captura
+estiver pausada, a seleção será usada ao ativá-la. **Cancelar** mantém a câmera
+anterior. Use **Atualizar lista** após conectar uma webcam. A busca ocorre em
+segundo plano, sem travar a janela. Sem câmeras, a ativação fica desabilitada. O controle **Pontos da mão** mostra ou oculta
+a sobreposição dos 21 pontos, sem interromper o reconhecimento.
+
+Falhas de permissão, abertura ou desconexão aparecem na janela. Corrija a causa
+e use **Tentar novamente**. Ao fechar, o aplicativo solicita o encerramento e
+aguarda a liberação da câmera e do detector. Se houver um download em andamento,
+pode ser necessário aguardar a operação de rede terminar ou atingir seu timeout.
+
+O aplicativo não transmite imagens. Ele abre um servidor TCP na porta 8765
+e anuncia o serviço por mDNS para transmitir os comandos ao robô na rede local.
+O download inicial do modelo precisa de internet, quando necessário.
+Consulte [a configuração da comunicação](comunicacao.md).
+
+## Tutorial no aplicativo
+
+Clique no **?** ao lado da engrenagem ou pressione **F1**. O tutorial traz
+ilustrações dos gestos, instruções de uso, troca de modo e uma explicação do
+funcionamento do robô e das integrações ainda pendentes. As abas **Gestos e
+controles** e **Como funciona o robô** têm rolagem. O tutorial pode ficar aberto
+enquanto você pratica; abrir ou fechar o guia não interrompe a captura.
+
+## Gestos e modos
+
+Use uma mão com a palma voltada para a câmera:
+
+| Gesto | Resultado |
+| --- | --- |
+| Mão aberta (cinco dedos) | Em frente |
+| Apenas mindinho levantado | Direita |
+| Apenas polegar levantado | Esquerda |
+| Indicador e médio levantados (V), demais fechados | Para trás |
+| Punho fechado | Parado |
+| Indicador e mindinho levantados (rock), médio e anelar fechados; polegar livre | Troca de modo |
+| Outra combinação | Aguardando |
+| Sem mão na imagem | Nenhuma mão |
+
+Mantenha o rock por 1 segundo para alternar entre **Gestos** e **Automático**.
+Desfaça o gesto por pelo menos meio segundo antes de trocar novamente. Manter
+o rock não provoca trocas repetidas. Uma interrupção na captura reinicia a
+contagem do gesto; pausar e reabrir a câmera começa uma sessão em modo Gestos.
+
+Em modo Gestos, os comandos acionam os motores do robô conectado. Sem mão,
+com gesto desconhecido, durante o rock ou no modo Automático, o comando é parar.
+Pausar, trocar a câmera, fechar o aplicativo ou perder a comunicação também
+interrompe o movimento. A navegação autônoma ainda não está implementada.
+
+## Modelo
+
+O aplicativo usa, nesta ordem:
+
+1. O arquivo indicado pela variável de ambiente `FUSCA_MODEL`, se definida.
+2. `src/gestos/model/hand_landmarker.task`, caso exista.
+3. Um arquivo no cache do usuário, baixado automaticamente na primeira execução.
+
+O cache fica em `fusca-azul/hand_landmarker.task` dentro de:
+
+- Linux: `$XDG_CACHE_HOME` ou `~/.cache`.
+- Windows: `%LOCALAPPDATA%`.
+- macOS: `~/Library/Caches`.
+
+Para preparar uma máquina sem internet, copie o
+[modelo oficial](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task)
+para o caminho local acima ou configure `FUSCA_MODEL`. As dependências Python
+também precisam estar instaladas previamente. Um download interrompido não é
+salvo como modelo completo. Se o modelo local estiver corrompido, remova esse
+arquivo para permitir novo download ou substitua-o por uma cópia válida.
+
+## Logs
+
+Por padrão, os logs mostram início e encerramento da captura, trocas de modo
+e erros. Para registrar apenas as mudanças de gesto, além dessas mensagens,
+configure `FUSCA_LOG_LEVEL=debug` no ambiente antes de executar o aplicativo.
+Por exemplo, no Linux/macOS:
+
+```bash
+FUSCA_LOG_LEVEL=debug uv run gestos
+```
+
+No PowerShell:
+
+```powershell
+$env:FUSCA_LOG_LEVEL = "debug"
+uv run gestos
+```
+
+Não há logs por imagem. Avisos internos do MediaPipe podem aparecer no terminal.
+
+Use **Parar robô (Esc)** para enviar a parada e pausar a captura. Para voltar
+a controlar por gestos, clique em **Ativar câmera**.

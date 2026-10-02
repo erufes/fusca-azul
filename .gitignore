@@ -16,6 +16,7 @@ env/
 htmlcov/
 
 # Build / packaging
+.pio/
 build/
 dist/
 *.egg-info/
@@ -68,3 +69,5 @@ fp-info-cache
 
 # Local project settings
 *.kicad_prl
+
+model/

@@ -1,0 +1,298 @@
+"""Qt lifecycle tests with synthetic frames, without camera hardware."""
+import os
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+
+from pathlib import Path
+import unittest
+from unittest.mock import Mock, patch
+
+import numpy as np
+from PySide6.QtCore import QObject, Signal
+from PySide6.QtGui import QImage
+from PySide6.QtTest import QTest
+from PySide6.QtWidgets import QApplication
+
+from gestos.camera import CameraWorker
+from gestos.detection import Detection
+from gestos.devices import CameraDevice
+from gestos.ui.window import MainWindow
+
+
+CAMERAS = [CameraDevice(0, 200, "Integrada", "/dev/video0"), CameraDevice(2, 200, "USB", "/dev/video2")]
+
+
+def wait_for_devices(window):
+	for _ in range(100):
+		QTest.qWait(10)
+		if window.settings.scanner is None:
+			return
+	raise AssertionError("Camera discovery did not finish")
+
+
+class FakeWorker(QObject):
+	status = Signal(str)
+	failed = Signal(str)
+	finished = Signal()
+
+	def __init__(self, index, parent):
+		super().__init__(parent)
+		self.index = index
+		self.interrupted = False
+		self.frame = None
+
+	def start(self):
+		self.status.emit("Câmera conectada")
+
+	def requestInterruption(self):
+		self.interrupted = True
+
+	def take_frame(self):
+		frame, self.frame = self.frame, None
+		return frame
+
+	def wait(self):
+		return True
+
+
+class WindowTests(unittest.TestCase):
+	@classmethod
+	def setUpClass(cls):
+		cls.app = QApplication.instance() or QApplication([])
+
+	def setUp(self):
+		self.window = MainWindow(worker_factory=FakeWorker, auto_start=False, camera_provider=lambda: CAMERAS)
+		wait_for_devices(self.window)
+
+	def tearDown(self):
+		if self.window.worker is not None:
+			self.window.worker.finished.emit()
+		self.window.close()
+
+	def test_pause_retry_and_camera_selection(self):
+		self.window.settings.camera.setCurrentIndex(1)
+		self.window.settings.accept()
+		self.window.start_camera()
+		worker = self.window.worker
+		self.assertEqual(worker.index, CAMERAS[1])
+		self.window.stop_camera()
+		self.assertTrue(worker.interrupted)
+		self.assertFalse(self.window.button.isEnabled())
+		worker.finished.emit()
+		self.assertIsNone(self.window.worker)
+		self.window.start_camera()
+		self.assertIsNot(self.window.worker, worker)
+
+	def test_apply_switches_only_after_old_camera_stops(self):
+		self.window.start_camera()
+		old = self.window.worker
+		self.window.settings.camera.setCurrentIndex(1)
+		self.window.settings.accept()
+		self.assertTrue(old.interrupted)
+		self.assertIs(self.window.worker, old)
+		old.finished.emit()
+		self.assertIsNot(self.window.worker, old)
+		self.assertEqual(self.window.worker.index, CAMERAS[1])
+
+	def test_cancel_does_not_change_camera(self):
+		self.window.start_camera()
+		old = self.window.worker
+		self.window.settings.open()
+		self.window.settings.camera.setCurrentIndex(1)
+		self.window.settings.reject()
+		self.assertIs(self.window.worker, old)
+		self.assertFalse(old.interrupted)
+		self.window.settings.open()
+		self.assertEqual(self.window.settings.camera.currentData(), CAMERAS[0])
+		self.window.settings.reject()
+
+	def test_refresh_preserves_identity_with_new_index(self):
+		self.window.settings.camera.setCurrentIndex(1)
+		self.window.settings.accept()
+		updated = CameraDevice(5, 200, "USB", "/dev/video2")
+		self.window.settings.provider = lambda: [updated, CAMERAS[0]]
+		self.window.settings.scan()
+		wait_for_devices(self.window)
+		self.assertEqual(self.window.settings.camera.currentData(), updated)
+		self.window.start_camera()
+		self.assertEqual(self.window.worker.index, updated)
+
+	def test_no_camera_and_refresh_after_connection(self):
+		self.window.settings.provider = lambda: []
+		self.window.settings.scan()
+		wait_for_devices(self.window)
+		self.assertFalse(self.window.button.isEnabled())
+		self.assertFalse(self.window.settings.apply.isEnabled())
+		self.window.start_camera()
+		self.assertIsNone(self.window.worker)
+		self.window.settings.provider = lambda: CAMERAS
+		self.window.settings.scan()
+		wait_for_devices(self.window)
+		self.assertTrue(self.window.button.isEnabled())
+
+	def test_discovery_error_recovers_without_crashing(self):
+		self.window.settings.provider = Mock(side_effect=OSError("Permission denied"))
+		self.window.settings.scan()
+		wait_for_devices(self.window)
+		self.assertIn("permissões", self.window.settings.message.text())
+		self.assertTrue(self.window.settings.refresh.isEnabled())
+		self.assertFalse(self.window.settings.apply.isEnabled())
+
+	def test_close_during_discovery_waits_safely(self):
+		from threading import Event
+		release = Event()
+		self.window.settings.provider = lambda: (release.wait(2) and CAMERAS) or []
+		self.window.show()
+		self.window.settings.scan()
+		self.window.close()
+		self.assertTrue(self.window.isVisible())
+		release.set()
+		wait_for_devices(self.window)
+		self.assertFalse(self.window.isVisible())
+
+	def test_frame_updates_and_overlay_can_be_disabled(self):
+		self.window.start_camera()
+		image = QImage(64, 48, QImage.Format.Format_RGB888)
+		image.fill(0)
+		self.window.worker.frame = (image, Detection("FRENTE", "AUTO", ((.5, .5),) * 21))
+		self.window.refresh_frame()
+		self.assertEqual(self.window.gesture.text(), "Em frente")
+		self.assertEqual(self.window.mode.text(), "Modo: Automático")
+		self.window.landmarks.setChecked(False)
+		self.assertFalse(self.window.video.show_landmarks)
+		self.window.show()
+		self.app.processEvents()
+		self.assertFalse(self.window.grab().isNull())
+
+	def test_commands_stop_on_pause_and_ignore_pending_frames(self):
+		from gestos.network import CommandState
+		self.window.command_state = state = CommandState()
+		self.window.start_camera()
+		image = QImage(64, 48, QImage.Format.Format_RGB888)
+		self.window.worker.frame = (image, Detection("FRENTE", "GESTOS", ()))
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 FRENTE\n")
+		self.window.worker.frame = (image, Detection("RE", "GESTOS", ()))
+		self.window.stop_camera()
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
+
+	def test_emergency_stop_cancels_camera_restart_and_pending_motion(self):
+		from gestos.network import CommandState
+		self.window.command_state = state = CommandState()
+		self.window.start_camera()
+		state.update("FRENTE")
+		worker = self.window.worker
+		worker.frame = (QImage(64, 48, QImage.Format.Format_RGB888), Detection("FRENTE", "GESTOS", ()))
+		self.window.restart_camera = True
+		self.window.stop_robot_button.click()
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
+		self.assertTrue(worker.interrupted)
+		worker.finished.emit()
+		self.assertIsNone(self.window.worker)
+		self.assertFalse(self.window.restart_camera)
+		self.assertFalse(self.window.auto_start)
+
+	def test_capture_error_cannot_reactivate_motors_from_pending_frame(self):
+		from gestos.network import CommandState
+		self.window.command_state = state = CommandState()
+		self.window.start_camera()
+		state.update("FRENTE")
+		self.window.worker.frame = (QImage(64, 48, QImage.Format.Format_RGB888), Detection("FRENTE", "GESTOS", ()))
+		self.window.show_error("Câmera desconectada")
+		self.window.refresh_frame()
+		self.assertEqual(state.response(), b"FUSCA/1 PARAR\n")
+
+	def test_error_is_visible_and_can_be_retried(self):
+		self.window.start_camera()
+		self.window.worker.failed.emit("Câmera indisponível")
+		self.window.worker.finished.emit()
+		self.assertEqual(self.window.status.text(), "Câmera indisponível")
+		self.assertEqual(self.window.button.text(), "Tentar novamente")
+		self.window.start_camera()
+		self.assertIsNone(self.window.error)
+
+	def test_close_waits_for_worker_without_destroying_running_thread(self):
+		self.window.show()
+		self.window.start_camera()
+		self.window.close()
+		self.assertTrue(self.window.isVisible())
+		self.assertTrue(self.window.worker.interrupted)
+		self.window.worker.finished.emit()
+		self.assertFalse(self.window.isVisible())
+
+	def test_real_thread_stops_and_releases_resources(self):
+		capture = Mock()
+		capture.read.return_value = (True, np.zeros((32, 32, 3), dtype=np.uint8))
+		detector = Mock()
+		detector.process.return_value = Detection("PARAR", "GESTOS", ())
+		window = MainWindow(auto_start=False, camera_provider=lambda: CAMERAS)
+		wait_for_devices(window)
+		with (
+			patch("gestos.camera.ensure_model", return_value=Path("model.task")),
+			patch("gestos.camera.GestureDetector", return_value=detector),
+			patch("gestos.camera.cv2.VideoCapture", return_value=capture),
+		):
+			try:
+				window.start_camera()
+				for _ in range(100):
+					QTest.qWait(10)
+					if window.video.image is not None:
+						break
+				self.assertIsNotNone(window.video.image)
+				window.close()
+				for _ in range(100):
+					QTest.qWait(10)
+					if window.worker is None:
+						break
+				self.assertIsNone(window.worker)
+				capture.release.assert_called_once()
+				detector.close.assert_called_once()
+			finally:
+				if window.worker is not None:
+					window.worker.requestInterruption()
+					window.worker.wait()
+					self.app.processEvents()
+				window.close()
+
+
+class WorkerTests(unittest.TestCase):
+	def run_worker(self, capture, detector):
+		worker = CameraWorker()
+		with patch("gestos.camera.ensure_model", return_value=Path("model.task")):
+			with patch("gestos.camera.GestureDetector", return_value=detector):
+				with patch("gestos.camera.cv2.VideoCapture", return_value=capture):
+					with self.assertLogs("gestos", level="INFO"):
+						worker.run()
+		return worker
+
+	def test_read_failure_releases_camera_and_detector(self):
+		capture = Mock()
+		capture.read.return_value = (False, None)
+		detector = Mock()
+		self.run_worker(capture, detector)
+		capture.release.assert_called_once()
+		detector.close.assert_called_once()
+
+	def test_latest_frame_owns_pixels_and_is_consumed_once(self):
+		capture = Mock()
+		capture.read.side_effect = [(True, np.zeros((32, 48, 3), dtype=np.uint8)), (False, None)]
+		detector = Mock()
+		detector.process.return_value = Detection("PARAR", "GESTOS", ())
+		worker = self.run_worker(capture, detector)
+		image, result = worker.take_frame()
+		self.assertEqual(image.width(), 48)
+		self.assertEqual(image.pixelColor(0, 0).red(), 0)
+		self.assertEqual(result.command, "PARAR")
+		self.assertIsNone(worker.take_frame())
+		capture.release.assert_called_once()
+		detector.close.assert_called_once()
+
+	def test_detector_failure_still_releases_resources(self):
+		capture = Mock()
+		capture.read.return_value = (True, np.zeros((8, 8, 3), dtype=np.uint8))
+		detector = Mock()
+		detector.process.side_effect = RuntimeError("Falha de reconhecimento")
+		self.run_worker(capture, detector)
+		capture.release.assert_called_once()
+		detector.close.assert_called_once()
