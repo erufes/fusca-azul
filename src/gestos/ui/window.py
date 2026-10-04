@@ -87,7 +87,7 @@ class MainWindow(QMainWindow):
 		self.mode = QLabel("Modo: Gestos")
 		panel.addWidget(self.mode)
 		panel.addStretch()
-		help_text = QLabel("Para trocar o modo, mantenha o gesto de rock por 1 segundo.\n\nDesfaça o gesto antes de trocar novamente.")
+		help_text = QLabel("O controle permanece no modo Gestos.\n\nA troca de modo pelo gesto de rock está desabilitada.")
 		help_text.setWordWrap(True)
 		help_text.setObjectName("muted")
 		panel.addWidget(help_text)

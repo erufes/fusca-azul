@@ -17,10 +17,6 @@ def identificar_comando(hand):
 	palm = distance(hand[0], hand[2])
 	if palm < 1e-6 or distance(hand[5], hand[17]) < 1e-6:
 		return "AGUARDANDO"
-	# The thumb can rest across the folded fingers or point outward during rock.
-	# Do not let its classification interrupt the mode-switch hold.
-	if extended == [True, False, False, True]:
-		return "TROCAR_MODO"
 	outward = (
 		(hand[4].x - hand[2].x) * (hand[5].x - hand[17].x)
 		+ (hand[4].y - hand[2].y) * (hand[5].y - hand[17].y)

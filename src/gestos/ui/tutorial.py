@@ -6,7 +6,6 @@ from PySide6.QtWidgets import (
 	QScrollArea, QTabWidget, QVBoxLayout, QWidget,
 )
 
-from ..modes import ModeControl
 from .gestures import GESTURES
 
 
@@ -109,9 +108,7 @@ class TutorialDialog(QDialog):
 			row.addLayout(text, 1)
 			grid.addWidget(card, index // 2, index % 2)
 		layout.addLayout(grid)
-		hold = f"{ModeControl.HOLD_SECONDS:g}".replace(".", ",")
-		release = f"{ModeControl.RELEASE_SECONDS:g}".replace(".", ",")
-		section(layout, "Trocar entre Gestos e Automático", f"Mantenha o rock por {hold} segundo para alternar o modo. Depois, desfaça o gesto por pelo menos {release} segundo antes de repetir. Manter o rock não provoca trocas seguidas. Pausar ou trocar a câmera inicia uma nova sessão em modo Gestos ao retomar a captura.")
+		section(layout, "Modo de controle", "O aplicativo permanece no modo Gestos. A troca de modo pelo gesto de rock está desabilitada; esse gesto é tratado como desconhecido e para o robô.")
 		section(layout, "Entenda os controles", "Pontos da mão mostra ou oculta os 21 pontos usados no reconhecimento. Pausar câmera interrompe a captura e libera a webcam. Ativar câmera retoma a captura.")
 		section(layout, "Se o gesto não for reconhecido", "Nenhuma mão significa que a câmera não detectou uma mão. Aguardando significa que a pose não corresponde a um comando conhecido. Ajuste o enquadramento, a iluminação e a posição dos dedos. Se a câmera falhar, confira a permissão do sistema, feche outros aplicativos que a usam e tente novamente.")
 		layout.addStretch()

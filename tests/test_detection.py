@@ -26,17 +26,17 @@ class DetectionTests(unittest.TestCase):
 		detector = detector_for(poses)
 		results = [detector.process(None) for _ in poses]
 		self.assertEqual([r.command for r in results],
-			["FRENTE", "DIREITA", "ESQUERDA", "RE", "PARAR", "TROCAR_MODO", "NENHUMA_MAO"])
+			["FRENTE", "DIREITA", "ESQUERDA", "RE", "PARAR", "AGUARDANDO", "NENHUMA_MAO"])
 		self.assertEqual([len(r.landmarks) for r in results], [21] * 6 + [0])
 
-	def test_mode_changes_once_and_new_session_resets(self):
+	def test_held_rock_keeps_gesture_mode(self):
 		detector = detector_for([hand(0, 1, 0, 0, 1)] * 31)
 		with patch("gestos.modes.monotonic", side_effect=[i / 10 for i in range(31)]):
-			with self.assertLogs("gestos", level="INFO") as logs:
+			with self.assertNoLogs("gestos", level="INFO"):
 				results = [detector.process(None) for _ in range(31)]
 		self.assertEqual(results[0].mode, "GESTOS")
-		self.assertEqual(results[-1].mode, "AUTO")
-		self.assertEqual(len(logs.records), 1)
+		self.assertTrue(all(result.mode == "GESTOS" for result in results))
+		self.assertTrue(all(result.command == "AGUARDANDO" for result in results))
 		self.assertEqual(detector_for([[]]).process(None).mode, "GESTOS")
 
 	def test_repeated_frames_only_log_changes(self):

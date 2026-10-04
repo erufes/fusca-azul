@@ -36,8 +36,9 @@ de versões e arquitetura precisa ser compatível. No Linux, o Qt pode exigir
 bibliotecas gráficas do sistema. Não há empacotamento nem Docker.
 
 **Os gestos controlam o robô por Wi-Fi.** O aplicativo anuncia o servidor por
-mDNS, e o robô o encontra automaticamente. O modo Automático mantém os motores
-parados; a navegação autônoma ainda não foi implementada.
+mDNS, e o robô o encontra automaticamente. A troca de modo pelo gesto de rock
+está desabilitada, e o aplicativo permanece no modo Gestos. A navegação autônoma
+ainda não foi implementada.
 
 Veja [configuração de Wi-Fi e protocolo](docs/comunicacao.md) para conectar o robô.
 

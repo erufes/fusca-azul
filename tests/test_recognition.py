@@ -20,8 +20,8 @@ class RecognitionTests(unittest.TestCase):
 	def test_gestures_are_invariant_to_mirror_scale_and_rotation(self):
 		examples = [((1,1,1,1,1), 'FRENTE'), ((0,0,0,0,1), 'DIREITA'),
 					((1,0,0,0,0), 'ESQUERDA'), ((0,1,1,0,0), 'RE'),
-					((0,0,0,0,0), 'PARAR'), ((0,1,0,0,1), 'TROCAR_MODO'),
-					((1,1,0,0,1), 'TROCAR_MODO'),
+					((0,0,0,0,0), 'PARAR'), ((0,1,0,0,1), 'AGUARDANDO'),
+					((1,1,0,0,1), 'AGUARDANDO'),
 					((1,1,0,0,0), 'AGUARDANDO'), ((0,1,0,0,0), 'AGUARDANDO')]
 		for fingers, expected in examples:
 			for mirror in [-1, 1]:
@@ -38,16 +38,16 @@ class RecognitionTests(unittest.TestCase):
 		self.assertEqual(identificar_comando([]), 'NENHUMA_MAO')
 		self.assertEqual(identificar_comando([SimpleNamespace(x=0,y=0)] * 21), 'AGUARDANDO')
 
-	def test_rock_hold_survives_thumb_movement(self):
+	def test_rock_hold_does_not_change_mode(self):
 		control = ModeControl()
 		changes = []
 		for frame in range(21):
 			points = hand(thumb=bool(frame % 2), index=True, pinky=True)
 			command = identificar_comando(points)
-			self.assertEqual(command, 'TROCAR_MODO')
+			self.assertEqual(command, 'AGUARDANDO')
 			changes.append(control.update(command, frame / 10))
-		self.assertEqual(sum(changes), 1)
-		self.assertEqual(control.mode, 'AUTO')
+		self.assertEqual(sum(changes), 0)
+		self.assertEqual(control.mode, 'GESTOS')
 
 	def test_rock_requires_middle_and_ring_folded(self):
 		for thumb in (False, True):

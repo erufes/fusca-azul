@@ -28,7 +28,7 @@ Consulte [a configuração da comunicação](comunicacao.md).
 ## Tutorial no aplicativo
 
 Clique no **?** ao lado da engrenagem ou pressione **F1**. O tutorial traz
-ilustrações dos gestos, instruções de uso, troca de modo e uma explicação do
+ilustrações dos gestos, instruções de uso e uma explicação do
 funcionamento do robô e das integrações ainda pendentes. As abas **Gestos e
 controles** e **Como funciona o robô** têm rolagem. O tutorial pode ficar aberto
 enquanto você pratica; abrir ou fechar o guia não interrompe a captura.
@@ -44,14 +44,12 @@ Use uma mão com a palma voltada para a câmera:
 | Apenas polegar levantado | Esquerda |
 | Indicador e médio levantados (V), demais fechados | Para trás |
 | Punho fechado | Parado |
-| Indicador e mindinho levantados (rock), médio e anelar fechados; polegar livre | Troca de modo |
+| Indicador e mindinho levantados (rock) | Aguardando (troca de modo desabilitada) |
 | Outra combinação | Aguardando |
 | Sem mão na imagem | Nenhuma mão |
 
-Mantenha o rock por 1 segundo para alternar entre **Gestos** e **Automático**.
-Desfaça o gesto por pelo menos meio segundo antes de trocar novamente. Manter
-o rock não provoca trocas repetidas. Uma interrupção na captura reinicia a
-contagem do gesto; pausar e reabrir a câmera começa uma sessão em modo Gestos.
+A troca de modo pelo gesto de rock está desabilitada. O aplicativo permanece
+no modo **Gestos**, e o rock é tratado como gesto desconhecido, enviando parar.
 
 Em modo Gestos, os comandos acionam os motores do robô conectado. Sem mão,
 com gesto desconhecido, durante o rock ou no modo Automático, o comando é parar.
