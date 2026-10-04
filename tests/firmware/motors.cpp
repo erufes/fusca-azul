@@ -14,11 +14,14 @@ int main() {
 	assert(pins[0] == 1024 && pins[3] == 1024);
 	assert(pins[1] == LOW && pins[2] == HIGH && pins[4] == LOW && pins[5] == HIGH);
 	robot.left();
-	assert(pins[0] == 1024 && pins[3] == 1024);
-	assert(pins[1] == LOW && pins[2] == HIGH && pins[4] == HIGH && pins[5] == LOW);
+	assert(pins[0] == 1024 && pins[3] == 0);
+	assert(pins[1] == HIGH && pins[2] == LOW && pins[4] == LOW && pins[5] == LOW);
 	robot.right();
-	assert(pins[0] == 1024 && pins[3] == 1024);
-	assert(pins[1] == HIGH && pins[2] == LOW && pins[4] == LOW && pins[5] == HIGH);
+	assert(pins[0] == 0 && pins[3] == 1024);
+	assert(pins[1] == LOW && pins[2] == LOW && pins[4] == HIGH && pins[5] == LOW);
+	robot.left();
+	assert(pins[0] == 1024 && pins[3] == 0);
+	assert(pins[1] == HIGH && pins[2] == LOW && pins[4] == LOW && pins[5] == LOW);
 	// Repeated commands renew the watchdog, including across millis rollover.
 	nowMs = UINT32_MAX - 200;
 	robot.forward();

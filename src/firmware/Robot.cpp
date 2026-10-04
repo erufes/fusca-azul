@@ -32,9 +32,11 @@ void Robot::stop() {
 }
 
 void Robot::drive(int left, int right) {
-	if (motion_ == Motion::Forward || motion_ == Motion::Right) leftMotor_.forward(left);
+	if (motion_ == Motion::Right) leftMotor_.stop();
+	else if (motion_ == Motion::Forward || motion_ == Motion::Left) leftMotor_.forward(left);
 	else leftMotor_.backward(left);
-	if (motion_ == Motion::Forward || motion_ == Motion::Left) rightMotor_.forward(right);
+	if (motion_ == Motion::Left) rightMotor_.stop();
+	else if (motion_ == Motion::Forward || motion_ == Motion::Right) rightMotor_.forward(right);
 	else rightMotor_.backward(right);
 }
 

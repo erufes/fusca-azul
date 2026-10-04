@@ -46,8 +46,9 @@ Veja [configuração de Wi-Fi e protocolo](docs/comunicacao.md) para conectar o 
 
 O NodeMCU/ESP8266 controla dois motores pela ponte H L298N.
 O robô inicia parado e recebe frente, ré, esquerda, direita e parar da aplicação.
-Sem comandos recentes ou conexão, volta a parar. As curvas giram as rodas em
-sentidos opostos. Os motores operam com PWM de até 100% nos pinos ENA/ENB; a parada desabilita
+Sem comandos recentes ou conexão, volta a parar. O comando esquerda aciona apenas
+o motor esquerdo para frente; direita aciona apenas o direito para frente, mantendo
+o outro motor desligado. Os motores operam com PWM de até 100% nos pinos ENA/ENB; a parada desabilita
 os canais e deixa os motores desacelerarem livremente.
 
 | L298N | NodeMCU |
