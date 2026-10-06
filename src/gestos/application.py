@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QApplication
 
 from .network import RobotServer
 from .ui.theme import STYLE
+from .ui.branding import application_icon
 from .ui.window import MainWindow
 
 
@@ -16,6 +17,7 @@ def run():
 	app = QApplication(sys.argv)
 	app.setApplicationName("Fusca Azul")
 	app.setOrganizationName("ERUS")
+	app.setWindowIcon(application_icon())
 	app.setStyle("Fusion")
 	app.setStyleSheet(STYLE)
 	server = RobotServer()

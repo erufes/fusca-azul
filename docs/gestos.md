@@ -12,8 +12,13 @@ superior direito. Selecione o nome da webcam e clique em **Aplicar**; a captura
 ativa é reiniciada com a nova câmera e o modo volta para Gestos. Se a captura
 estiver pausada, a seleção será usada ao ativá-la. **Cancelar** mantém a câmera
 anterior. Use **Atualizar lista** após conectar uma webcam. A busca ocorre em
-segundo plano, sem travar a janela. Sem câmeras, a ativação fica desabilitada. O controle **Pontos da mão** mostra ou oculta
-a sobreposição dos 21 pontos, sem interromper o reconhecimento.
+segundo plano, sem travar a janela. Sem câmeras, a ativação fica desabilitada.
+Os 21 pontos da mão são sempre desenhados quando uma mão é detectada.
+
+O indicador acima do gesto atual destaca a conexão do robô: verde para conectado, amarelo para
+aguardando comunicação e vermelho para falha no servidor. Abaixo da câmera fica
+apenas o controle de captura. Consulte **?** (F1) para os gestos, os modos e as
+orientações de conexão por Wi-Fi.
 
 Falhas de permissão, abertura ou desconexão aparecem na janela. Corrija a causa
 e use **Tentar novamente**. Ao fechar, o aplicativo solicita o encerramento e

@@ -149,7 +149,7 @@ class WindowTests(unittest.TestCase):
 		wait_for_devices(self.window)
 		self.assertFalse(self.window.isVisible())
 
-	def test_frame_updates_and_overlay_can_be_disabled(self):
+	def test_frame_updates_with_hand_overlay(self):
 		self.window.start_camera()
 		image = QImage(64, 48, QImage.Format.Format_RGB888)
 		image.fill(0)
@@ -157,8 +157,7 @@ class WindowTests(unittest.TestCase):
 		self.window.refresh_frame()
 		self.assertEqual(self.window.gesture.text(), "Em frente")
 		self.assertEqual(self.window.mode.text(), "Modo: Automático")
-		self.window.landmarks.setChecked(False)
-		self.assertFalse(self.window.video.show_landmarks)
+		self.assertEqual(self.window.video.landmarks, ((.5, .5),) * 21)
 		self.window.show()
 		self.app.processEvents()
 		self.assertFalse(self.window.grab().isNull())

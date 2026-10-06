@@ -109,13 +109,14 @@ class TutorialDialog(QDialog):
 			grid.addWidget(card, index // 2, index % 2)
 		layout.addLayout(grid)
 		section(layout, "Modo de controle", "O aplicativo permanece no modo Gestos. A troca de modo pelo gesto de rock está desabilitada; esse gesto é tratado como desconhecido e para o robô.")
-		section(layout, "Entenda os controles", "Pontos da mão mostra ou oculta os 21 pontos usados no reconhecimento. Pausar câmera interrompe a captura e libera a webcam. Ativar câmera retoma a captura.")
+		section(layout, "Entenda os controles", "Os 21 pontos da mão aparecem sempre que ela é detectada no vídeo. Pausar câmera interrompe a captura e libera a webcam. Ativar câmera retoma a captura. Para interromper o controle, clique em Parar robô ou pressione Esc.")
 		section(layout, "Se o gesto não for reconhecido", "Nenhuma mão significa que a câmera não detectou uma mão. Aguardando significa que a pose não corresponde a um comando conhecido. Ajuste o enquadramento, a iluminação e a posição dos dedos. Se a câmera falhar, confira a permissão do sistema, feche outros aplicativos que a usam e tente novamente.")
 		layout.addStretch()
 		return page
 
 	def robot_page(self):
 		page, layout = scroll_page()
+		section(layout, "Status da conexão", "O indicador acima do gesto atual, no painel lateral, mostra a conexão com o robô: verde indica Robô conectado; amarelo indica que o aplicativo aguarda comunicação na rede Wi-Fi; vermelho indica uma falha ao iniciar o servidor. Mantenha o computador e o robô na mesma rede. O status da câmera aparece separadamente, acima do vídeo.")
 		section(layout, "O que é o Fusca Azul?", "É o projeto de robô móvel da ERUS/UFES. O software e o hardware estão sendo atualizados. A proposta é usar gestos para indicar movimentos e oferecer um modo de navegação automática.")
 		section(layout, "Da sua mão ao comando", "A webcam captura a imagem. No próprio computador, o reconhecimento localiza 21 pontos da mão e compara a posição dos dedos com os gestos conhecidos. A interface mostra o comando identificado e o modo selecionado. As imagens não são enviadas para um servidor.")
 		section(layout, "O que os modos significam", "Gestos representa o controle por comandos da mão: frente, ré, esquerda, direita e parar. Automático representa a proposta de navegação autônoma. Nesta versão, o modo Automático mantém os motores parados; a navegação autônoma ainda não foi implementada.")

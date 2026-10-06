@@ -1,4 +1,4 @@
-"""Aspect-preserving video widget with an optional hand overlay."""
+"""Aspect-preserving video widget with an always-on hand overlay."""
 from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QColor, QPainter, QPen
 from PySide6.QtWidgets import QWidget
@@ -15,7 +15,6 @@ class VideoView(QWidget):
 		super().__init__(parent)
 		self.image = None
 		self.landmarks = ()
-		self.show_landmarks = True
 		self.message = "Preparando câmera…"
 		self.setMinimumSize(360, 270)
 		self.setAccessibleName("Prévia espelhada da câmera")
@@ -30,10 +29,6 @@ class VideoView(QWidget):
 		self.message = message
 		self.update()
 
-	def set_landmarks_visible(self, visible):
-		self.show_landmarks = visible
-		self.update()
-
 	def paintEvent(self, event):
 		painter = QPainter(self)
 		painter.setRenderHint(QPainter.RenderHint.Antialiasing)
@@ -45,7 +40,7 @@ class VideoView(QWidget):
 		size = self.image.size().scaled(self.size(), Qt.AspectRatioMode.KeepAspectRatio)
 		rect = QRectF((self.width() - size.width()) / 2, (self.height() - size.height()) / 2, size.width(), size.height())
 		painter.drawImage(rect, self.image)
-		if self.show_landmarks and len(self.landmarks) == 21:
+		if len(self.landmarks) == 21:
 			points = [QPointF(rect.x() + x * rect.width(), rect.y() + y * rect.height()) for x, y in self.landmarks]
 			painter.setPen(QPen(QColor("#bcd6f6"), 2))
 			for start, end in EDGES:

@@ -1,7 +1,7 @@
 """Application window and capture lifecycle; no recognition algorithms."""
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Qt
 from PySide6.QtWidgets import (
-	QCheckBox, QFrame, QHBoxLayout, QLabel, QMainWindow, QPushButton,
+	QFrame, QHBoxLayout, QLabel, QMainWindow, QPushButton,
 	QVBoxLayout, QWidget,
 )
 
@@ -12,11 +12,13 @@ from ..devices import list_cameras
 
 from .gestures import COMMANDS
 from .tutorial import TutorialDialog
+from .branding import application_icon
 
 
 class MainWindow(QMainWindow):
 	def __init__(self, *, worker_factory=CameraWorker, auto_start=True, camera_provider=list_cameras, command_state=None, network_error=None):
 		super().__init__()
+		self.setWindowIcon(application_icon())
 		self.command_state = command_state
 		self.worker_factory = worker_factory
 		self.worker = None
@@ -41,6 +43,11 @@ class MainWindow(QMainWindow):
 		title = QLabel("Fusca Azul")
 		title.setObjectName("title")
 		header = QHBoxLayout()
+		logo = QLabel()
+		logo.setPixmap(self.windowIcon().pixmap(44, 44))
+		logo.setFixedSize(44, 44)
+		logo.setAccessibleName("Logo ERUS")
+		header.addWidget(logo)
 		header.addWidget(title)
 		header.addStretch()
 		self.stop_robot_button = QPushButton("Parar robô (Esc)")
@@ -63,6 +70,10 @@ class MainWindow(QMainWindow):
 		self.settings_button.clicked.connect(self.settings.open)
 		header.addWidget(self.settings_button)
 		layout.addLayout(header)
+		self.robot_status = QLabel()
+		self.robot_status.setObjectName("robotStatus")
+		self.robot_status.setTextFormat(Qt.TextFormat.PlainText)
+		self.robot_status.setWordWrap(True)
 		self.status = QLabel("Pronto para iniciar")
 		self.status.setObjectName("muted")
 		self.status.setWordWrap(True)
@@ -76,6 +87,8 @@ class MainWindow(QMainWindow):
 		card.setMinimumWidth(240)
 		panel = QVBoxLayout(card)
 		panel.setContentsMargins(24, 24, 24, 24)
+		panel.addWidget(self.robot_status)
+		panel.addSpacing(20)
 		panel.addWidget(QLabel("GESTO RECONHECIDO"))
 		self.symbol = QLabel("—")
 		self.symbol.setObjectName("symbol")
@@ -87,10 +100,6 @@ class MainWindow(QMainWindow):
 		self.mode = QLabel("Modo: Gestos")
 		panel.addWidget(self.mode)
 		panel.addStretch()
-		help_text = QLabel("O controle permanece no modo Gestos.\n\nA troca de modo pelo gesto de rock está desabilitada.")
-		help_text.setWordWrap(True)
-		help_text.setObjectName("muted")
-		panel.addWidget(help_text)
 		content.addWidget(card, 1)
 		layout.addLayout(content, 1)
 		controls = QHBoxLayout()
@@ -98,32 +107,24 @@ class MainWindow(QMainWindow):
 		self.button.clicked.connect(self.toggle_camera)
 		controls.addWidget(self.button)
 		controls.addStretch()
-		self.landmarks = QCheckBox("Pontos da mão")
-		self.landmarks.setChecked(True)
-		self.landmarks.toggled.connect(self.video.set_landmarks_visible)
-		controls.addWidget(self.landmarks)
 		layout.addLayout(controls)
-		guide = QLabel("Mão aberta: frente  •  Punho: parar  •  V: ré  •  Mindinho: direita  •  Polegar: esquerda")
-		guide.setWordWrap(True)
-		guide.setObjectName("muted")
-		layout.addWidget(guide)
-		footer = QLabel("Reconhecimento local • Comandos por Wi-Fi • Automático mantém o robô parado.")
-		footer.setObjectName("muted")
-		footer.setWordWrap(True)
-		layout.addWidget(footer)
-		self.robot_status = QLabel()
-		self.robot_status.setObjectName("muted")
-		self.robot_status.setWordWrap(True)
-		layout.addWidget(self.robot_status)
 		self.network_timer = QTimer(self)
 		def refresh_network():
 			if network_error:
-				text = "Servidor do robô indisponível: " + network_error
+				state, text = "error", "Conexão indisponível — " + network_error
 			elif self.command_state is None:
-				text = "Comunicação com o robô desativada"
+				state, text = "disabled", "Comunicação com o robô desativada"
+			elif self.command_state.connected():
+				state, text = "connected", "Robô conectado"
 			else:
-				text = "Robô conectado" if self.command_state.connected() else "Aguardando robô na rede Wi-Fi…"
-			self.robot_status.setText(text)
+				state, text = "waiting", "Robô desconectado"
+			self.robot_status.setText("●  " + text)
+			self.robot_status.setToolTip("Aguardando robô na rede Wi-Fi…" if state == "waiting" else text)
+			if self.robot_status.property("connection") != state:
+				self.robot_status.setProperty("connection", state)
+				self.robot_status.style().unpolish(self.robot_status)
+				self.robot_status.style().polish(self.robot_status)
+				self.robot_status.update()
 		self.network_timer.timeout.connect(refresh_network)
 		self.network_timer.start(500)
 		refresh_network()
