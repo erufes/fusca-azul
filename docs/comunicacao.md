@@ -31,10 +31,12 @@ As credenciais não são impressas no monitor serial nem devolvidas pelo portal.
 
 A cada boot, o firmware lê essa configuração e verifica a conexão Wi-Fi.
 Se não conectar em 20 segundos, abre o hotspot. Se perder uma conexão em uso,
-para os motores, tenta novamente a rede salva e abre o hotspot se necessário.
-Enquanto o portal estiver ocioso, volta a tentar a última rede a cada 30 segundos.
-Uma rede ausente ou senha incorreta não apaga a última configuração válida.
-Para trocar de rede, torne a anterior indisponível para o robô e use o portal.
+para os motores e continua tentando a rede salva, com intervalos crescentes até
+30 segundos. Uma queda temporária não abre o portal nem apaga a configuração.
+O Wi-Fi permanece sem economia de energia para melhorar a resposta em redes
+fracas, com maior consumo de bateria. Uma rede ausente ou senha incorreta não
+apaga a última configuração válida. Para trocar de rede, torne a anterior
+indisponível para o robô e use o portal.
 
 O hotspot é aberto, destinado à configuração local por proximidade, e é fechado
 quando a conexão normal se estabelece. SSID e senha ficam na flash sem criptografia.
@@ -86,6 +88,8 @@ A parada não é frenagem ativa: a ponte é desabilitada e as rodas desaceleram.
 - `[ROBO]` registra `FRENTE`, `RE`, `ESQUERDA`, `DIREITA` e `PARADO` somente
   quando mudam, sem repetir o mesmo movimento a cada comando recebido.
 - `[WIFI]`, `[PORTAL]` e `[BUSCA_WIFI]` mostram conexão, configuração e busca.
+  Após uma queda, `AGUARDANDO_RECONEXAO` indica que o firmware seguirá tentando
+  a rede salva sem interromper o funcionamento para abrir o portal.
 - `[GESTOS]` distingue espera por Wi-Fi, servidor ausente, múltiplos servidores,
   falha mDNS/TCP, conexão estabelecida, timeout e erro de protocolo. Cada
   tentativa TCP informa o IP e a porta realmente retornados pelo mDNS.

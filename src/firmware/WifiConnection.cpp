@@ -7,12 +7,14 @@
 
 namespace {
 constexpr uint32_t WIFI_TIMEOUT = 20000;
+constexpr uint32_t WIFI_RETRY_INITIAL = 2000;
+constexpr uint32_t WIFI_RETRY_MAX = 30000;
 ESP8266WebServer portal(80);
 DNSServer dns;
 WifiCredentials saved{}, candidate{};
 bool storageReady = false, portalOpen = false, testing = false, joining = false;
-bool online = false, restarting = false;
-uint32_t joinStarted = 0, restartAt = 0;
+bool online = false, restarting = false, reconnecting = false;
+uint32_t joinStarted = 0, restartAt = 0, retryAt = 0, retryDelay = WIFI_RETRY_INITIAL;
 String deviceHostname, message = "Selecione uma rede Wi-Fi de 2,4 GHz.";
 StateLog wifiState("WIFI"), portalState("PORTAL"), scanState("BUSCA_WIFI");
 bool scanning = false;
@@ -171,6 +173,8 @@ void WifiConnection::update() {
 			return;
 		}
 		online = true;
+		reconnecting = false;
+		retryDelay = WIFI_RETRY_INITIAL;
 		wifiState.set("CONECTADO");
 		if (portalOpen) {
 			WiFi.scanDelete();
@@ -188,12 +192,23 @@ void WifiConnection::update() {
 		joining = false;
 		testing = false;
 		WiFi.disconnect();
-		message = "Não foi possível conectar. Confira a rede selecionada e a senha. A última rede salva foi mantida.";
-		if (!portalOpen) openPortal();
+		if (reconnecting) {
+			retryAt = millis() + retryDelay;
+			retryDelay = min(retryDelay * 2, WIFI_RETRY_MAX);
+			wifiState.set("AGUARDANDO_RECONEXAO");
+		} else {
+			message = "Não foi possível conectar. Confira a rede selecionada e a senha. A última rede salva foi mantida.";
+			if (!portalOpen) openPortal();
+		}
 	}
 	if (online && WiFi.status() != WL_CONNECTED) {
 		online = false;
+		reconnecting = true;
+		retryDelay = WIFI_RETRY_INITIAL;
 		wifiState.set("DESCONECTADO", "Conexao Wi-Fi perdida");
+		join(saved);
+	}
+	if (reconnecting && !joining && !online && static_cast<int32_t>(millis() - retryAt) >= 0) {
 		join(saved);
 	}
 	// Continue trying the last successful network while the portal is idle.
@@ -206,6 +221,8 @@ const String& WifiConnection::hostname() { return deviceHostname; }
 void WifiConnection::begin() {
 	WiFi.persistent(false);
 	WiFi.mode(WIFI_STA);
+	// Avoid ESP8266 modem sleep: it can make short TCP exchanges unreliable on weak APs.
+	WiFi.setSleepMode(WIFI_NONE_SLEEP);
 	WiFi.setAutoReconnect(false);
 	deviceHostname = "fusca-azul-" + String(ESP.getChipId(), HEX);
 	WiFi.hostname(deviceHostname);
